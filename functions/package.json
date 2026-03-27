@@ -1,0 +1,11 @@
+{
+  "name": "james-ai-functions",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "firebase-functions": "^7.2.2"
+  }
+}

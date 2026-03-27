@@ -1,0 +1,236 @@
+import { describe, expect, it } from "vitest";
+import { refusalMessage } from "../src/data/resumeCorpus.js";
+import { askAssistant } from "../src/lib/retrieval.js";
+
+describe("James AI retrieval", () => {
+  it("answers direct factual contact questions from the approved resume", () => {
+    const response = askAssistant("What is James Lane's email address?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("tiburo13@gmail.com");
+    expect(response.answer).toContain("[p1-contact]");
+  });
+
+  it("answers environment-fit questions from the markdown docs", () => {
+    const response = askAssistant("What kinds of environments are the best fit for James Lane?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/environment|fit|manager|latitude|process improvement/i);
+    expect(response.answer).toContain("[environment-fit-model-");
+  });
+
+  it("answers tradeoff questions from the markdown docs", () => {
+    const response = askAssistant("What are James Lane's main tradeoffs or friction points?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/ambiguity|precision|friction|intensity/i);
+    expect(response.answer).toContain("[friction-points-and-tradeoffs-");
+  });
+
+  it("answers evidence-pattern questions", () => {
+    const response = askAssistant("What evidence shows how James Lane works?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/build|artifact|AI|workflow/i);
+    expect(response.answer).toContain("[evidence-and-projects-");
+  });
+
+  it("prioritizes business-facing AI and process-improvement evidence over game-dev examples for broad employer-facing questions", () => {
+    const response = askAssistant("What projects best show James Lane's AI and process-improvement work?", [], {
+      modeId: "evidence",
+      preferredIntent: "evidence"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/proposal|pilot|FAQ assistant|regulatory assistant|workflow/i);
+    expect(response.answer).not.toMatch(/^Iron Tides is one of James's most developed creative-technical projects\./i);
+  });
+
+  it("returns live project links from the new projects lens", () => {
+    const response = askAssistant("What live projects can I review?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/https:\/\/james-lane-web-resume\.web\.app\/|https:\/\/cbc-proposal-faq-assistant\.web\.app\/|https:\/\/iron-shores\.web\.app\//i);
+    expect(response.answer).toContain("[p2-project-living-resume-ai]");
+  });
+
+  it("handles broad named-project questions for resume-backed deployed projects", () => {
+    const response = askAssistant("What can you tell me about Iron Shores?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Iron Shores|playable demo|bullet-hell|tank roguelite/i);
+    expect(response.answer).toContain("[p2-project-iron-shores-playable-demo]");
+  });
+
+  it("handles broad named-project questions for hosted portfolio media projects", () => {
+    const response = askAssistant("What can you tell me about Iron Tides?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Iron Tides|Hosted media URL|portfolio video|Godot|animation|wooden decks|battleship/i);
+    expect(response.answer).toContain("[portfolio-media-index-");
+  });
+
+  it("handles broad named-project questions for the rest of the live project catalog", () => {
+    const response = askAssistant("Tell me about the BLKVue AI Security Intake Bot.", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/BLKVue|security intake|risk assessments|target security company's own website/i);
+    expect(response.answer).toContain("[p2-project-blkvue-ai-security-intake-bot]");
+  });
+
+  it("surfaces hosted Iron Tides media through the projects lens without exposing local file paths", () => {
+    const response = askAssistant("What Iron Tides portfolio examples can I watch?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Iron Tides|Godot|animation|wooden decks|battleship/i);
+    expect(response.answer).toContain("[portfolio-media-index-");
+    expect(response.answer).toMatch(/https:\/\/james-lane-web-resume\.web\.app\/portfolio\/iron-tides\//i);
+    expect(response.answer).not.toMatch(/C:\\Users\\angry/i);
+  });
+
+  it("answers broad role-family fit questions with actual role families", () => {
+    const response = askAssistant("What roles look like a strong fit versus a stretch fit for James Lane?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/process analysis|business analysis|workflow design|operations improvement/i);
+    expect(response.answer).toMatch(/strong fit|stretch fit/i);
+    expect(response.answer).toContain("[role-fit-model-");
+  });
+
+  it("answers work location preference questions", () => {
+    const response = askAssistant("What is James Lane's work location preference?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("Remote work is generally the best fit");
+    expect(response.answer).toContain("[core-identity-work-location-preference]");
+  });
+
+  it("answers natural best-at questions from the approved sources", () => {
+    const response = askAssistant("What is James best at?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/systems|reasoning|process improvement|strength/i);
+    expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p1-core-strengths|evidence-and-projects)-?/) ;
+  });
+
+  it("uses the corrected current CBC title in retrieval answers", () => {
+    const response = askAssistant("What is James Lane's current role at Capital Blue Cross?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("Claims Examiner I");
+    expect(response.answer).not.toContain("Claims Operations Analyst");
+  });
+
+  it("uses recent user context for follow-up tool questions", () => {
+    const history = [
+      {
+        role: "user",
+        content: "Tell me about James Lane's tools and data work."
+      }
+    ];
+
+    const response = askAssistant("What about SQL and Power BI?", history);
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Power BI|SQL/i);
+    expect(response.answer).toContain("[p2-tools]");
+  });
+
+  it("supports broader fit questions when fit mode is active", () => {
+    const response = askAssistant("How can James adapt when a role is a stretch fit?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/ramp|learning|stretch fit|reasoning/i);
+    expect(response.answer).toContain("[role-fit-model-");
+  });
+
+  it("pulls concrete BA and analytics evidence for broad business analyst fit questions", () => {
+    const response = askAssistant("How would James do in a business analyst job?", [], {
+      modeId: "profile",
+      preferredIntent: "identity"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/business analysis|requirements|process mapping|workflow/i);
+    expect(response.answer).toMatch(/Power BI|SQL|Tableau|analytics|reporting/i);
+    expect(response.answer).toMatch(/\[(p1-core-strengths|p2-tools|p1-summary|core-identity|role-fit-model)-/);
+  });
+
+  it("handles adjacent hiring-manager phrasing for analyst-style work", () => {
+    const response = askAssistant("Would James be a good fit for work focused on requirements, workflow design, and reporting?", [], {
+      modeId: "profile",
+      preferredIntent: "identity"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/requirements|workflow|reporting|process mapping/i);
+    expect(response.answer).toMatch(/Power BI|SQL|analytics|documentation/i);
+    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|p2-tools|p1-exp-capital-blue-cross|p1-exp-randstad-icu-medical|core-identity|environment-fit-model|role-fit-model)-/);
+  });
+
+  it("uses communication and presentation evidence for meeting-leadership questions", () => {
+    const response = askAssistant("Can James lead meetings?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/communication|leadership|presentation|written|structured|live verbal/i);
+    expect(response.answer).not.toMatch(/Assess role fit using the following dimensions/i);
+    expect(response.answer).toMatch(/\[(evidence-and-projects|cognitive-profile|friction-points-and-tradeoffs|environment-fit-model|role-fit-model|p1-exp-capital-blue-cross)-/);
+  });
+
+  it("keeps workplace politics questions in scope when the sources cover them", () => {
+    const response = askAssistant("How does James handle internal workplace politics?", [], {
+      modeId: "fit",
+      preferredIntent: "environment"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/politics|clarity|environment|mismatch/i);
+  });
+
+  it("answers credential-gap hiring questions from the approved sources", () => {
+    const response = askAssistant("Why hire James if there are other candidates with college degrees?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/nontraditional|credential|degree|reasoning|interaction|work samples|resume/i);
+    expect(response.answer).toMatch(/\[(core-identity|role-fit-model)-/);
+    expect(response.answer).not.toMatch(/Credentials do not matter|James can do anything if given a chance/i);
+  });
+
+  it("refuses unsupported comparison questions", () => {
+    const response = askAssistant("How does James Lane compare with other business analysts?");
+
+    expect(response.refused).toBe(true);
+    expect(response.answer).toBe(refusalMessage);
+  });
+
+  it("refuses unsupported medical questions", () => {
+    const response = askAssistant("What medical advice would James Lane give for burnout?");
+
+    expect(response.refused).toBe(true);
+    expect(response.answer).toBe(refusalMessage);
+  });
+});
