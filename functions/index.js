@@ -6,6 +6,7 @@ const ALLOWED_ORIGIN = "https://james-lane-web-resume.web.app";
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b(does not contain (any )?information about|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
+const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|approved sources do not define the role requirements|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
 const PROJECT_NAME_PATTERNS = [
   /\bliving resume ai\b/i,
   /\bliving resume\b/i,
@@ -15,6 +16,17 @@ const PROJECT_NAME_PATTERNS = [
   /\bjameslaneai\.com\b/i,
   /\biron shores\b/i,
   /\biron tides\b/i
+];
+const WRITING_NAME_PATTERNS = [
+  /\bdon['’]?t be duped by government propaganda\b/i,
+  /\bthe constitution needs you\b/i,
+  /\bvengeance is best not served at all\b/i,
+  /\bis it 2025 or 1857\b/i,
+  /\ball lives matter except for palestinians\b/i,
+  /\bet tu,? mom\b/i,
+  /\bode to miata\b/i,
+  /\bp\(doom\) or big boon\b/i,
+  /\bp doom or big boon\b/i
 ];
 
 function fallbackFormat(retrievedMatches) {
@@ -98,10 +110,13 @@ function getModePrompt(mode) {
   if (mode.id === "fit") {
     return `${mode.answerStyle || "Give the fit conclusion first."}
 - If the question is broad, identify the strongest fit pattern or likely fit class first.
-- If the question is too abstract to fully resolve, state what the sources establish and then ask for one specific role or job posting to narrow the fit judgment.
+- If the question is too abstract to fully resolve, still give the best conditional fit judgment the sources support first, then note what would narrow it further.
 - Do not answer broad fit questions by only reciting category definitions if the matched sources support a more concrete role-family answer.
 - If the matched excerpts include concrete resume evidence such as tools, process skills, analytics work, or documented role experience, use that evidence in the fit judgment instead of speaking only at the abstract profile level.
 - You may give a best-supported interpretation of likely fit when multiple excerpts point in the same direction, as long as you state any meaningful limits that remain.
+- If direct role proof is missing but the excerpts support adjacent evidence, give the conditional fit judgment instead of defaulting to "the sources do not establish this at all."
+- Separate what is directly documented from what is a reasonable role-fit inference and from what remains unknown.
+- Do not make missing exact role requirements the lead sentence if the excerpts support a conditional fit judgment.
 - If the question mentions other candidates, college degrees, or credentials, do not compare unknown people. Instead, explain James's documented value, nontraditional-background framing, and any limits the approved sources establish.`;
   }
 
@@ -122,6 +137,15 @@ function getModePrompt(mode) {
 - If the matched excerpts are hosted media entries rather than a full project writeup, explain that those hosted clips are the approved project evidence currently available.`;
   }
 
+  if (mode.id === "writing") {
+    return `${mode.answerStyle || "Lead with the most relevant article or writing pattern."}
+- Treat Medium pieces as published public writing and opinion analysis that James chose to publish.
+- Do not describe published essays as hidden internal cognition, private thoughts, or profile truth beyond what the writing explicitly says.
+- If the matched excerpts are the ChatGPT-linked memo, describe it as supporting analysis or research context, not as a James-authored Medium article.
+- If the user asks what James has written, lead with the catalog or the strongest relevant article and include the live article link when present.
+- If the user asks what a specific piece is about, answer from that piece directly and make the public-writing boundary explicit only if it is relevant to the question.`;
+  }
+
   if (mode.id === "resume") {
     return `${mode.answerStyle || "Answer directly and factually."}
 - Answer factually and directly with minimal framing.
@@ -138,6 +162,15 @@ function hasNamedProjectEvidence(question, matches) {
     .toLowerCase();
 
   return PROJECT_NAME_PATTERNS.some((pattern) => pattern.test(question) && pattern.test(sourceText));
+}
+
+function hasNamedWritingEvidence(question, matches) {
+  const sourceText = matches
+    .map((match) => `${match.title}\n${match.items.join("\n")}`)
+    .join("\n")
+    .toLowerCase();
+
+  return WRITING_NAME_PATTERNS.some((pattern) => pattern.test(question) && pattern.test(sourceText));
 }
 
 exports.synthesize = onRequest(
@@ -189,10 +222,15 @@ STRICT RULES:
 - Do not use general job-market or training knowledge to explain what a role typically entails if that is not explicitly stated in the matched source material.
 - If the question is about fit for a role and the matched source material does not define that role's duties, say that the approved sources do not define the role requirements rather than filling them in from general knowledge.
 - Do not define a role by saying what it "typically," "usually," or "generally" involves unless that description is explicitly present in the matched source material.
+- When direct evidence for a role is missing, you may infer cautiously from adjacent documented traits, projects, communication patterns, and experiences if multiple matched excerpts support that inference.
+- Distinguish clearly between confirmed evidence, reasonable inference, and unknowns or remaining gaps.
+- Do not refuse a role-fit question if the matched source material supports a conditional or adjacent-evidence assessment. Refuse only when the approved matches make even a conditional assessment impossible.
+- For broad job titles, answer with a fit range or fit category when possible, rather than saying no assessment is possible.
 - Avoid sounding like a checklist reader when the matched sources support a more natural synthesis.
 - Start by answering the user's real question directly instead of opening with long framing.
 - If the matched source material contains concrete tools, methods, projects, or work examples that bear on the question, mention the strongest ones instead of speaking only in generalities.
 - If the matched source material already contains concrete examples, do not say there are no concrete examples.
+- When the matched source material is public writing, treat it as published essays or analysis that James chose to make public, not as hidden internal cognition or private thought beyond the text itself.
 - Use bullets only when they make the answer clearer than prose.
 
 MODE GUIDANCE:
@@ -260,6 +298,46 @@ ${getModePrompt(mode)}`;
         if (repairResponse.ok) {
           const repairedText = repairResponse.text;
           if (repairedText && !BAD_PROJECT_DENIAL_PATTERN.test(repairedText)) {
+            answer = repairedText;
+          } else {
+            answer = fallbackFormat(matches);
+          }
+        } else {
+          answer = fallbackFormat(matches);
+        }
+      }
+
+      if (mode?.id === "writing" && BAD_PROJECT_DENIAL_PATTERN.test(answer) && hasNamedWritingEvidence(question, matches)) {
+        const repairResponse = await requestAnthropic({
+          apiKey: anthropicKey.value(),
+          system: `${SYSTEM_PROMPT}\n\nWRITING REPAIR RULES:\n- Your previous answer incorrectly denied information about a writing sample even though the provided excerpts explicitly name it.\n- Answer directly from the named writing excerpts.\n- If the excerpts are published Medium pieces, describe them as public writing or opinion analysis.\n- If the excerpts are the linked ChatGPT memo, describe it as supporting analysis, not a James-authored Medium article.\n- Do not tell the user the approved sources lack information about the writing sample if the sample is named in the provided excerpts.`,
+          userMessage,
+          maxAttempts: 2
+        });
+
+        if (repairResponse.ok) {
+          const repairedText = repairResponse.text;
+          if (repairedText && !BAD_PROJECT_DENIAL_PATTERN.test(repairedText)) {
+            answer = repairedText;
+          } else {
+            answer = fallbackFormat(matches);
+          }
+        } else {
+          answer = fallbackFormat(matches);
+        }
+      }
+
+      if (mode?.id === "fit" && BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer)) {
+        const repairResponse = await requestAnthropic({
+          apiKey: anthropicKey.value(),
+          system: `${SYSTEM_PROMPT}\n\nROLE-FIT REPAIR RULES:\n- Your previous answer over-deferred because the role was not defined exactly.\n- Give the best conditional fit judgment the provided excerpts support.\n- Lead with the fit assessment, not with the lack of a formal role definition.\n- Separate direct evidence, adjacent evidence, and unknowns.\n- If the role looks plausible but not fully proven, say so plainly using language like stretch fit, plausible fit, adjacent evidence, or conditional fit.\n- Do not ask for a job description unless it is a brief optional note after you have already answered from the provided material.`,
+          userMessage,
+          maxAttempts: 2
+        });
+
+        if (repairResponse.ok) {
+          const repairedText = repairResponse.text;
+          if (repairedText && !BAD_ROLEFIT_DEFERRAL_PATTERN.test(repairedText)) {
             answer = repairedText;
           } else {
             answer = fallbackFormat(matches);

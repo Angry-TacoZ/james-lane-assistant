@@ -53,8 +53,52 @@ describe("James AI retrieval", () => {
     });
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/https:\/\/james-lane-web-resume\.web\.app\/|https:\/\/cbc-proposal-faq-assistant\.web\.app\/|https:\/\/iron-shores\.web\.app\//i);
+    expect(response.answer).toMatch(/https:\/\/james-lane-web-resume\.web\.app\/|https:\/\/iron-shores\.web\.app\/|https:\/\/cruisnpa\.fun\//i);
     expect(response.answer).toContain("[p2-project-living-resume-ai]");
+  });
+
+  it("lists James's published writing from the writing lens", () => {
+    const response = askAssistant("What has James Lane written on Medium?", [], {
+      modeId: "writing",
+      preferredIntent: "writing"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/P\(doom\) or Big Boon|Ode to Miata|Et tu, Mom|The Constitution needs you/i);
+    expect(response.answer).toContain("[writing-catalog]");
+  });
+
+  it("retrieves the AI essay as published writing rather than profile cognition", () => {
+    const response = askAssistant("What is P(doom) or Big Boon about?", [], {
+      modeId: "writing",
+      preferredIntent: "writing"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/published public AI-analysis piece|hallucinations|AGI|web-search gaps/i);
+    expect(response.answer).toContain("[writing-p-doom-or-big-boon]");
+  });
+
+  it("answers the public-writing boundary question explicitly", () => {
+    const response = askAssistant("Are these writing samples opinion pieces or internal cognition?", [], {
+      modeId: "writing",
+      preferredIntent: "writing"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/published public writing|not.*internal cognition|not.*private thoughts/i);
+    expect(response.answer).toContain("[writing-boundary]");
+  });
+
+  it("surfaces linked supporting analysis without mislabeling it as a Medium article", () => {
+    const response = askAssistant("What was the full ChatGPT analysis linked from The Constitution needs you?", [], {
+      modeId: "writing",
+      preferredIntent: "writing"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/supporting analysis|research memo|denaturalization|Overton window|not a James-authored Medium article/i);
+    expect(response.answer).toContain("[writing-support-constitution-linked-denaturalization-analysis]");
   });
 
   it("handles broad named-project questions for resume-backed deployed projects", () => {
@@ -88,6 +132,17 @@ describe("James AI retrieval", () => {
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/BLKVue|security intake|risk assessments|target security company's own website/i);
     expect(response.answer).toContain("[p2-project-blkvue-ai-security-intake-bot]");
+  });
+
+  it("handles broad named-project questions for Cruis'n PA", () => {
+    const response = askAssistant("What can you tell me about Cruis'n PA?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Cruis'?n PA|driving club|custom weekly routes|mystery dessert|restaurant finish/i);
+    expect(response.answer).toContain("[p2-project-cruisn-pa]");
   });
 
   it("surfaces hosted Iron Tides media through the projects lens without exposing local file paths", () => {
@@ -184,6 +239,28 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/requirements|workflow|reporting|process mapping/i);
     expect(response.answer).toMatch(/Power BI|SQL|analytics|documentation/i);
     expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|p2-tools|p1-exp-capital-blue-cross|p1-exp-randstad-icu-medical|core-identity|environment-fit-model|role-fit-model)-/);
+  });
+
+  it("handles broader job-fit questions for roles without a custom keyword pack", () => {
+    const response = askAssistant("Would James be good at developer relations?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/stakeholder explanations|training-oriented documentation|public-facing|published public AI-analysis piece|accessible explanation|writing/i);
+    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|core-identity|evidence-and-projects|writing-p-doom-or-big-boon|cognitive-profile|role-fit-model)-/);
+  });
+
+  it("handles generic engineering-title fit questions with conditional evidence instead of refusing", () => {
+    const response = askAssistant("How would James be as a software engineer 1?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/prototype|deployment|React|Vite|Phaser|Firebase|build|technical troubleshooting|software engineering breadth/i);
+    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|p2-tools|evidence-and-projects|core-identity|cognitive-profile|role-fit-model)-/);
   });
 
   it("uses communication and presentation evidence for meeting-leadership questions", () => {

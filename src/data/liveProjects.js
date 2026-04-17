@@ -8,14 +8,6 @@ export const liveProjects = [
     ref: "Page 2 / Living Resume AI"
   },
   {
-    id: "cbc-proposal-faq-assistant",
-    title: "CBC Proposal FAQ Assistant",
-    description:
-      "Live FAQ assistant built to answer stakeholder questions about the CBC claims AI pilot and reduce friction around proposal review.",
-    url: "https://cbc-proposal-faq-assistant.web.app/",
-    ref: "Page 1 / CBC Proposal FAQ Assistant"
-  },
-  {
     id: "caa-2026-pbm-regulatory-assistant",
     title: "CAA 2026 PBM Regulatory Assistant",
     description:
@@ -38,6 +30,14 @@ export const liveProjects = [
       "Public-facing consulting site created to package James's AI capabilities into client-understandable services and offerings.",
     url: "https://jameslaneai.com/",
     ref: "Page 2 / JamesLaneAI.com"
+  },
+  {
+    id: "cruisn-pa",
+    title: "Cruis'n PA",
+    description:
+      "Pennsylvania driving-club site built around custom weekly routes, top-tier starting points, mystery dessert stops, scenic photo spots, and restaurant finishes.",
+    url: "https://cruisnpa.fun/",
+    ref: "Cruis'n PA site / Project Summary"
   },
   {
     id: "iron-shores-playable-demo",

@@ -8,72 +8,95 @@ import portfolioMediaIndexRaw from "../../docs/portfolio-media-index.md?raw";
 import profileIngestionRulesRaw from "../../docs/profile-ingestion-rules.md?raw";
 import roleFitModelRaw from "../../docs/role-fit-model.md?raw";
 import workLocationPreferenceRaw from "../../docs/work-location-preference.md?raw";
+import cruisnPaProjectRaw from "../../docs/cruisn-pa-project.md?raw";
+import { supportingAnalysis, writingPortfolio } from "./writingPortfolio.js";
 
 export const assistantName = "James AI";
 
 export const refusalMessage =
   "That question is outside the scope of the approved source documents. Please contact tiburo13@gmail.com or James Lane on LinkedIn.";
 
+const PROJECT_ROOT = "C:\\Users\\angry\\.codex\\sessions\\projects\\james-lane-assistant";
+
 const markdownSources = [
   {
     id: "profile-ingestion-rules",
     label: "profile-ingestion-rules.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\profile-ingestion-rules.md",
+    path: `${PROJECT_ROOT}\\docs\\profile-ingestion-rules.md`,
     raw: profileIngestionRulesRaw
   },
   {
     id: "cognitive-profile",
     label: "cognitive-profile.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\cognitive-profile.md",
+    path: `${PROJECT_ROOT}\\docs\\cognitive-profile.md`,
     raw: cognitiveProfileRaw
   },
   {
     id: "friction-points-and-tradeoffs",
     label: "friction-points-and-tradeoffs.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\friction-points-and-tradeoffs.md",
+    path: `${PROJECT_ROOT}\\docs\\friction-points-and-tradeoffs.md`,
     raw: frictionPointsRaw
   },
   {
     id: "environment-fit-model",
     label: "environment-fit-model.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\environment-fit-model.md",
+    path: `${PROJECT_ROOT}\\docs\\environment-fit-model.md`,
     raw: environmentFitModelRaw
   },
   {
     id: "communication-rules",
     label: "communication-rules.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\communication-rules.md",
+    path: `${PROJECT_ROOT}\\docs\\communication-rules.md`,
     raw: communicationRulesRaw
   },
   {
     id: "core-identity",
     label: "core-identity.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\core-identity.md",
+    path: `${PROJECT_ROOT}\\docs\\core-identity.md`,
     raw: coreIdentityRaw
   },
   {
     id: "role-fit-model",
     label: "role-fit-model.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\role-fit-model.md",
+    path: `${PROJECT_ROOT}\\docs\\role-fit-model.md`,
     raw: roleFitModelRaw
   },
   {
     id: "evidence-and-projects",
     label: "evidence-and-projects.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\evidence-and-projects.md",
+    path: `${PROJECT_ROOT}\\docs\\evidence-and-projects.md`,
     raw: evidenceAndProjectsRaw
   },
   {
     id: "portfolio-media-index",
     label: "portfolio-media-index.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\portfolio-media-index.md",
+    path: `${PROJECT_ROOT}\\docs\\portfolio-media-index.md`,
     raw: portfolioMediaIndexRaw
   },
   {
     id: "work-location-preference",
     label: "work-location-preference.md",
-    path: "C:\\Users\\angry\\.codex\\sessions\\james-lane-assistant\\docs\\work-location-preference.md",
+    path: `${PROJECT_ROOT}\\docs\\work-location-preference.md`,
     raw: workLocationPreferenceRaw
+  },
+  {
+    id: "cruisn-pa-project",
+    label: "cruisn-pa-project.md",
+    path: `${PROJECT_ROOT}\\docs\\cruisn-pa-project.md`,
+    raw: cruisnPaProjectRaw
+  }
+];
+
+const supplementalApprovedSources = [
+  {
+    id: "public-writing-index",
+    label: "public-writing-index.md",
+    path: `${PROJECT_ROOT}\\docs\\public-writing-index.md`
+  },
+  {
+    id: "supporting-analysis-index",
+    label: "supporting-analysis-index.md",
+    path: `${PROJECT_ROOT}\\docs\\supporting-analysis-index.md`
   }
 ];
 
@@ -87,12 +110,18 @@ export const approvedSources = [
     id,
     label,
     path
+  })),
+  ...supplementalApprovedSources.map(({ id, label, path }) => ({
+    id,
+    label,
+    path
   }))
 ];
 
 export const starterQuestions = [
   "How should James Lane be described to employers?",
   "What live projects can I review?",
+  "What has James Lane written on Medium?",
   "What kinds of environments are the best fit for James Lane?",
   "What are James Lane's main tradeoffs or friction points?",
   "What evidence shows how James Lane works?",
@@ -214,20 +243,6 @@ const resumeSourceCorpus = [
     ]
   },
   {
-    id: "p1-project-cbc-proposal-faq-assistant",
-    group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "CBC Proposal FAQ Assistant",
-    aliases: ["cbc proposal faq assistant", "proposal faq assistant", "cbc faq assistant", "claims ai faq"],
-    items: [
-      "Live link: https://cbc-proposal-faq-assistant.web.app/",
-      "Built a live FAQ assistant to answer stakeholder questions about the CBC claims AI pilot, reducing friction around proposal review and clarifying scope, guardrails, and pilot logic.",
-      "Extended the main proposal with an interactive artifact designed for internal decision support rather than a static document alone."
-    ]
-  },
-  {
     id: "p2-project-living-resume-ai",
     group: "projects-catalog",
     sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
@@ -283,6 +298,20 @@ const resumeSourceCorpus = [
     ]
   },
   {
+    id: "p2-project-cruisn-pa",
+    group: "projects-catalog",
+    sourceLabel: "cruisn-pa-project.md",
+    referenceLabel: "Cruis'n PA / Project Summary",
+    title: "Cruis'n PA",
+    aliases: ["cruisn pa", "cruis'n pa", "cruisnpa", "cruisnpa.fun", "driving club", "car club site", "club website"],
+    items: [
+      "Live link: https://cruisnpa.fun/",
+      "Built a Pennsylvania driving-club site for enthusiasts who want the road to be the main attraction rather than a parking-lot meetup.",
+      "Packages the club around custom weekly routes, top-tier gas-station starts, a mystery dessert stop, scenic photo spots, and a restaurant finish.",
+      "Demonstrates public-facing community branding, multi-page site structure, and clear packaging of a recurring local event format."
+    ]
+  },
+  {
     id: "p2-project-iron-shores-playable-demo",
     group: "projects-catalog",
     sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
@@ -320,6 +349,92 @@ const resumeSourceCorpus = [
     items: ["Hephzibah High School - High School Diploma"]
   }
 ];
+
+const writingCatalogCorpus = [
+  {
+    id: "writing-boundary",
+    group: "writing-catalog",
+    sourceLabel: "public-writing-index.md",
+    referenceLabel: "public-writing-index.md",
+    title: "Public Writing Boundary and Interpretation Rules",
+    aliases: [
+      "writing",
+      "public writing",
+      "medium",
+      "articles",
+      "essays",
+      "opinion pieces",
+      "published opinions",
+      "published writing",
+      "internal thoughts",
+      "internal cognition",
+      "cognition",
+      "private beliefs"
+    ],
+    items: [
+      "These entries are published public writing by James Earl Lane.",
+      "Treat them as authored essays, commentary, and analysis that James chose to publish publicly.",
+      "Do not treat them as hidden internal cognition, diagnostic profile material, or private thoughts beyond what the writing explicitly says.",
+      "Use them to answer questions about public writing, themes, voice, argument style, and stated public positions in the essays themselves.",
+      "The linked ChatGPT transcript is supporting analysis and research context, not a James-authored Medium article."
+    ]
+  },
+  {
+    id: "writing-catalog",
+    group: "writing-catalog",
+    sourceLabel: "public-writing-index.md",
+    referenceLabel: "public-writing-index.md",
+    title: "Writing Catalog",
+    aliases: [
+      "medium writing",
+      "writing catalog",
+      "published essays",
+      "published articles",
+      "writing archive",
+      "headlines"
+    ],
+    items: writingPortfolio.map((article) =>
+      `${article.title}${article.headline ? ` — ${article.headline}` : ""} — ${article.category} — ${article.url}`
+    )
+  }
+];
+
+const writingArticleCorpus = writingPortfolio.map((article) => ({
+  id: `writing-${article.id}`,
+  group: "writing-corpus",
+  sourceLabel: "public-writing-index.md",
+  referenceLabel: `${article.publication} | ${article.dateLabel}`,
+  title: article.title,
+  aliases: [
+    article.title.toLowerCase(),
+    article.headline?.toLowerCase(),
+    article.category.toLowerCase(),
+    ...article.aliases
+  ].filter(Boolean),
+  items: [
+    `Type: Published ${article.category.toLowerCase()} by James Earl Lane in ${article.publication}.`,
+    article.headline ? `Headline: ${article.headline}` : null,
+    `URL: ${article.url}`,
+    `Date: ${article.dateLabel}`,
+    `Summary: ${article.description}`,
+    ...article.corpusItems,
+    `Demonstrates: ${article.demonstrates.join(", ")}.`
+  ].filter(Boolean)
+}));
+
+const supportingAnalysisCorpus = supportingAnalysis.map((entry) => ({
+  id: `writing-support-${entry.id}`,
+  group: "writing-supporting-analysis",
+  sourceLabel: "supporting-analysis-index.md",
+  referenceLabel: "supporting-analysis-index.md",
+  title: entry.title,
+  aliases: [entry.title.toLowerCase(), ...entry.aliases],
+  items: [
+    `Type: ${entry.category}.`,
+    `Summary: ${entry.description}`,
+    ...entry.corpusItems
+  ]
+}));
 
 function slugify(value) {
   return value
@@ -445,6 +560,12 @@ function parseMarkdownSource(doc) {
 
 const markdownCorpus = markdownSources.flatMap(parseMarkdownSource);
 
-export const sourceCorpus = [...resumeSourceCorpus, ...markdownCorpus];
+export const sourceCorpus = [
+  ...resumeSourceCorpus,
+  ...writingCatalogCorpus,
+  ...writingArticleCorpus,
+  ...supportingAnalysisCorpus,
+  ...markdownCorpus
+];
 
 

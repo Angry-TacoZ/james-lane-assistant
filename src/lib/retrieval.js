@@ -75,6 +75,26 @@ const SAFE_ALIASES = {
   presentation: ["present", "leadership", "stakeholder"],
   facilitate: ["meeting", "meetings", "stakeholder", "communication"],
   facilitation: ["meeting", "meetings", "stakeholder", "communication"],
+  developer: ["technical", "documentation", "writing", "education", "community"],
+  developers: ["developer", "technical", "community", "documentation"],
+  technical: ["developer", "documentation", "writing", "explanation"],
+  communication: ["writing", "documentation", "explanation", "stakeholder"],
+  documentation: ["writing", "technical", "communication", "training"],
+  community: ["public", "writing", "communication", "audience"],
+  relations: ["communication", "stakeholder", "public"],
+  advocacy: ["communication", "public", "writing"],
+  advocate: ["advocacy", "communication", "public"],
+  education: ["writing", "documentation", "training", "communication"],
+  educator: ["education", "writing", "communication"],
+  training: ["documentation", "education", "stakeholder explanations"],
+  content: ["writing", "communication", "public"],
+  software: ["engineering", "developer", "technical", "build", "prototype", "deployment"],
+  engineer: ["engineering", "software", "developer", "technical", "build"],
+  engineering: ["engineer", "software", "developer", "technical", "build"],
+  developers: ["developer", "software", "technical", "build"],
+  coding: ["code", "developer", "software", "technical"],
+  code: ["coding", "developer", "software", "technical"],
+  programming: ["code", "coding", "software", "technical"],
   adapt: ["ramp", "adjust", "learn", "fit", "transition"],
   adaptable: ["adapt", "ramp", "adjust", "learn"],
   ramp: ["adapt", "learn", "transition"],
@@ -96,7 +116,21 @@ const SAFE_ALIASES = {
   animation: ["art", "menu", "game"],
   menu: ["animation", "game"],
   wooden: ["art", "game"],
-  battleship: ["gameplay", "iron tides", "game"]
+  battleship: ["gameplay", "iron tides", "game"],
+  medium: ["writing", "articles", "essays", "published"],
+  article: ["writing", "essay", "medium", "published"],
+  articles: ["writing", "essay", "medium", "published"],
+  essay: ["writing", "articles", "medium", "published"],
+  essays: ["writing", "articles", "medium", "published"],
+  writing: ["articles", "essays", "medium", "published"],
+  wrote: ["writing", "published", "article", "essay"],
+  written: ["writing", "published", "article", "essay"],
+  published: ["writing", "article", "essay", "medium"],
+  opinion: ["writing", "essay", "published"],
+  opinions: ["writing", "essay", "published"],
+  pdoom: ["p doom", "agi", "hallucination", "writing"],
+  miata: ["ode", "writing", "article"],
+  soulfight: ["writing", "article", "essay"]
 };
 
 const STOPWORDS = new Set([
@@ -132,11 +166,10 @@ const STOPWORDS = new Set([
   "with"
 ]);
 
-const UNSUPPORTED_PATTERN = /\b(compare|comparison|better than|best candidate|salary|compensation|political views|opinion of|medical advice|legal advice|stock pick|religion)\b/i;
+const UNSUPPORTED_PATTERN = /\b(compare|comparison|better than|best candidate|salary|compensation|medical advice|legal advice|stock pick|religion)\b/i;
 const FIT_EVALUATION_PATTERN = /\b(how would|would james|could james|can james|do well|good fit|fit for|fit in|handle|succeed|qualified|would he|could he|can he)\b/;
 const BA_CAPABILITY_PATTERN = /\b(business analyst|business analysis|systems analyst|analyst role|analyst job|requirements|requirement|stakeholder|workflow|workflow design|process mapping|process improvement|operations analysis|reporting|dashboard|dashboards|sql|power bi|tableau|uat|user acceptance)\b/;
 const MEETING_PATTERN = /\b(meeting|meetings|present|presentation|presenting|facilitate|facilitation|stakeholder|stakeholders|workshop|workshops|leadership discussion|leadership meeting)\b/;
-
 const GROUP_BY_INTENT = {
   contact: ["resume-pdf"],
   headline: ["resume-pdf"],
@@ -150,8 +183,9 @@ const GROUP_BY_INTENT = {
   tradeoffs: ["friction-points-and-tradeoffs", "cognitive-profile"],
   communication: ["communication-rules", "cognitive-profile"],
   evidence: ["evidence-and-projects", "projects-catalog"],
-  projects: ["projects-catalog", "portfolio-media-index", "evidence-and-projects"],
-  roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf"],
+  projects: ["projects-catalog", "portfolio-media-index"],
+  writing: ["writing-catalog", "writing-corpus", "writing-supporting-analysis"],
+  roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf", "evidence-and-projects", "cognitive-profile"],
   workLocation: ["work-location-preference", "core-identity"],
   representation: ["profile-ingestion-rules", "communication-rules", "core-identity"]
 };
@@ -160,7 +194,8 @@ const MODE_GROUP_BOOSTS = {
   profile: ["core-identity", "cognitive-profile", "evidence-and-projects", "communication-rules"],
   fit: ["role-fit-model", "environment-fit-model", "friction-points-and-tradeoffs", "core-identity", "cognitive-profile"],
   evidence: ["evidence-and-projects", "projects-catalog", "resume-pdf", "core-identity"],
-  projects: ["projects-catalog", "portfolio-media-index", "resume-pdf", "evidence-and-projects"],
+  projects: ["projects-catalog", "portfolio-media-index", "resume-pdf"],
+  writing: ["writing-catalog", "writing-corpus", "writing-supporting-analysis"],
   resume: ["resume-pdf", "work-location-preference"]
 };
 
@@ -169,11 +204,6 @@ const PROJECT_ENTITIES = [
     id: "living-resume-ai",
     questionPattern: /\b(living resume ai|living resume|interactive resume|james ai)\b/,
     sectionPattern: /\b(living resume ai|interactive resume|james ai)\b/
-  },
-  {
-    id: "cbc-proposal-faq-assistant",
-    questionPattern: /\b(cbc proposal faq assistant|proposal faq assistant|cbc faq assistant|claims ai faq)\b/,
-    sectionPattern: /\b(cbc proposal faq assistant|proposal faq assistant|cbc faq assistant|claims ai faq)\b/
   },
   {
     id: "caa-2026-pbm-regulatory-assistant",
@@ -191,6 +221,11 @@ const PROJECT_ENTITIES = [
     sectionPattern: /\b(jameslaneai\.com|james lane ai dot com|consulting site)\b/
   },
   {
+    id: "cruisn-pa",
+    questionPattern: /\b(cruisn pa|cruis n pa|cruis['’]?n pa|cruisnpa\.fun|driving club|club website)\b/,
+    sectionPattern: /\b(cruisn pa|cruis n pa|cruis['’]?n pa|cruisnpa\.fun|driving club|club website)\b/
+  },
+  {
     id: "iron-shores",
     questionPattern: /\b(iron shores|iron-shores\.web\.app|playable demo)\b/,
     sectionPattern: /\b(iron shores|playable demo|iron-shores\.web\.app)\b/
@@ -199,6 +234,54 @@ const PROJECT_ENTITIES = [
     id: "iron-tides",
     questionPattern: /\b(iron tides|godot 4 porting experiment|main menu animation|wooden decks|battleship gameplay)\b/,
     sectionPattern: /\b(iron tides|portfolio media index|godot 4 porting experiment|main menu animation|wooden decks|battleship gameplay|game development - iron tides|ai-assisted game-development workflow and engine experimentation)\b/
+  }
+];
+
+const WRITING_ENTITIES = [
+  {
+    id: "dont-be-duped-by-government-propaganda",
+    questionPattern: /\b(don[’']?t be duped by government propaganda|government propaganda)\b/i,
+    sectionPattern: /\b(don[’']?t be duped by government propaganda|government propaganda)\b/i
+  },
+  {
+    id: "the-constitution-needs-you",
+    questionPattern: /\b(the constitution needs you|constitution needs you)\b/i,
+    sectionPattern: /\b(the constitution needs you|constitution needs you)\b/i
+  },
+  {
+    id: "vengeance-is-best-not-served-at-all",
+    questionPattern: /\b(vengeance is best not served at all|team sports will lead to america['’]s downfall)\b/i,
+    sectionPattern: /\b(vengeance is best not served at all|team sports will lead to america['’]s downfall)\b/i
+  },
+  {
+    id: "is-it-2025-or-1857",
+    questionPattern: /\b(is it 2025 or 1857|2025 or 1857|1857)\b/i,
+    sectionPattern: /\b(is it 2025 or 1857|2025 or 1857|1857)\b/i
+  },
+  {
+    id: "all-lives-matter-except-for-palestinians",
+    questionPattern: /\b(all lives matter except for palestinians|pearl clutch heard around the world|bob vylan)\b/i,
+    sectionPattern: /\b(all lives matter except for palestinians|pearl clutch heard around the world|bob vylan)\b/i
+  },
+  {
+    id: "et-tu-mom",
+    questionPattern: /\b(et tu mom|et tu, mom|a tale as old as time)\b/i,
+    sectionPattern: /\b(et tu mom|et tu, mom|a tale as old as time)\b/i
+  },
+  {
+    id: "ode-to-miata",
+    questionPattern: /\b(ode to miata|miata|lilith)\b/i,
+    sectionPattern: /\b(ode to miata|how a little car rekindled a big spirit|miata|lilith)\b/i
+  },
+  {
+    id: "p-doom-or-big-boon",
+    questionPattern: /\b(p\(doom\) or big boon|p doom or big boon|big boon|p\(doom\)|agi article)\b/i,
+    sectionPattern: /\b(p\(doom\) or big boon|p doom or big boon|big boon|agi analysis)\b/i
+  },
+  {
+    id: "constitution-linked-denaturalization-analysis",
+    questionPattern: /\b(full chatgpt analysis|linked analysis|denaturalization analysis|overton window analysis|citizenship risk analysis)\b/i,
+    sectionPattern: /\b(denaturalization and democratic erosion analysis|full chatgpt analysis|linked analysis)\b/i
   }
 ];
 
@@ -298,6 +381,7 @@ function getSectionKeywords(section) {
 function getIntent(question, preferredIntent = null) {
   const normalized = normalizeText(question);
   const matchedProjectEntity = getMatchedProjectEntity(normalized);
+  const matchedWritingEntity = getMatchedWritingEntity(normalized);
 
   if (/\b(email|phone|linkedin|contact)\b/.test(normalized)) {
     return "contact";
@@ -305,6 +389,15 @@ function getIntent(question, preferredIntent = null) {
 
   if (/\b(location|remote|hybrid|relocate|relocation)\b/.test(normalized)) {
     return "workLocation";
+  }
+
+  if (
+    matchedWritingEntity ||
+    /\b(medium|article|articles|essay|essays|writing|wrote|written|published writing|published essay|published article|blog|opinion pieces|writing samples)\b/.test(
+      normalized
+    )
+  ) {
+    return "writing";
   }
 
   if (/\b(role|roles|title|headline|position)\b/.test(normalized) && !/\bfit\b/.test(normalized)) {
@@ -315,6 +408,10 @@ function getIntent(question, preferredIntent = null) {
     (FIT_EVALUATION_PATTERN.test(normalized) && /\b(job|role|position)\b/.test(normalized)) ||
     (FIT_EVALUATION_PATTERN.test(normalized) && BA_CAPABILITY_PATTERN.test(normalized))
   ) {
+    return "roleFit";
+  }
+
+  if (FIT_EVALUATION_PATTERN.test(normalized) && looksLikeRoleTitleQuestion(normalized)) {
     return "roleFit";
   }
 
@@ -381,9 +478,33 @@ function getMatchedProjectEntity(normalizedQuestion) {
   return PROJECT_ENTITIES.find((entity) => entity.questionPattern.test(normalizedQuestion)) ?? null;
 }
 
+function getMatchedWritingEntity(normalizedQuestion) {
+  return WRITING_ENTITIES.find((entity) => entity.questionPattern.test(normalizedQuestion)) ?? null;
+}
+
 function sectionMatchesProjectEntity(section, entity) {
   const sectionText = normalizeText([section.title, ...section.aliases, ...section.items].join(" "));
   return entity.sectionPattern.test(sectionText);
+}
+
+function sectionMatchesWritingEntity(section, entity) {
+  const sectionText = normalizeText([section.title, ...section.aliases, ...section.items].join(" "));
+  return entity.sectionPattern.test(sectionText);
+}
+
+function looksLikeRoleTitleQuestion(normalizedQuestion) {
+  return /\b(?:as|at|for|in)\s+(?:a|an)?\s*(?!james\b|lane\b|him\b|his\b|this\b|that\b|the\b)([a-z][a-z/-]*(?:\s+[a-z][a-z/-]*){0,4})\b/.test(
+    normalizedQuestion
+  );
+}
+
+function isGenericRoleFitQuestion(normalizedQuestion) {
+  return (
+    !BA_CAPABILITY_PATTERN.test(normalizedQuestion) &&
+    !MEETING_PATTERN.test(normalizedQuestion) &&
+    !/hire|hired|degree|degrees|college|credential|credentials|pedigree|nontraditional/.test(normalizedQuestion) &&
+    !/what roles|roles look like|kinds of roles|which roles/.test(normalizedQuestion)
+  );
 }
 
 function getQueryPhrases(question) {
@@ -394,7 +515,6 @@ function getQueryPhrases(question) {
     "power bi",
     "business analyst",
     "business analysis",
-    "cbc proposal faq assistant",
     "living resume ai",
     "caa 2026 pbm regulatory assistant",
     "blkvue ai security intake bot",
@@ -418,7 +538,14 @@ function getQueryPhrases(question) {
     "godot 4",
     "main menu",
     "wooden decks",
-    "screen recording"
+    "screen recording",
+    "p doom or big boon",
+    "ode to miata",
+    "et tu mom",
+    "constitution needs you",
+    "government propaganda",
+    "public writing",
+    "full chatgpt analysis"
   ]) {
     if (normalized.includes(phrase)) {
       phrases.push(phrase);
@@ -436,6 +563,7 @@ function scoreSection(section, question, intent, modeId = null) {
   const normalizedQuestion = normalizeText(question);
   const normalizedTitle = normalizeText(section.title);
   const matchedProjectEntity = getMatchedProjectEntity(normalizedQuestion);
+  const matchedWritingEntity = getMatchedWritingEntity(normalizedQuestion);
   let score = 0;
   let exactMatches = 0;
 
@@ -545,6 +673,16 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 2;
   }
 
+  if (
+    intent === "roleFit" &&
+    isGenericRoleFitQuestion(normalizedQuestion) &&
+    /professional summary|core strengths|candidate type|professional value thesis|how james should be explained to employers|role family implications|stress pattern under good fit|public writing and structured analysis|interactive employer facing and decision facing tool concepts|evidence pattern summary|core evidence themes|work relevant strength pattern|communication style|ramp feasibility|fit categories|technical troubleshooting and systems reasoning|productive build pattern|strongly supported claims|moderately supported claims|not automatically supported claims|\btools\b/.test(
+      normalizedTitle
+    )
+  ) {
+    score += 8;
+  }
+
   if (intent === "skills" && /core skills|work relevant strength pattern|strongest recurring cognitive advantages|professional value thesis|safe summary/.test(normalizedTitle)) {
     score += 5;
   }
@@ -565,11 +703,11 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 5;
   }
 
-  if (intent === "projects" && /cbc proposal faq assistant|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
     score += 10;
   }
 
-  if (intent === "projects" && /live|link|demo|site|website|review|try/.test(normalizedQuestion) && /cbc proposal faq assistant|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /live|link|demo|site|website|review|try/.test(normalizedQuestion) && /living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
     score += 8;
   }
 
@@ -579,6 +717,39 @@ function scoreSection(section, question, intent, modeId = null) {
       exactMatches += 2;
     } else if (section.group === "projects-catalog" || section.group === "portfolio-media-index") {
       score -= 5;
+    }
+  }
+
+  if (intent === "writing" && /public writing boundary|writing catalog/.test(normalizedTitle)) {
+    score += 7;
+  }
+
+  if (intent === "writing" && /medium|article|articles|essay|essays|writing|written|published|headlines|archive/.test(normalizedQuestion) && /public writing boundary|writing catalog/.test(normalizedTitle)) {
+    score += 8;
+  }
+
+  if (intent === "writing" && /opinion pieces|published opinions|internal cognition|internal thoughts|private beliefs|public writing/.test(normalizedQuestion) && /public writing boundary/.test(normalizedTitle)) {
+    score += 12;
+  }
+
+  if (intent === "writing" && /ai thinking|ai writing|agi|hallucination|chatbot/.test(normalizedQuestion) && /p doom or big boon/.test(normalizedTitle)) {
+    score += 12;
+  }
+
+  if (intent === "writing" && /constitution|denaturalization|overton window|citizenship/.test(normalizedQuestion) && /the constitution needs you|denaturalization and democratic erosion analysis/.test(normalizedTitle)) {
+    score += 10;
+  }
+
+  if (intent === "writing" && matchedWritingEntity) {
+    if (sectionMatchesWritingEntity(section, matchedWritingEntity)) {
+      score += 18;
+      exactMatches += 2;
+    } else if (
+      section.group === "writing-catalog" ||
+      section.group === "writing-corpus" ||
+      section.group === "writing-supporting-analysis"
+    ) {
+      score -= 4;
     }
   }
 
@@ -667,6 +838,7 @@ function pickSections(scoredSections, intent, question = "") {
     const limitedSections = scoredSections.filter((entry) => allowedGroups.includes(entry.section.group));
     const normalizedQuestion = normalizeText(question);
     const matchedProjectEntity = getMatchedProjectEntity(normalizedQuestion);
+    const matchedWritingEntity = getMatchedWritingEntity(normalizedQuestion);
 
     if (intent === "roleFit" && /hire|hired|degree|degrees|college|credential|credentials|pedigree|nontraditional/.test(normalizedQuestion)) {
       const selected = [];
@@ -755,16 +927,25 @@ function pickSections(scoredSections, intent, question = "") {
 
     if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion)) {
       const selected = [];
-      const targets = [
-        /professional summary/,
-        /core strengths/,
-        /\btools\b/,
-        /capital blue cross|claims examiner|help desk analyst/,
-        /career direction|role family implications/
-      ];
+      const summary = limitedSections.find(
+        (entry) => entry.section.group === "resume-pdf" && /professional summary/.test(normalizeText(entry.section.title))
+      );
+      const strengths = limitedSections.find(
+        (entry) => entry.section.group === "resume-pdf" && /core strengths/.test(normalizeText(entry.section.title))
+      );
+      const tools = limitedSections.find(
+        (entry) => entry.section.group === "resume-pdf" && /\btools\b/.test(normalizeText(entry.section.title))
+      );
+      const experience = limitedSections.find(
+        (entry) =>
+          entry.section.group === "resume-pdf" &&
+          /capital blue cross|claims examiner|help desk analyst/.test(normalizeText(entry.section.title))
+      );
+      const roleDirection = limitedSections.find((entry) =>
+        /career direction|role family implications/.test(normalizeText(entry.section.title))
+      );
 
-      for (const pattern of targets) {
-        const found = limitedSections.find((entry) => pattern.test(normalizeText(entry.section.title)));
+      for (const found of [summary, strengths, tools, experience, roleDirection]) {
         if (found && !selected.includes(found)) {
           selected.push(found);
         }
@@ -813,10 +994,40 @@ function pickSections(scoredSections, intent, question = "") {
       return selected;
     }
 
+    if (intent === "roleFit" && isGenericRoleFitQuestion(normalizedQuestion)) {
+      const selected = [];
+      const targets = [
+        /professional summary/,
+        /core strengths/,
+        /candidate type|professional value thesis|how james should be explained to employers/,
+        /technical troubleshooting and systems reasoning|productive build pattern|interactive employer facing and decision facing tool concepts|core evidence themes|evidence pattern summary|strongly supported claims|moderately supported claims|not automatically supported claims/,
+        /work relevant strength pattern|communication style|\btools\b/,
+        /ramp feasibility|fit categories|role family implications/
+      ];
+
+      for (const pattern of targets) {
+        const found = limitedSections.find((entry) => pattern.test(normalizeText(entry.section.title)));
+        if (found && !selected.includes(found)) {
+          selected.push(found);
+        }
+      }
+
+      for (const entry of limitedSections) {
+        if (selected.length >= 5) {
+          break;
+        }
+
+        if (!selected.includes(entry)) {
+          selected.push(entry);
+        }
+      }
+
+      return selected;
+    }
+
     if (intent === "projects") {
       const projectSections = limitedSections.filter((entry) => entry.section.group === "projects-catalog");
       const portfolioMedia = limitedSections.filter((entry) => entry.section.group === "portfolio-media-index");
-      const projectEvidence = limitedSections.filter((entry) => entry.section.group === "evidence-and-projects");
 
       if (matchedProjectEntity) {
         const selected = [];
@@ -830,7 +1041,7 @@ function pickSections(scoredSections, intent, question = "") {
           }
         }
 
-        for (const entry of [...projectSections, ...portfolioMedia, ...projectEvidence]) {
+        for (const entry of [...projectSections, ...portfolioMedia]) {
           if (selected.length >= 4) {
             break;
           }
@@ -848,15 +1059,14 @@ function pickSections(scoredSections, intent, question = "") {
       if (/iron tides|video|videos|media|portfolio media/.test(normalizedQuestion)) {
         const selected = [];
         const supportingProject = projectSections.find((entry) => /iron shores playable demo/.test(normalizeText(entry.section.title)));
-        const supportingEvidence = projectEvidence.find((entry) => /game development - iron tides|ai-assisted game-development workflow and engine experimentation/.test(normalizeText(entry.section.title)));
 
-        for (const entry of [...portfolioMedia.slice(0, 2), supportingProject, supportingEvidence]) {
+        for (const entry of [...portfolioMedia.slice(0, 2), supportingProject]) {
           if (entry && !selected.includes(entry)) {
             selected.push(entry);
           }
         }
 
-        for (const entry of [...projectSections, ...projectEvidence]) {
+        for (const entry of projectSections) {
           if (selected.length >= 5) {
             break;
           }
@@ -870,10 +1080,86 @@ function pickSections(scoredSections, intent, question = "") {
       }
 
       if (/live|links|demo|site|website|review|try|projects/.test(normalizedQuestion)) {
-        return [...projectSections.slice(0, 6), ...portfolioMedia.slice(0, 1)].slice(0, 6);
+        return [...projectSections.slice(0, 7), ...portfolioMedia.slice(0, 1)].slice(0, 7);
       }
 
-      return [...projectSections.slice(0, 4), ...projectEvidence.slice(0, 1), ...portfolioMedia.slice(0, 1)].slice(0, 5);
+      return [...projectSections.slice(0, 4), ...portfolioMedia.slice(0, 1)].slice(0, 5);
+    }
+
+    if (intent === "writing") {
+      const catalogSections = limitedSections.filter((entry) => entry.section.group === "writing-catalog");
+      const articleSections = limitedSections.filter((entry) => entry.section.group === "writing-corpus");
+      const analysisSections = limitedSections.filter((entry) => entry.section.group === "writing-supporting-analysis");
+
+      if (/opinion pieces|published opinions|internal cognition|internal thoughts|private beliefs|public writing/.test(normalizedQuestion)) {
+        const boundary = catalogSections.find((entry) => /public writing boundary/.test(normalizeText(entry.section.title)));
+        const catalog = catalogSections.find((entry) => /writing catalog/.test(normalizeText(entry.section.title)));
+        return [boundary, catalog].filter(Boolean);
+      }
+
+      if (/full chatgpt analysis|linked analysis|supporting analysis|research memo/.test(normalizedQuestion)) {
+        const linkedAnalysis = analysisSections[0];
+        const constitutionArticle = articleSections.find((entry) => /the constitution needs you/.test(normalizeText(entry.section.title)));
+        return [linkedAnalysis, constitutionArticle].filter(Boolean);
+      }
+
+      if (matchedWritingEntity) {
+        const selected = [];
+        const targetedArticleSections = articleSections.filter((entry) =>
+          sectionMatchesWritingEntity(entry.section, matchedWritingEntity)
+        );
+        const targetedAnalysisSections = analysisSections.filter((entry) =>
+          sectionMatchesWritingEntity(entry.section, matchedWritingEntity)
+        );
+        const targetedCatalogSections = catalogSections.filter((entry) =>
+          sectionMatchesWritingEntity(entry.section, matchedWritingEntity)
+        );
+
+        for (const entry of [...targetedArticleSections, ...targetedAnalysisSections]) {
+          if (!selected.includes(entry)) {
+            selected.push(entry);
+          }
+        }
+
+        if (selected.length === 0) {
+          for (const entry of targetedCatalogSections) {
+            if (!selected.includes(entry)) {
+              selected.push(entry);
+            }
+          }
+        }
+
+        if (
+          matchedWritingEntity.id === "the-constitution-needs-you" &&
+          /analysis|chatgpt|linked/.test(normalizedQuestion)
+        ) {
+          const linkedAnalysis = analysisSections[0];
+          if (linkedAnalysis && !selected.includes(linkedAnalysis)) {
+            selected.push(linkedAnalysis);
+          }
+        }
+
+        const boundary = catalogSections.find((entry) => /public writing boundary/.test(normalizeText(entry.section.title)));
+        if (boundary && !selected.includes(boundary) && /opinion|cognition|belief/.test(normalizedQuestion)) {
+          selected.push(boundary);
+        }
+
+        return selected.slice(0, 3);
+      }
+
+      if (/what has james written|medium|articles|essays|headlines|writing archive|published writing|published articles/.test(normalizedQuestion)) {
+        const catalog = catalogSections.find((entry) => /writing catalog/.test(normalizeText(entry.section.title)));
+        const boundary = catalogSections.find((entry) => /public writing boundary/.test(normalizeText(entry.section.title)));
+        return [catalog, boundary].filter(Boolean);
+      }
+
+      if (/ai thinking|ai writing|agi|hallucination|chatbot/.test(normalizedQuestion)) {
+        const aiArticle = articleSections.find((entry) => /p doom or big boon/.test(normalizeText(entry.section.title)));
+        const catalog = catalogSections.find((entry) => /writing catalog/.test(normalizeText(entry.section.title)));
+        return [aiArticle, catalog].filter(Boolean);
+      }
+
+      return [...articleSections.slice(0, 2), ...catalogSections.slice(0, 1)].slice(0, 3);
     }
 
     const limit = intent === "roleFit" ? 3 : 2;
@@ -930,13 +1216,28 @@ function buildAnswerLines(scoredSections, question, intent) {
 
       const rankedItems = scoreItems(entry.section, question);
       const positiveItems = rankedItems.filter((item) => item.score > 0);
-      const fallbackCount = entry.section.group === "resume-pdf" ? 5 : entry.section.group === "portfolio-media-index" ? 6 : 4;
+      const fallbackCount =
+        entry.section.group === "resume-pdf"
+          ? 5
+          : entry.section.group === "portfolio-media-index"
+            ? 6
+            : entry.section.group === "writing-catalog"
+              ? 10
+              : entry.section.group === "writing-corpus"
+                ? 8
+                : entry.section.group === "writing-supporting-analysis"
+                  ? 7
+                  : 4;
       let items =
         entry.section.group === "portfolio-media-index"
           ? entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount))
           : positiveItems.length > 0
             ? positiveItems.slice(0, fallbackCount).map((item) => item.text)
             : entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));
+
+      if (entry.section.id === "writing-catalog" || entry.section.id === "writing-boundary") {
+        items = entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));
+      }
 
       if (
         intent === "roleFit" &&

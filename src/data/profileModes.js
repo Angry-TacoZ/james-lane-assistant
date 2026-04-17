@@ -168,6 +168,48 @@ export const profileModes = [
     ]
   },
   {
+    id: "writing",
+    label: "Writing",
+    panelTitle: "Writing Lens",
+    description:
+      "Use this lens to browse James Lane's published essays, public analysis, and linked supporting writing sources.",
+    placeholder: "Ask what James has written, which article to start with, or what a specific piece is about...",
+    welcomeMessage:
+      "I can point you to James Lane's published writing, summarize what each piece is about, and distinguish public essays from supporting analysis.",
+    defaultIntent: "writing",
+    answerStyle:
+      "Lead with the most relevant article or writing pattern, note when something is a published opinion piece, and keep the distinction from internal cognition explicit.",
+    starterQuestions: [
+      "What has James Lane written on Medium?",
+      "What writing best shows James's AI thinking?",
+      "What is P(doom) or Big Boon about?",
+      "Are these writing samples opinion pieces or internal cognition?"
+    ],
+    briefingCards: [
+      {
+        eyebrow: "Writing",
+        title: "Published essays and public analysis",
+        body:
+          "This lens collects James Lane's published Medium essays and linked public analysis across AI, politics, civil liberties, and personal narrative.",
+        ref: "public-writing-index / Writing Catalog"
+      },
+      {
+        eyebrow: "Featured Analysis",
+        title: "AI writing with real argument structure",
+        body:
+          "The strongest AI-specific piece is P(doom) or Big Boon, which explains hallucinations, search gaps, and AGI risk in plain language rather than marketing abstractions.",
+        ref: "public-writing-index / P(doom) or Big Boon"
+      },
+      {
+        eyebrow: "Range",
+        title: "Analysis, politics, and personal narrative",
+        body:
+          "The writing set spans AI analysis, political and civil-liberties essays, and a personal long-form narrative piece, giving visitors a clearer sense of voice and subject range.",
+        ref: "public-writing-index / Writing Catalog"
+      }
+    ]
+  },
+  {
     id: "resume",
     label: "Resume",
     panelTitle: "Resume Lens",

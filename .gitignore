@@ -9,6 +9,7 @@ dist/
 .firebase/
 
 output/
+.playwright-cli/
 
 *.log
 npm-debug.log*
