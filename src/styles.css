@@ -297,6 +297,34 @@ input {
   box-shadow: 0 0 20px rgba(177, 208, 154, 0.15);
 }
 
+.artifacts-grid {
+  align-items: stretch;
+}
+
+.artifact-card {
+  height: 100%;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+  transform: translateY(0);
+}
+
+.artifact-card:hover {
+  transform: translateY(-3px);
+}
+
+.artifact-card--summary,
+.artifact-card--image,
+.artifact-card--compact {
+  min-height: 320px;
+}
+
+.artifact-card--highlight {
+  min-height: 340px;
+}
+
+.artifact-card--detail {
+  min-height: 100%;
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
