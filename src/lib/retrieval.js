@@ -1310,6 +1310,29 @@ export function findMatches(question, history = [], options = {}) {
   };
 }
 
+function formatMatchItems(items) {
+  const fragments = [];
+
+  for (const rawItem of items) {
+    const item = rawItem.trim();
+
+    if (!item) {
+      continue;
+    }
+
+    const previous = fragments[fragments.length - 1];
+
+    if (previous?.endsWith(":")) {
+      fragments[fragments.length - 1] = `${previous} ${item}`;
+      continue;
+    }
+
+    fragments.push(item);
+  }
+
+  return fragments.filter((fragment) => !fragment.endsWith(":")).join(" ");
+}
+
 export function askAssistant(question, history = [], options = {}) {
   const { intent, matches: scoredSections } = findMatches(question, history, options);
 
@@ -1334,7 +1357,11 @@ export function askAssistant(question, history = [], options = {}) {
   }
 
   const answer = matches
-    .map((match) => `${match.items.join("; ")} [${match.ref}]`)
+    .map((match) => {
+      const formatted = formatMatchItems(match.items);
+      return formatted ? `${formatted} [${match.ref}]` : "";
+    })
+    .filter(Boolean)
     .join("\n");
 
   return {
