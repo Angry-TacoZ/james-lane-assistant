@@ -28,6 +28,7 @@ const PAGE_TITLES = {
 const CONTACT_EMAIL = "tiburo13@gmail.com";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("James AI Inquiry")}&body=${encodeURIComponent("Hi James,%0D%0A%0D%0AI'd like to talk about working together.%0D%0A%0D%0AName:%0D%0ACompany:%0D%0AWhat I'm looking for:%0D%0A")}`;
 const LINKEDIN_URL = "https://www.linkedin.com/in/james-lane-1051291a9";
+const PROFILE_PHOTO_URL = "/images/profile/jamesprofile3.jpg";
 
 const PROJECT_PRESENTATION = {
   "living-resume-ai": {
@@ -661,7 +662,15 @@ function renderHomePage() {
                     .join("")}
                 </div>
               </div>
-              <div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/10">
+              <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-lg border border-outline-variant/10">
+                <div class="relative rounded-xl overflow-hidden mb-5 aspect-[4/5] bg-surface-container-high">
+                  <img class="w-full h-full object-cover" src="${PROFILE_PHOTO_URL}" alt="Portrait of James Lane at his desk"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent"></div>
+                  <div class="absolute left-4 right-4 bottom-4">
+                    <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-primary/90 mb-2">James Lane</div>
+                    <div class="text-xl font-bold text-on-surface leading-tight">Systems-oriented builder with a source-bound AI front door.</div>
+                  </div>
+                </div>
                 <div class="text-[10px] font-['Space_Grotesk'] text-primary/60 uppercase mb-4 tracking-widest">Current Vector</div>
                 <div class="text-xl font-bold text-on-surface mb-2">${escapeHtml(vectorCard.title)}</div>
                 <p class="text-sm text-on-surface-variant/70 mb-4">${escapeHtml(vectorCard.body)}</p>
