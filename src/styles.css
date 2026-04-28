@@ -325,6 +325,41 @@ input {
   min-height: 100%;
 }
 
+@media (min-width: 768px) {
+  .artifacts-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "feature feature summary summary"
+      "feature feature image detail"
+      "compact highlight highlight detail";
+    grid-auto-rows: 220px;
+  }
+
+  .artifact-card--feature {
+    grid-area: feature;
+  }
+
+  .artifact-card--summary {
+    grid-area: summary;
+  }
+
+  .artifact-card--image {
+    grid-area: image;
+  }
+
+  .artifact-card--detail {
+    grid-area: detail;
+  }
+
+  .artifact-card--compact {
+    grid-area: compact;
+  }
+
+  .artifact-card--highlight {
+    grid-area: highlight;
+  }
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

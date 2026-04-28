@@ -1325,7 +1325,7 @@ function renderProjectsPage() {
             pageState.projectView === "list"
               ? renderProjectList(filteredProjects)
               : `
-          <div class="artifacts-grid grid grid-cols-1 md:grid-cols-12 gap-5 xl:gap-6 auto-rows-[minmax(270px,auto)]">
+          <div class="artifacts-grid grid grid-cols-1 gap-5 xl:gap-6">
             ${renderFeaturedProjectCard(featured)}
             ${renderProjectSummaryCard(secondary)}
             ${renderProjectImageCard(tertiary)}
@@ -1362,17 +1362,17 @@ function renderFeaturedProjectCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
 
   return `
-    <div class="artifact-card artifact-card--feature md:col-span-8 group relative overflow-hidden glass-panel rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all duration-500 cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--feature group relative overflow-hidden glass-panel rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all duration-500 cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-80"></div>
-      <img alt="Dark aesthetic laboratory setting with holographic data projections" class="w-full h-[400px] object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4BS76XUmGNK-oP5g3xraE1xGQ5uvWTCgZjoHYQBhctlwJp-r6Kzf--nXR_WoM21XPVbrulCIJN2hZFIE7I305LM0dKpRo-NDQ4zLpy1H4tAvxuQF0q7CIgI8-YU8IwTsENmjPnLqr91Ohd8_beuenGWsc8-Fsv57cFQg8S7NwAc69iXMNfEu49xdZdbhBRsEMBrq6j6OHsAiX8a2SKQqlPKk3igWCdRgL7ZRJwPhX1pUozeoJv8klYY_FMm9CB4ecJCWmWMAH1rYo"/>
+      <img alt="Dark aesthetic laboratory setting with holographic data projections" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4BS76XUmGNK-oP5g3xraE1xGQ5uvWTCgZjoHYQBhctlwJp-r6Kzf--nXR_WoM21XPVbrulCIJN2hZFIE7I305LM0dKpRo-NDQ4zLpy1H4tAvxuQF0q7CIgI8-YU8IwTsENmjPnLqr91Ohd8_beuenGWsc8-Fsv57cFQg8S7NwAc69iXMNfEu49xdZdbhBRsEMBrq6j6OHsAiX8a2SKQqlPKk3igWCdRgL7ZRJwPhX1pUozeoJv8klYY_FMm9CB4ecJCWmWMAH1rYo"/>
       <div class="absolute bottom-0 left-0 p-7 md:p-8 z-20 w-full">
         <div class="flex items-center gap-3 mb-4">
           <span class="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded font-label text-[10px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span>
           <span class="text-gray-500 font-label text-[10px] tracking-widest">${escapeHtml(meta.version)}</span>
         </div>
-        <h2 class="text-4xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter">${escapeHtml(project.title)}</h2>
-        <p class="text-on-surface-variant max-w-xl mb-6">${escapeHtml(meta.summary)}</p>
-        <div class="flex items-center gap-6 flex-wrap">
+        <h2 class="text-3xl xl:text-4xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter">${escapeHtml(project.title)}</h2>
+        <p class="text-on-surface-variant max-w-xl mb-5">${escapeHtml(meta.summary)}</p>
+        <div class="flex items-center gap-4 xl:gap-6 flex-wrap">
           ${meta.featureBadges.map((badge, index) => `<div class="flex items-center gap-2 text-primary"><span class="material-symbols-outlined text-sm">${["psychology", "build", "auto_awesome"][index] ?? "bolt"}</span><span class="font-label text-[10px] uppercase tracking-widest font-bold">${escapeHtml(badge)}</span></div>`).join("")}
         </div>
       </div>
@@ -1383,7 +1383,7 @@ function renderFeaturedProjectCard(project) {
 function renderProjectSummaryCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["caa-2026-pbm-regulatory-assistant"];
   return `
-    <div class="artifact-card artifact-card--summary md:col-span-4 glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--summary glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div>
         <div class="flex justify-between items-start mb-6">
           <span class="material-symbols-outlined text-primary text-3xl">${meta.icon}</span>
@@ -1403,8 +1403,8 @@ function renderProjectSummaryCard(project) {
 function renderProjectImageCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["blkvue-ai-security-intake-bot"];
   return `
-    <div class="artifact-card artifact-card--image md:col-span-4 glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 hover:bg-surface-container-highest/40 transition-all cursor-pointer group" data-open-url="${escapeAttribute(project.url)}">
-      <div class="h-36 mb-6 bg-surface-container-lowest rounded-lg overflow-hidden relative">
+    <div class="artifact-card artifact-card--image glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 hover:bg-surface-container-highest/40 transition-all cursor-pointer group min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+      <div class="h-32 md:h-28 mb-5 bg-surface-container-lowest rounded-lg overflow-hidden relative">
         <img alt="Profile Lens visual" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNd1wlFdIcEyYmVYnTAbEuzmMuyz0yuj1iwfv1XaHKr1ZhggigKkZlZ5jBoemX5kp7PiEBT6Kb5ZHP4tc4WyltYCGJCC1jOLEOCzd-wbyCIO3RX5vhhGwoInYSRYyUpZhZ6p884Dp2e0XL5W3oHu961byWj3Qca6nrDmhpgKvoiLCj2mR4YCFeoNi7Iaf8vOG4PKslOb0Z8HacxU2aXa8mGeTjp9qLEFn9Mol1wSHbFVCBM7pS0bL72i2eMnCkzH8Jf56xouThkc6L"/>
         <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
       </div>
@@ -1418,15 +1418,21 @@ function renderProjectImageCard(project) {
 
 function renderProjectDetailCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["jameslaneai-com"];
+  const detailTitle = escapeHtml(project.title)
+    .replace(/([a-z])([A-Z])/g, "$1<wbr>$2")
+    .replace(/\./g, "<wbr>.");
   return `
-    <div class="artifact-card artifact-card--detail md:col-span-4 md:row-span-2 glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer min-h-[360px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div>
-        <div class="flex items-center gap-3 mb-8">
-          <div class="p-3 rounded-lg bg-surface-container-highest border border-outline-variant/20"><span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">${meta.icon}</span></div>
-          <div><p class="font-label text-[10px] text-gray-500 tracking-widest uppercase">${escapeHtml(meta.emphasis)}</p><h3 class="text-2xl font-headline font-extrabold text-on-surface tracking-tighter">${escapeHtml(project.title)}</h3></div>
+        <div class="flex flex-col items-start gap-3 mb-7">
+          <div class="p-3 rounded-lg bg-surface-container-highest border border-outline-variant/20"><span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">${meta.icon}</span></div>
+          <div>
+            <p class="font-label text-[10px] text-gray-500 tracking-widest uppercase">${escapeHtml(meta.emphasis)}</p>
+            <h3 class="text-lg xl:text-[1.45rem] leading-[1.08] font-headline font-extrabold text-on-surface tracking-tighter break-normal">${detailTitle}</h3>
+          </div>
         </div>
-        <p class="text-on-surface-variant leading-relaxed mb-8">${escapeHtml(meta.summary)}</p>
+        <p class="text-on-surface-variant text-[0.96rem] leading-relaxed mb-7">${escapeHtml(meta.summary)}</p>
         <ul class="space-y-4">${meta.detailBullets.map((bullet) => `<li class="flex items-center gap-3 text-sm text-on-surface font-light"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>${escapeHtml(bullet)}</li>`).join("")}</ul>
       </div>
       <button class="w-full py-4 border border-outline-variant/30 rounded-lg font-label text-[10px] font-bold tracking-widest text-on-surface hover:bg-surface-container-highest hover:border-primary/50 transition-all uppercase" data-open-url="${escapeAttribute(project.url)}">OPEN_PROJECT</button>
@@ -1437,7 +1443,7 @@ function renderProjectDetailCard(project) {
 function renderProjectCompactCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["cruisn-pa"];
   return `
-    <div class="artifact-card artifact-card--compact md:col-span-4 glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--compact glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div>
         <div class="flex items-center gap-2 mb-4"><span class="material-symbols-outlined text-gray-500 text-xl">${meta.icon}</span><span class="text-gray-500 font-label text-[9px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span></div>
         <h3 class="text-lg font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
@@ -1456,11 +1462,11 @@ function renderProjectHighlightCard(project) {
   };
   const highlightActions = meta.highlightActions ?? [];
   return `
-    <div class="artifact-card artifact-card--highlight md:col-span-8 glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex items-center justify-between gap-8 xl:gap-12 group cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--highlight glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex items-center justify-between gap-6 xl:gap-8 group cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="max-w-md">
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-highest rounded-full mb-6"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase font-bold">${escapeHtml(meta.emphasis)}</span></div>
-        <h3 class="text-3xl font-headline font-extrabold text-on-surface mb-4 tracking-tighter leading-none">${escapeHtml(project.title)}</h3>
-        <p class="text-on-surface-variant text-sm font-light leading-relaxed mb-6">${escapeHtml(meta.summary)}</p>
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-highest rounded-full mb-4"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase font-bold">${escapeHtml(meta.emphasis)}</span></div>
+        <h3 class="text-2xl xl:text-3xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter leading-none">${escapeHtml(project.title)}</h3>
+        <p class="text-on-surface-variant text-sm font-light leading-relaxed mb-4">${escapeHtml(meta.summary)}</p>
         ${
           highlightActions.length
             ? `<div class="flex gap-4 flex-wrap">
@@ -1478,7 +1484,7 @@ function renderProjectHighlightCard(project) {
               </div>`
         }
       </div>
-      <div class="hidden md:block w-64 h-64 relative shrink-0">
+      <div class="hidden md:block w-44 h-44 xl:w-48 xl:h-48 relative shrink-0">
         <div class="absolute inset-0 bg-primary/20 rounded-[2rem] blur-[60px] group-hover:scale-125 transition-transform duration-700"></div>
         <div class="relative w-full h-full glass-panel rounded-[2rem] border border-primary/20 flex items-center justify-center overflow-hidden">
           <img alt="${escapeAttribute(art.alt)}" class="w-full h-full object-cover" src="${escapeAttribute(art.src)}"/>
