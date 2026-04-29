@@ -53,8 +53,12 @@ describe("James AI retrieval", () => {
     });
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/https:\/\/james-lane-web-resume\.web\.app\/|https:\/\/iron-shores\.web\.app\/|https:\/\/cruisnpa\.fun\//i);
-    expect(response.answer).toContain("[p2-project-living-resume-ai]");
+    expect(response.answer).toContain("https://james-lane-web-resume.web.app/");
+    expect(response.answer).toContain("https://iron-shores.web.app/");
+    expect(response.answer).toContain("https://cruisnpa.fun/");
+    expect(response.answer).toContain("https://nextjs-boilerplate-flame-three-27.vercel.app/");
+    expect(response.answer).toContain("https://replit.com/@tiburo13/Jarvis-Lite-Python");
+    expect(response.answer).toContain("[live-project-links-index]");
   });
 
   it("lists James's published writing from the writing lens", () => {
@@ -143,6 +147,24 @@ describe("James AI retrieval", () => {
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/Cruis'?n PA|driving club|custom weekly routes|mystery dessert|restaurant finish/i);
     expect(response.answer).toContain("[p2-project-cruisn-pa]");
+  });
+
+  it("handles named questions for repo-metadata live artifacts", () => {
+    const nextResponse = askAssistant("What can you tell me about the Next.js boilerplate deployment?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const jarvisResponse = askAssistant("What can you tell me about Jarvis Lite Python?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(nextResponse.refused).toBe(false);
+    expect(nextResponse.answer).toMatch(/Next\.js Boilerplate|Vercel|framework and deployment baseline/i);
+    expect(nextResponse.answer).toContain("[github-project-nextjs-boilerplate-vercel]");
+    expect(jarvisResponse.refused).toBe(false);
+    expect(jarvisResponse.answer).toMatch(/Jarvis Lite Python|Replit|assistant experiment/i);
+    expect(jarvisResponse.answer).toContain("[github-project-jarvis-lite-python]");
   });
 
   it("surfaces hosted Iron Tides media through the projects lens without exposing local file paths", () => {

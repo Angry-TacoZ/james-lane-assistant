@@ -113,6 +113,32 @@ const PROJECT_PRESENTATION = {
       "Refined through actual player use instead of presentation-only mockups.",
       "Shows product instincts, iteration discipline, and willingness to ship."
     ]
+  },
+  "nextjs-boilerplate-vercel": {
+    emphasis: "LIVE_DEPLOYMENT",
+    version: "VERCEL_BASELINE",
+    summary:
+      "Private TypeScript Next.js repo with a live Vercel deployment, useful as a framework and deployment baseline.",
+    featureBadges: ["Next.js", "TypeScript", "Vercel"],
+    icon: "deployed_code",
+    shortLabel: "Vercel Baseline",
+    detailBullets: [
+      "Shows a working Next.js deployment target tied to a GitHub repo.",
+      "Best framed as a baseline deployment artifact, not a finished product."
+    ]
+  },
+  "jarvis-lite-python": {
+    emphasis: "ASSISTANT_EXPERIMENT",
+    version: "REPLIT_LINK",
+    summary:
+      "Python/Replit assistant experiment connected to a public Replit project link from the private repo metadata.",
+    featureBadges: ["Python", "Replit", "Assistant Prototype"],
+    icon: "memory",
+    shortLabel: "Assistant Prototype",
+    detailBullets: [
+      "Represents early personal assistant and memory-bot exploration.",
+      "Useful context for the longer-running AI assistant direction."
+    ]
   }
 };
 
@@ -1266,6 +1292,7 @@ function renderProjectsPage() {
   const detail = filteredProjects[3] ?? liveProjects[3];
   const compact = filteredProjects[4] ?? liveProjects[4];
   const highlight = filteredProjects[5] ?? liveProjects[5];
+  const supplementalProjects = filteredProjects.slice(6);
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
@@ -1341,7 +1368,8 @@ function renderProjectsPage() {
             ${renderProjectDetailCard(detail)}
             ${renderProjectCompactCard(compact)}
             ${renderProjectHighlightCard(highlight)}
-          </div>`
+          </div>
+          ${supplementalProjects.length ? renderSupplementalProjectCards(supplementalProjects) : ""}`
           }
           <footer class="mt-20 pt-10 border-t border-outline-variant/10">
           <div class="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -1513,6 +1541,35 @@ function renderProjectHighlightAction(action) {
   }
 
   return "";
+}
+
+function renderSupplementalProjectCards(projects) {
+  return `
+    <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
+      ${projects
+        .map((project) => {
+          const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
+
+          return `
+            <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[260px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+              <div>
+                <div class="flex items-start justify-between gap-4 mb-8">
+                  <span class="material-symbols-outlined text-primary text-3xl">${escapeHtml(meta.icon)}</span>
+                  <span class="bg-surface-container-highest text-gray-400 px-2 py-1 rounded font-label text-[9px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span>
+                </div>
+                <h3 class="text-xl font-headline font-bold text-on-surface mb-3 tracking-tight">${escapeHtml(project.title)}</h3>
+                <p class="text-on-surface-variant text-sm font-light leading-relaxed">${escapeHtml(project.description)}</p>
+              </div>
+              <div class="pt-6 mt-6 border-t border-outline-variant/10 flex items-center justify-between gap-4">
+                <span class="font-label text-[10px] uppercase tracking-widest text-gray-500">${escapeHtml(project.ref)}</span>
+                <span class="material-symbols-outlined text-primary">arrow_forward</span>
+              </div>
+            </article>
+          `;
+        })
+        .join("")}
+    </section>
+  `;
 }
 
 function normalizeEvidenceLine(item) {

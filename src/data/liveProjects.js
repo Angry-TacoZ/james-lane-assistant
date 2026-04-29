@@ -46,5 +46,21 @@ export const liveProjects = [
       "Browser-based tank roguelite and bullet-hell demo refined through real player use rather than static mockups alone.",
     url: "https://iron-shores.web.app/",
     ref: "Page 2 / Iron Shores playable demo"
+  },
+  {
+    id: "nextjs-boilerplate-vercel",
+    title: "Next.js Boilerplate Deployment",
+    description:
+      "Private TypeScript Next.js repo with a live Vercel deployment, useful as a deployment and framework baseline rather than a finished product claim.",
+    url: "https://nextjs-boilerplate-flame-three-27.vercel.app/",
+    ref: "GitHub repo / nextjs-boilerplate"
+  },
+  {
+    id: "jarvis-lite-python",
+    title: "Jarvis Lite Python",
+    description:
+      "Private Python/Replit assistant experiment with a public Replit project link, representing early personal assistant and memory-bot exploration.",
+    url: "https://replit.com/@tiburo13/Jarvis-Lite-Python",
+    ref: "GitHub repo / Jarvis-Lite-Python"
   }
 ];

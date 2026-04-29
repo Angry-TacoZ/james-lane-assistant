@@ -328,11 +328,11 @@ input {
 @media (min-width: 768px) {
   .artifacts-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: 250px 285px 340px;
     grid-template-areas:
       "feature feature summary summary"
       "feature feature image detail"
       "compact highlight highlight detail";
-    grid-auto-rows: 220px;
   }
 
   .artifact-card--feature {

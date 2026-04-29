@@ -231,6 +231,16 @@ const PROJECT_ENTITIES = [
     sectionPattern: /\b(iron shores|playable demo|iron-shores\.web\.app)\b/
   },
   {
+    id: "nextjs-boilerplate-vercel",
+    questionPattern: /\b(nextjs boilerplate|next js boilerplate|nextjs-boilerplate|vercel baseline|nextjs-boilerplate-flame-three-27)\b/,
+    sectionPattern: /\b(nextjs boilerplate|next js boilerplate|nextjs-boilerplate|vercel baseline|nextjs-boilerplate-flame-three-27)\b/
+  },
+  {
+    id: "jarvis-lite-python",
+    questionPattern: /\b(jarvis lite python|jarvis-lite-python|jarvis lite|replit assistant|python assistant)\b/,
+    sectionPattern: /\b(jarvis lite python|jarvis-lite-python|jarvis lite|replit assistant|python assistant)\b/
+  },
+  {
     id: "iron-tides",
     questionPattern: /\b(iron tides|godot 4 porting experiment|main menu animation|wooden decks|battleship gameplay)\b/,
     sectionPattern: /\b(iron tides|portfolio media index|godot 4 porting experiment|main menu animation|wooden decks|battleship gameplay|game development - iron tides|ai-assisted game-development workflow and engine experimentation)\b/
@@ -703,11 +713,11 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 5;
   }
 
-  if (intent === "projects" && /living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /live project links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|next js boilerplate deployment|jarvis lite python|portfolio media index/.test(normalizedTitle)) {
     score += 10;
   }
 
-  if (intent === "projects" && /live|link|demo|site|website|review|try/.test(normalizedQuestion) && /living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /live|link|demo|site|website|review|try/.test(normalizedQuestion) && /live project links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|next js boilerplate deployment|jarvis lite python|portfolio media index/.test(normalizedTitle)) {
     score += 8;
   }
 
@@ -1032,7 +1042,7 @@ function pickSections(scoredSections, intent, question = "") {
       if (matchedProjectEntity) {
         const selected = [];
         const targetedSections = limitedSections.filter((entry) =>
-          sectionMatchesProjectEntity(entry.section, matchedProjectEntity)
+          entry.section.id !== "live-project-links-index" && sectionMatchesProjectEntity(entry.section, matchedProjectEntity)
         );
 
         for (const entry of targetedSections) {
@@ -1046,7 +1056,12 @@ function pickSections(scoredSections, intent, question = "") {
             break;
           }
 
-          if (entry && !selected.includes(entry) && sectionMatchesProjectEntity(entry.section, matchedProjectEntity)) {
+          if (
+            entry &&
+            entry.section.id !== "live-project-links-index" &&
+            !selected.includes(entry) &&
+            sectionMatchesProjectEntity(entry.section, matchedProjectEntity)
+          ) {
             selected.push(entry);
           }
         }
@@ -1080,7 +1095,13 @@ function pickSections(scoredSections, intent, question = "") {
       }
 
       if (/live|links|demo|site|website|review|try|projects/.test(normalizedQuestion)) {
-        return [...projectSections.slice(0, 7), ...portfolioMedia.slice(0, 1)].slice(0, 7);
+        const index = projectSections.find((entry) => entry.section.id === "live-project-links-index");
+
+        if (index) {
+          return [index];
+        }
+
+        return [...projectSections.slice(0, 8), ...portfolioMedia.slice(0, 1)].slice(0, 8);
       }
 
       return [...projectSections.slice(0, 4), ...portfolioMedia.slice(0, 1)].slice(0, 5);
@@ -1234,6 +1255,10 @@ function buildAnswerLines(scoredSections, question, intent) {
           : positiveItems.length > 0
             ? positiveItems.slice(0, fallbackCount).map((item) => item.text)
             : entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));
+
+      if (entry.section.id === "live-project-links-index") {
+        items = entry.section.items;
+      }
 
       if (entry.section.id === "writing-catalog" || entry.section.id === "writing-boundary") {
         items = entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));

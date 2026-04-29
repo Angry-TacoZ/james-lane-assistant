@@ -257,6 +257,32 @@ const resumeSourceCorpus = [
     ]
   },
   {
+    id: "live-project-links-index",
+    group: "projects-catalog",
+    sourceLabel: "Live project artifact index",
+    referenceLabel: "Artifacts / GitHub live-link sweep",
+    title: "Live Project Links",
+    aliases: [
+      "live projects",
+      "project links",
+      "artifacts",
+      "github repos with live links",
+      "public demos",
+      "showcase projects",
+      "portfolio links"
+    ],
+    items: [
+      "Living Resume AI: https://james-lane-web-resume.web.app/",
+      "CAA 2026 PBM Regulatory Assistant: https://caademoweb.web.app/",
+      "BLKVue AI Security Intake Bot: https://blkvueai.web.app/",
+      "JamesLaneAI.com: https://jameslaneai.com/",
+      "Cruis'n PA: https://cruisnpa.fun/",
+      "Iron Shores playable demo: https://iron-shores.web.app/",
+      "Next.js Boilerplate Deployment: https://nextjs-boilerplate-flame-three-27.vercel.app/",
+      "Jarvis Lite Python: https://replit.com/@tiburo13/Jarvis-Lite-Python"
+    ]
+  },
+  {
     id: "p2-project-caa-2026-pbm-regulatory-assistant",
     group: "projects-catalog",
     sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
@@ -322,6 +348,46 @@ const resumeSourceCorpus = [
     items: [
       "Live link: https://iron-shores.web.app/",
       "Designed and deployed a browser-based tank roguelite and bullet-hell demo with 1 level and 10 waves; used by players and refined through real feedback rather than static mockups."
+    ]
+  },
+  {
+    id: "github-project-nextjs-boilerplate-vercel",
+    group: "projects-catalog",
+    sourceLabel: "GitHub repo metadata",
+    referenceLabel: "Angry-TacoZ/nextjs-boilerplate",
+    title: "Next.js Boilerplate Deployment",
+    aliases: [
+      "nextjs boilerplate",
+      "next.js boilerplate",
+      "vercel baseline",
+      "nextjs-boilerplate-flame-three-27",
+      "nextjs-boilerplate",
+      "vercel deployment"
+    ],
+    items: [
+      "Live link: https://nextjs-boilerplate-flame-three-27.vercel.app/",
+      "Private TypeScript Next.js repo with a live Vercel deployment.",
+      "Best represented as a framework and deployment baseline rather than a finished product claim."
+    ]
+  },
+  {
+    id: "github-project-jarvis-lite-python",
+    group: "projects-catalog",
+    sourceLabel: "GitHub repo metadata",
+    referenceLabel: "Angry-TacoZ/Jarvis-Lite-Python",
+    title: "Jarvis Lite Python",
+    aliases: [
+      "jarvis lite python",
+      "jarvis lite",
+      "jarvis-lite-python",
+      "replit assistant",
+      "python assistant",
+      "memory bot"
+    ],
+    items: [
+      "Live link: https://replit.com/@tiburo13/Jarvis-Lite-Python",
+      "Private Python/Replit assistant experiment with a public Replit project link.",
+      "Best represented as early personal assistant and memory-bot exploration, not as a polished production application."
     ]
   },
   {
