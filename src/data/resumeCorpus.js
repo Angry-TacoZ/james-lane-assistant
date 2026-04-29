@@ -261,7 +261,7 @@ const resumeSourceCorpus = [
     group: "projects-catalog",
     sourceLabel: "Live project artifact index",
     referenceLabel: "Artifacts / GitHub live-link sweep",
-    title: "Live Project Links",
+    title: "Project Artifact Links",
     aliases: [
       "live projects",
       "project links",
@@ -278,8 +278,10 @@ const resumeSourceCorpus = [
       "JamesLaneAI.com: https://jameslaneai.com/",
       "Cruis'n PA: https://cruisnpa.fun/",
       "Iron Shores playable demo: https://iron-shores.web.app/",
-      "Next.js Boilerplate Deployment: https://nextjs-boilerplate-flame-three-27.vercel.app/",
-      "Jarvis Lite Python: https://replit.com/@tiburo13/Jarvis-Lite-Python"
+      "Vast Lands: private GitHub repo at https://github.com/Angry-TacoZ/vast-lands",
+      "X'TIGE: https://xtige-app.web.app/",
+      "Iron Horizon WW2 Battleship Prototype: public GitHub repo at https://github.com/Angry-TacoZ/ww2-battleship-prototype",
+      "Composio Dependency Graph: private GitHub repo at https://github.com/Angry-TacoZ/dep-graph"
     ]
   },
   {
@@ -351,43 +353,58 @@ const resumeSourceCorpus = [
     ]
   },
   {
-    id: "github-project-nextjs-boilerplate-vercel",
+    id: "github-project-vast-lands",
     group: "projects-catalog",
-    sourceLabel: "GitHub repo metadata",
-    referenceLabel: "Angry-TacoZ/nextjs-boilerplate",
-    title: "Next.js Boilerplate Deployment",
-    aliases: [
-      "nextjs boilerplate",
-      "next.js boilerplate",
-      "vercel baseline",
-      "nextjs-boilerplate-flame-three-27",
-      "nextjs-boilerplate",
-      "vercel deployment"
-    ],
+    sourceLabel: "GitHub repo and local README",
+    referenceLabel: "Angry-TacoZ/vast-lands",
+    title: "Vast Lands",
+    aliases: ["vast lands", "babylon city builder", "isometric city builder", "anno style", "civ style"],
     items: [
-      "Live link: https://nextjs-boilerplate-flame-three-27.vercel.app/",
-      "Private TypeScript Next.js repo with a live Vercel deployment.",
-      "Best represented as a framework and deployment baseline rather than a finished product claim."
+      "Private GitHub repo: https://github.com/Angry-TacoZ/vast-lands",
+      "Babylon.js isometric prototype for a modern city-state builder with Anno-style production and resident needs plus Civ-style civic progression.",
+      "Current gameplay includes placement of residential, logistics, production, commerce, and civic districts; resource balancing; satisfaction-linked income; civic unlocks; and export/import of map, economy, and civic state."
     ]
   },
   {
-    id: "github-project-jarvis-lite-python",
+    id: "github-project-xtige",
     group: "projects-catalog",
-    sourceLabel: "GitHub repo metadata",
-    referenceLabel: "Angry-TacoZ/Jarvis-Lite-Python",
-    title: "Jarvis Lite Python",
-    aliases: [
-      "jarvis lite python",
-      "jarvis lite",
-      "jarvis-lite-python",
-      "replit assistant",
-      "python assistant",
-      "memory bot"
-    ],
+    sourceLabel: "GitHub repo and local README",
+    referenceLabel: "Angry-TacoZ/xtige",
+    title: "X'TIGE",
+    aliases: ["xtige", "x'tige", "car social app", "garage", "bounties", "crew", "live map"],
     items: [
-      "Live link: https://replit.com/@tiburo13/Jarvis-Lite-Python",
-      "Private Python/Replit assistant experiment with a public Replit project link.",
-      "Best represented as early personal assistant and memory-bot exploration, not as a polished production application."
+      "Live link: https://xtige-app.web.app/",
+      "Private GitHub repo: https://github.com/Angry-TacoZ/xtige",
+      "Car-first social app for drivers to discover nearby enthusiasts, build a Garage identity, complete Bounties, organize Crews, and test live map presence.",
+      "Stack includes React, Vite, TypeScript, Leaflet, Firebase Hosting, Firebase Auth scaffolding, Firestore rules, and Capacitor for a future Android path."
+    ]
+  },
+  {
+    id: "github-project-iron-horizon-ww2-battleship",
+    group: "projects-catalog",
+    sourceLabel: "GitHub repo and local README",
+    referenceLabel: "Angry-TacoZ/ww2-battleship-prototype",
+    title: "Iron Horizon WW2 Battleship Prototype",
+    aliases: ["iron horizon", "ww2 battleship prototype", "ww2 horde survival", "naval combat", "battleship combat"],
+    items: [
+      "Public GitHub repo: https://github.com/Angry-TacoZ/ww2-battleship-prototype",
+      "Playable top-down WW2-inspired battleship combat prototype built with Vite, TypeScript, and Phaser 3.",
+      "Implemented surfaces include main menu, nation select, battle scenario, enemy ships, periodic aircraft threats, manual main battery fire, auto-firing secondaries and AA, torpedoes, fires, flooding, repair party, reloads, health bars, and zoom.",
+      "Verifier coverage checks damage loops, enemy damage, secondaries, priority targeting, AA, torpedoes, fire/flood DOT, and win/loss conditions."
+    ]
+  },
+  {
+    id: "github-project-composio-dependency-graph",
+    group: "projects-catalog",
+    sourceLabel: "GitHub repo and local README",
+    referenceLabel: "Angry-TacoZ/dep-graph",
+    title: "Composio Dependency Graph",
+    aliases: ["benchmarking tool", "benchmark tool", "composio dependency graph", "dependency graph", "tool routing", "agent workflow graph"],
+    items: [
+      "Private GitHub repo: https://github.com/Angry-TacoZ/dep-graph",
+      "Builds a dependency graph for Composio Google Super and GitHub toolkits, focused on prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges.",
+      "Primary reviewer artifact is graph/dependency_graph.html with workflow view, full graph mode, debug edge auditing, filters, and a right-side inspector.",
+      "The implementation uses deterministic TypeScript generation, Mermaid/HTML output, confidence-ranked edges, and risk-aware routing labels."
     ]
   },
   {

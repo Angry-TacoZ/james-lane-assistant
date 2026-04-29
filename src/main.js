@@ -114,30 +114,56 @@ const PROJECT_PRESENTATION = {
       "Shows product instincts, iteration discipline, and willingness to ship."
     ]
   },
-  "nextjs-boilerplate-vercel": {
-    emphasis: "LIVE_DEPLOYMENT",
-    version: "VERCEL_BASELINE",
+  "vast-lands": {
+    emphasis: "SYSTEMS_GAME",
+    version: "PRIVATE_REPO",
     summary:
-      "Private TypeScript Next.js repo with a live Vercel deployment, useful as a framework and deployment baseline.",
-    featureBadges: ["Next.js", "TypeScript", "Vercel"],
+      "Babylon.js isometric city-builder prototype shaped around production chains, resident needs, civic projects, and an editor-ready building catalog.",
+    featureBadges: ["Babylon.js", "TypeScript", "Simulation"],
     icon: "deployed_code",
-    shortLabel: "Vercel Baseline",
+    shortLabel: "City Builder",
     detailBullets: [
-      "Shows a working Next.js deployment target tied to a GitHub repo.",
-      "Best framed as a baseline deployment artifact, not a finished product."
+      "Shows systems design across resources, residents, civic unlocks, and map editing.",
+      "Includes verification around placement and animation behavior."
     ]
   },
-  "jarvis-lite-python": {
-    emphasis: "ASSISTANT_EXPERIMENT",
-    version: "REPLIT_LINK",
+  xtige: {
+    emphasis: "LIVE_APP",
+    version: "FIREBASE_HOSTED",
     summary:
-      "Python/Replit assistant experiment connected to a public Replit project link from the private repo metadata.",
-    featureBadges: ["Python", "Replit", "Assistant Prototype"],
-    icon: "memory",
-    shortLabel: "Assistant Prototype",
+      "Car-first social app with live map presence, Garage profiles, Bounties, Crew surfaces, Firebase hosting, and an Android path through Capacitor.",
+    featureBadges: ["React", "Firebase", "Maps"],
+    icon: "route",
+    shortLabel: "Car Social App",
     detailBullets: [
-      "Represents early personal assistant and memory-bot exploration.",
-      "Useful context for the longer-running AI assistant direction."
+      "Packages a social product concept into working app surfaces instead of a static idea.",
+      "Includes auth scaffolding, Firestore rules, and mobile packaging direction."
+    ]
+  },
+  "iron-horizon-ww2-battleship": {
+    emphasis: "PLAYABLE_PROTOTYPE",
+    version: "PUBLIC_REPO",
+    summary:
+      "Top-down WW2-inspired naval combat prototype with national ship selection, aircraft threats, secondaries, AA, torpedoes, damage states, and verifier coverage.",
+    featureBadges: ["Phaser 3", "TypeScript", "Combat Systems"],
+    icon: "anchor",
+    shortLabel: "Naval Combat",
+    detailBullets: [
+      "Demonstrates playable combat loops and system balance rather than only presentation art.",
+      "Verifier checks cover damage, aircraft threats, torpedoes, DOT effects, and win/loss conditions."
+    ]
+  },
+  "composio-dependency-graph": {
+    emphasis: "BENCHMARK_TOOL",
+    version: "PRIVATE_REPO",
+    summary:
+      "Workflow-first dependency graph for agent tool execution, mapping prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges.",
+    featureBadges: ["TypeScript", "Mermaid", "Tool Routing"],
+    icon: "account_tree",
+    shortLabel: "Dependency Graph",
+    detailBullets: [
+      "Shows practical agent-routing logic for Google Super and GitHub toolkits.",
+      "Includes visual graph output, confidence-ranked edges, and risk-aware routing."
     ]
   }
 };
@@ -1374,7 +1400,7 @@ function renderProjectsPage() {
           <footer class="mt-20 pt-10 border-t border-outline-variant/10">
           <div class="flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="flex items-center gap-12">
-              <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">LIVE_PROJECTS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${liveProjects.length}</p></div>
+              <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">PROJECT_ARTIFACTS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${liveProjects.length}</p></div>
               <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">RESPONSE_FIDELITY</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">SOURCE-BOUND</p></div>
               <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">VERIFIED_SOURCES</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${approvedSources.length}</p></div>
             </div>
@@ -1545,13 +1571,13 @@ function renderProjectHighlightAction(action) {
 
 function renderSupplementalProjectCards(projects) {
   return `
-    <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
+    <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 xl:gap-6">
       ${projects
         .map((project) => {
           const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
 
           return `
-            <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[260px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+            <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[320px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
               <div>
                 <div class="flex items-start justify-between gap-4 mb-8">
                   <span class="material-symbols-outlined text-primary text-3xl">${escapeHtml(meta.icon)}</span>
@@ -1672,7 +1698,7 @@ function renderProjectList(projects) {
                 </div>
                 <div class="md:text-right md:min-w-[220px]">
                   <div class="font-label text-[10px] uppercase tracking-widest text-gray-500 mb-2">${escapeHtml(project.ref)}</div>
-                  <div class="text-primary font-label text-xs uppercase tracking-widest font-bold">Open Live Project</div>
+                  <div class="text-primary font-label text-xs uppercase tracking-widest font-bold">${project.url.includes("github.com") ? "Open Repo" : "Open Live Project"}</div>
                 </div>
               </div>
             </div>

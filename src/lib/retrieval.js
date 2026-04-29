@@ -231,14 +231,24 @@ const PROJECT_ENTITIES = [
     sectionPattern: /\b(iron shores|playable demo|iron-shores\.web\.app)\b/
   },
   {
-    id: "nextjs-boilerplate-vercel",
-    questionPattern: /\b(nextjs boilerplate|next js boilerplate|nextjs-boilerplate|vercel baseline|nextjs-boilerplate-flame-three-27)\b/,
-    sectionPattern: /\b(nextjs boilerplate|next js boilerplate|nextjs-boilerplate|vercel baseline|nextjs-boilerplate-flame-three-27)\b/
+    id: "vast-lands",
+    questionPattern: /\b(vast lands|babylon city builder|isometric city builder|anno style|civ style)\b/,
+    sectionPattern: /\b(vast lands|babylon city builder|isometric city builder|anno style|civ style)\b/
   },
   {
-    id: "jarvis-lite-python",
-    questionPattern: /\b(jarvis lite python|jarvis-lite-python|jarvis lite|replit assistant|python assistant)\b/,
-    sectionPattern: /\b(jarvis lite python|jarvis-lite-python|jarvis lite|replit assistant|python assistant)\b/
+    id: "xtige",
+    questionPattern: /\b(xtige|x tige|x'tige|car social app|garage|bounties|crew|live map)\b/,
+    sectionPattern: /\b(xtige|x tige|x'tige|car social app|garage|bounties|crew|live map)\b/
+  },
+  {
+    id: "iron-horizon-ww2-battleship",
+    questionPattern: /\b(iron horizon|ww2 battleship prototype|ww2 horde survival|naval combat|battleship combat)\b/,
+    sectionPattern: /\b(iron horizon|ww2 battleship prototype|ww2 horde survival|naval combat|battleship combat)\b/
+  },
+  {
+    id: "composio-dependency-graph",
+    questionPattern: /\b(benchmarking tool|benchmark tool|composio dependency graph|dependency graph|tool routing|agent workflow graph)\b/,
+    sectionPattern: /\b(benchmarking tool|benchmark tool|composio dependency graph|dependency graph|tool routing|agent workflow graph)\b/
   },
   {
     id: "iron-tides",
@@ -437,6 +447,10 @@ function getIntent(question, preferredIntent = null) {
     return "skills";
   }
 
+  if (/\b(benchmarking tool|benchmark tool|dependency graph|tool routing|agent workflow graph)\b/.test(normalized)) {
+    return "projects";
+  }
+
   if (/\b(tool|tools|platform|platforms|software|technology|technologies)\b/.test(normalized)) {
     return "tools";
   }
@@ -458,7 +472,7 @@ function getIntent(question, preferredIntent = null) {
   }
 
   if (
-    /\b(live projects?|project links?|live links?|live demos?|demo links?|web apps?|websites?|sites?|what can i review live|what can i try|portfolio links?|portfolio examples?|hosted media|portfolio media)\b/.test(normalized) ||
+    /\b(live projects?|project links?|live links?|live demos?|demo links?|web apps?|websites?|sites?|what can i review live|what can i try|portfolio links?|portfolio examples?|hosted media|portfolio media|benchmarking tool|benchmark tool|dependency graph|tool routing|github repos?)\b/.test(normalized) ||
     matchedProjectEntity ||
     (/\biron tides\b/.test(normalized) && /\b(video|videos|media|watch|review|portfolio)\b/.test(normalized))
   ) {
@@ -713,11 +727,11 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 5;
   }
 
-  if (intent === "projects" && /live project links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|next js boilerplate deployment|jarvis lite python|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /project artifact links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 10;
   }
 
-  if (intent === "projects" && /live|link|demo|site|website|review|try/.test(normalizedQuestion) && /live project links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|next js boilerplate deployment|jarvis lite python|portfolio media index/.test(normalizedTitle)) {
+  if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github|artifact/.test(normalizedQuestion) && /project artifact links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 8;
   }
 

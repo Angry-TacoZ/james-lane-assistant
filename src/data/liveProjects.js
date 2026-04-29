@@ -48,19 +48,35 @@ export const liveProjects = [
     ref: "Page 2 / Iron Shores playable demo"
   },
   {
-    id: "nextjs-boilerplate-vercel",
-    title: "Next.js Boilerplate Deployment",
+    id: "vast-lands",
+    title: "Vast Lands",
     description:
-      "Private TypeScript Next.js repo with a live Vercel deployment, useful as a deployment and framework baseline rather than a finished product claim.",
-    url: "https://nextjs-boilerplate-flame-three-27.vercel.app/",
-    ref: "GitHub repo / nextjs-boilerplate"
+      "Babylon.js isometric city-builder prototype with Anno-style production, resident needs, civic progression, and an editor-ready asset workflow.",
+    url: "https://github.com/Angry-TacoZ/vast-lands",
+    ref: "Private GitHub repo / vast-lands"
   },
   {
-    id: "jarvis-lite-python",
-    title: "Jarvis Lite Python",
+    id: "xtige",
+    title: "X'TIGE",
     description:
-      "Private Python/Replit assistant experiment with a public Replit project link, representing early personal assistant and memory-bot exploration.",
-    url: "https://replit.com/@tiburo13/Jarvis-Lite-Python",
-    ref: "GitHub repo / Jarvis-Lite-Python"
+      "Car-first social app with a live Firebase web build, map presence, Garage profiles, Bounties, Crew surfaces, and an Android path through Capacitor.",
+    url: "https://xtige-app.web.app/",
+    ref: "Live Firebase site / xtige"
+  },
+  {
+    id: "iron-horizon-ww2-battleship",
+    title: "Iron Horizon WW2 Battleship Prototype",
+    description:
+      "Playable top-down WW2-inspired naval combat prototype with nation select, ship combat, aircraft threats, secondaries, AA, torpedoes, and verifier coverage.",
+    url: "https://github.com/Angry-TacoZ/ww2-battleship-prototype",
+    ref: "Public GitHub repo / ww2-battleship-prototype"
+  },
+  {
+    id: "composio-dependency-graph",
+    title: "Composio Dependency Graph",
+    description:
+      "Benchmark-style tool dependency graph that maps prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges for agent workflows.",
+    url: "https://github.com/Angry-TacoZ/dep-graph",
+    ref: "Private GitHub repo / dep-graph"
   }
 ];

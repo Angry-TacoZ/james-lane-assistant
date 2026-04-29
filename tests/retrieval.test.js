@@ -56,8 +56,10 @@ describe("James AI retrieval", () => {
     expect(response.answer).toContain("https://james-lane-web-resume.web.app/");
     expect(response.answer).toContain("https://iron-shores.web.app/");
     expect(response.answer).toContain("https://cruisnpa.fun/");
-    expect(response.answer).toContain("https://nextjs-boilerplate-flame-three-27.vercel.app/");
-    expect(response.answer).toContain("https://replit.com/@tiburo13/Jarvis-Lite-Python");
+    expect(response.answer).toContain("https://xtige-app.web.app/");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/vast-lands");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/ww2-battleship-prototype");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/dep-graph");
     expect(response.answer).toContain("[live-project-links-index]");
   });
 
@@ -149,22 +151,36 @@ describe("James AI retrieval", () => {
     expect(response.answer).toContain("[p2-project-cruisn-pa]");
   });
 
-  it("handles named questions for repo-metadata live artifacts", () => {
-    const nextResponse = askAssistant("What can you tell me about the Next.js boilerplate deployment?", [], {
+  it("handles named questions for repo-backed showcase artifacts", () => {
+    const vastResponse = askAssistant("What can you tell me about Vast Lands?", [], {
       modeId: "projects",
       preferredIntent: "projects"
     });
-    const jarvisResponse = askAssistant("What can you tell me about Jarvis Lite Python?", [], {
+    const xtigeResponse = askAssistant("What can you tell me about X'TIGE?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const ww2Response = askAssistant("What can you tell me about the WW2 horde survival prototype?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const benchmarkResponse = askAssistant("What can you tell me about the benchmarking tool?", [], {
       modeId: "projects",
       preferredIntent: "projects"
     });
 
-    expect(nextResponse.refused).toBe(false);
-    expect(nextResponse.answer).toMatch(/Next\.js Boilerplate|Vercel|framework and deployment baseline/i);
-    expect(nextResponse.answer).toContain("[github-project-nextjs-boilerplate-vercel]");
-    expect(jarvisResponse.refused).toBe(false);
-    expect(jarvisResponse.answer).toMatch(/Jarvis Lite Python|Replit|assistant experiment/i);
-    expect(jarvisResponse.answer).toContain("[github-project-jarvis-lite-python]");
+    expect(vastResponse.refused).toBe(false);
+    expect(vastResponse.answer).toMatch(/Vast Lands|Babylon\.js|city-state builder|resident needs/i);
+    expect(vastResponse.answer).toContain("[github-project-vast-lands]");
+    expect(xtigeResponse.refused).toBe(false);
+    expect(xtigeResponse.answer).toMatch(/X'TIGE|car-first social app|Garage|Bounties|Firebase/i);
+    expect(xtigeResponse.answer).toContain("[github-project-xtige]");
+    expect(ww2Response.refused).toBe(false);
+    expect(ww2Response.answer).toMatch(/Iron Horizon|WW2-inspired|naval combat|aircraft threats|torpedoes/i);
+    expect(ww2Response.answer).toContain("[github-project-iron-horizon-ww2-battleship]");
+    expect(benchmarkResponse.refused).toBe(false);
+    expect(benchmarkResponse.answer).toMatch(/Composio Dependency Graph|prerequisite inputs|precursor tools|risk-confirmation/i);
+    expect(benchmarkResponse.answer).toContain("[github-project-composio-dependency-graph]");
   });
 
   it("surfaces hosted Iron Tides media through the projects lens without exposing local file paths", () => {
