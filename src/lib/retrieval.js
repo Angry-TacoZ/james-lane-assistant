@@ -18,7 +18,9 @@ const SAFE_ALIASES = {
   dashboard: ["dashboards", "analytics", "reporting"],
   school: ["education", "diploma"],
   schooling: ["education", "diploma"],
-  location: ["based", "remote", "hybrid", "relocate"],
+  location: ["based", "remote", "hybrid", "relocate", "onsite"],
+  onsite: ["in person", "location", "remote", "hybrid"],
+  "in-person": ["onsite", "location", "remote", "hybrid"],
   mail: ["email"],
   call: ["phone"],
   telephone: ["phone"],
@@ -45,11 +47,48 @@ const SAFE_ALIASES = {
   website: ["site", "live", "link", "project"],
   site: ["website", "live", "link", "project"],
   evidence: ["projects", "artifacts", "proof"],
+  design: ["art", "artwork", "visual", "portfolio", "logo"],
+  artwork: ["art", "design", "visual", "portfolio"],
+  art: ["artwork", "design", "visual", "portfolio"],
+  visual: ["design", "art", "artwork", "portfolio"],
+  logo: ["design", "brand", "motion", "animation"],
+  motion: ["animation", "design", "logo"],
   candidate: ["identity", "background", "fit"],
   roles: ["role", "fit"],
   remote: ["hybrid", "relocate", "location"],
   hybrid: ["remote", "location"],
   relocate: ["remote", "hybrid", "location"],
+  audhd: ["autism", "adhd", "neurodivergent", "executive function", "sensory", "social cues"],
+  autism: ["audhd", "neurodivergent", "social cues", "sensory", "level 1"],
+  adhd: ["audhd", "neurodivergent", "executive function", "attention", "organization"],
+  neurodivergent: ["audhd", "autism", "adhd"],
+  sensory: ["audhd", "autism", "environment"],
+  "social-cue": ["social cues", "autism", "communication"],
+  "cue": ["social cues", "communication"],
+  "cues": ["social cues", "communication"],
+  queue: ["cue", "cues", "social cues"],
+  dysregulation: ["executive function", "adhd", "task control"],
+  dysfunction: ["executive function", "adhd", "task control"],
+  perceptual: ["perceptual load", "pattern detection", "visual"],
+  cognitive: ["cognitive load", "executive function", "working memory"],
+  diabetes: ["type 2", "insulin", "neuropathy", "health", "accommodations"],
+  diabetic: ["diabetes", "neuropathy", "insulin"],
+  insulin: ["diabetes", "blood sugar", "glucose"],
+  neuropathy: ["diabetic neuropathy", "mobility", "remote", "onsite"],
+  peripheral: ["neuropathy", "mobility"],
+  charcot: ["charcot foot", "neuropathy", "mobility", "foot"],
+  foot: ["charcot", "neuropathy", "mobility"],
+  diaphragm: ["collapsed diaphragm", "breathing", "exertion", "remote", "onsite"],
+  breathing: ["diaphragm", "exertion", "onsite"],
+  gastroparesis: ["digestive", "diabetes", "schedule", "restroom"],
+  tinnitus: ["hearing", "noise", "audio", "sensory"],
+  shoulder: ["frozen shoulder", "range of motion", "ergonomic"],
+  shoulders: ["frozen shoulder", "range of motion", "ergonomic"],
+  cancer: ["colon cancer", "remission", "accommodations", "health"],
+  remission: ["cancer", "colon cancer", "survivorship"],
+  mobility: ["neuropathy", "diaphragm", "remote", "onsite"],
+  disability: ["health", "remote", "hybrid", "accommodations"],
+  accommodations: ["remote", "hybrid", "work style", "health"],
   legislation: ["policy", "pbm", "caa"],
   pbm: ["legislation", "policy"],
   proposal: ["claims", "assistant", "innovation", "governance"],
@@ -113,7 +152,7 @@ const SAFE_ALIASES = {
   game: ["portfolio", "project", "artifact", "iron tides"],
   godot: ["porting", "game", "iron tides"],
   porting: ["godot", "game", "experiment"],
-  animation: ["art", "menu", "game"],
+  animation: ["art", "design", "motion", "logo", "menu", "game"],
   menu: ["animation", "game"],
   wooden: ["art", "game"],
   battleship: ["gameplay", "iron tides", "game"],
@@ -170,23 +209,27 @@ const UNSUPPORTED_PATTERN = /\b(compare|comparison|better than|best candidate|sa
 const FIT_EVALUATION_PATTERN = /\b(how would|would james|could james|can james|do well|good fit|fit for|fit in|handle|succeed|qualified|would he|could he|can he)\b/;
 const BA_CAPABILITY_PATTERN = /\b(business analyst|business analysis|systems analyst|analyst role|analyst job|requirements|requirement|stakeholder|workflow|workflow design|process mapping|process improvement|operations analysis|reporting|dashboard|dashboards|sql|power bi|tableau|uat|user acceptance)\b/;
 const MEETING_PATTERN = /\b(meeting|meetings|present|presentation|presenting|facilitate|facilitation|stakeholder|stakeholders|workshop|workshops|leadership discussion|leadership meeting)\b/;
+const ART_DESIGN_QUERY_PATTERN = /\b(art and design|art design|design work|artwork|visual design|graphic design|logo design|motion design|logo animation|defillama|cruis n pa visuals?|cruisn pa visuals?|car club art)\b/;
+const HEALTH_CONTEXT_PATTERN = /\b(audhd|autism|autistic|adhd|neurodivergent|neurodivergence|diagnosis|diagnoses|social cues?|social queue|executive function|executive dysfunction|dysregulation|sensory|sensory input|sensory aversion|perceptual load|cognitive load|diabetes|type 2|insulin|diabetic neuropathy|peripheral neuropathy|neuropathy|charcot|charcot foot|collapsed diaphragm|diaphragm|gastroparesis|tinnitus|frozen shoulder|shoulder|colon cancer|cancer|remission|mobility|medical|health|health section|health condition|health conditions|disability|disabled|accommodation|accommodations|onsite|on-site|in person|in-person)\b/;
+const AUDHD_CONTEXT_PATTERN = /\b(audhd|autism|autistic|adhd|neurodivergent|neurodivergence|diagnosis|diagnoses|social cues?|social queue|executive function|executive dysfunction|dysregulation|sensory|sensory input|sensory aversion|perceptual load|cognitive load)\b/;
 const GROUP_BY_INTENT = {
   contact: ["resume-pdf"],
   headline: ["resume-pdf"],
-  skills: ["resume-pdf", "cognitive-profile", "core-identity", "evidence-and-projects"],
+  skills: ["resume-pdf", "cognitive-profile", "core-identity", "evidence-and-projects", "health-and-neurodivergence"],
   tools: ["resume-pdf"],
   analytics: ["resume-pdf"],
   education: ["resume-pdf"],
   experience: ["resume-pdf"],
   identity: ["core-identity", "cognitive-profile"],
-  environment: ["environment-fit-model"],
-  tradeoffs: ["friction-points-and-tradeoffs", "cognitive-profile"],
+  environment: ["environment-fit-model", "health-and-neurodivergence"],
+  tradeoffs: ["friction-points-and-tradeoffs", "cognitive-profile", "health-and-neurodivergence"],
   communication: ["communication-rules", "cognitive-profile"],
   evidence: ["evidence-and-projects", "projects-catalog"],
   projects: ["projects-catalog", "portfolio-media-index"],
   writing: ["writing-catalog", "writing-corpus", "writing-supporting-analysis"],
-  roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf", "evidence-and-projects", "cognitive-profile"],
-  workLocation: ["work-location-preference", "core-identity"],
+  roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf", "evidence-and-projects", "cognitive-profile", "health-and-neurodivergence", "work-location-preference"],
+  workLocation: ["work-location-preference", "core-identity", "health-and-neurodivergence", "health-accommodations"],
+  healthContext: ["health-accommodations", "health-and-neurodivergence", "work-location-preference", "cognitive-profile", "friction-points-and-tradeoffs", "environment-fit-model"],
   representation: ["profile-ingestion-rules", "communication-rules", "core-identity"]
 };
 
@@ -227,8 +270,8 @@ const PROJECT_ENTITIES = [
   },
   {
     id: "iron-shores",
-    questionPattern: /\b(iron shores|iron-shores\.web\.app|playable demo)\b/,
-    sectionPattern: /\b(iron shores|playable demo|iron-shores\.web\.app)\b/
+    questionPattern: /\b(masters of metal|iron shores|iron-shores\.web\.app|playable demo)\b/,
+    sectionPattern: /\b(masters of metal|iron shores|playable demo|iron-shores\.web\.app)\b/
   },
   {
     id: "vast-lands",
@@ -407,8 +450,23 @@ function getIntent(question, preferredIntent = null) {
     return "contact";
   }
 
+  if (
+    HEALTH_CONTEXT_PATTERN.test(normalized) &&
+    /\b(remote|hybrid|relocate|relocation|onsite|on-site|in person|in-person|move around|mobility|commute|commuting)\b/.test(normalized)
+  ) {
+    return "workLocation";
+  }
+
+  if (HEALTH_CONTEXT_PATTERN.test(normalized)) {
+    return "healthContext";
+  }
+
   if (/\b(location|remote|hybrid|relocate|relocation)\b/.test(normalized)) {
     return "workLocation";
+  }
+
+  if (ART_DESIGN_QUERY_PATTERN.test(normalized)) {
+    return "projects";
   }
 
   if (
@@ -432,6 +490,10 @@ function getIntent(question, preferredIntent = null) {
   }
 
   if (FIT_EVALUATION_PATTERN.test(normalized) && looksLikeRoleTitleQuestion(normalized)) {
+    return "roleFit";
+  }
+
+  if (FIT_EVALUATION_PATTERN.test(normalized) && MEETING_PATTERN.test(normalized)) {
     return "roleFit";
   }
 
@@ -472,7 +534,7 @@ function getIntent(question, preferredIntent = null) {
   }
 
   if (
-    /\b(live projects?|project links?|live links?|live demos?|demo links?|web apps?|websites?|sites?|what can i review live|what can i try|portfolio links?|portfolio examples?|hosted media|portfolio media|benchmarking tool|benchmark tool|dependency graph|tool routing|github repos?)\b/.test(normalized) ||
+    /\b(live projects?|project links?|project artifacts?|live links?|live demos?|demo links?|web apps?|websites?|sites?|what can i review live|what can i try|portfolio links?|portfolio examples?|hosted media|portfolio media|benchmarking tool|benchmark tool|dependency graph|tool routing|github repos?)\b/.test(normalized) ||
     matchedProjectEntity ||
     (/\biron tides\b/.test(normalized) && /\b(video|videos|media|watch|review|portfolio)\b/.test(normalized))
   ) {
@@ -543,7 +605,8 @@ function getQueryPhrases(question) {
     "caa 2026 pbm regulatory assistant",
     "blkvue ai security intake bot",
     "jameslaneai com",
-    "iron shores",
+      "masters of metal",
+      "iron shores",
     "identity access",
     "capital blue cross",
     "randstad digital",
@@ -723,15 +786,35 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 8;
   }
 
+  if (intent === "workLocation" && HEALTH_CONTEXT_PATTERN.test(normalizedQuestion) && /health and neurodivergence context|health and accessibility overview|physical health and work location context|remote and hybrid preference|employer-facing safe summary|charcot foot|advanced peripheral neuropathy|collapsed diaphragm/.test(normalizedTitle)) {
+    score += 12;
+  }
+
+  if (intent === "healthContext" && /health and neurodivergence context|health and accessibility overview|self-disclosed diagnoses|strengths connected to audhd|weaknesses and friction connected to audhd|physical health and work location context|remote and hybrid preference|employer-facing safe summary|privacy and representation boundary/.test(normalizedTitle)) {
+    score += 14;
+  }
+
+  if (intent === "healthContext" && section.group === "health-accommodations") {
+    score += 10;
+  }
+
+  if (intent === "healthContext" && /audhd|autism|adhd|neurodivergent|social cues|social queue|executive function|executive dysfunction|dysregulation|sensory|perceptual load|cognitive load/.test(normalizedQuestion) && /self-disclosed diagnoses|strengths connected to audhd|weaknesses and friction connected to audhd|autism level 1|adhd with executive-function dysregulation/.test(normalizedTitle)) {
+    score += 8;
+  }
+
+  if (intent === "healthContext" && /diabetes|type 2|insulin|diabetic neuropathy|peripheral neuropathy|neuropathy|charcot|charcot foot|collapsed diaphragm|diaphragm|gastroparesis|tinnitus|frozen shoulder|shoulder|colon cancer|cancer|remission|remote|hybrid|onsite|on-site|in person|in-person|mobility/.test(normalizedQuestion) && /physical health and work location context|remote and hybrid preference|type 2 diabetes|advanced peripheral neuropathy|charcot foot|collapsed diaphragm|gastroparesis|tinnitus|frozen shoulders|colon cancer/.test(normalizedTitle)) {
+    score += 8;
+  }
+
   if (intent === "evidence" && /evidence pattern summary|core evidence themes|major project and evidence areas|productive build pattern/.test(normalizedTitle)) {
     score += 5;
   }
 
-  if (intent === "projects" && /project artifact links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
+if (intent === "projects" && /project artifact links|art and design work|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 10;
   }
 
-  if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github|artifact/.test(normalizedQuestion) && /project artifact links|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
+if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github|artifact|design|art|artwork|logo|motion/.test(normalizedQuestion) && /project artifact links|art and design work|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 8;
   }
 
@@ -1049,9 +1132,139 @@ function pickSections(scoredSections, intent, question = "") {
       return selected;
     }
 
+    if (intent === "workLocation") {
+      const selected = [];
+      const targets = HEALTH_CONTEXT_PATTERN.test(normalizedQuestion)
+        ? [
+            /work location preference/,
+            /physical health and work location context/,
+            /remote and hybrid preference/,
+            /employer-facing safe summary/
+          ]
+        : [/work location preference/];
+
+      for (const pattern of targets) {
+        const found = limitedSections.find((entry) => pattern.test(normalizeText(entry.section.title)));
+        if (found && !selected.includes(found)) {
+          selected.push(found);
+        }
+      }
+
+      for (const entry of limitedSections) {
+        if (selected.length >= 4) {
+          break;
+        }
+
+        if (!selected.includes(entry)) {
+          selected.push(entry);
+        }
+      }
+
+      return selected;
+    }
+
+    if (intent === "healthContext") {
+      const selected = [];
+      const conditionTargets = [];
+
+      if (/autism|autistic|social cues|social queue|sensory aversion|sensory/.test(normalizedQuestion)) {
+        conditionTargets.push(/autism level 1/);
+      }
+
+      if (/adhd|executive function|executive dysfunction|dysregulation|perceptual load|cognitive load/.test(normalizedQuestion)) {
+        conditionTargets.push(/adhd with executive-function dysregulation/);
+      }
+
+      if (/diabetes|type 2|insulin|glucose|blood sugar/.test(normalizedQuestion)) {
+        conditionTargets.push(/type 2 diabetes/);
+      }
+
+      if (/peripheral neuropathy|diabetic neuropathy|neuropathy/.test(normalizedQuestion)) {
+        conditionTargets.push(/advanced peripheral neuropathy/);
+      }
+
+      if (/charcot|charcot foot/.test(normalizedQuestion)) {
+        conditionTargets.push(/charcot foot/);
+      }
+
+      if (/collapsed diaphragm|diaphragm|breathing|exertion/.test(normalizedQuestion)) {
+        conditionTargets.push(/collapsed diaphragm/);
+      }
+
+      if (/gastroparesis|digestive|nausea|restroom/.test(normalizedQuestion)) {
+        conditionTargets.push(/gastroparesis/);
+      }
+
+      if (/tinnitus|hearing|noise|audio/.test(normalizedQuestion)) {
+        conditionTargets.push(/tinnitus/);
+      }
+
+      if (/frozen shoulder|shoulder|range of motion/.test(normalizedQuestion)) {
+        conditionTargets.push(/frozen shoulders/);
+      }
+
+      if (/colon cancer|cancer|remission|survivorship/.test(normalizedQuestion)) {
+        conditionTargets.push(/colon cancer/);
+      }
+
+      const targets = [
+        /health and accessibility overview/,
+        ...conditionTargets,
+        ...(AUDHD_CONTEXT_PATTERN.test(normalizedQuestion)
+          ? [
+              /self-disclosed diagnoses/,
+              /strengths connected to audhd/,
+              /weaknesses and friction connected to audhd/,
+              /employer-facing safe summary/,
+              /privacy and representation boundary/
+            ]
+          : [
+              /physical health and work location context/,
+              /remote and hybrid preference/,
+              /employer-facing safe summary/,
+              /privacy and representation boundary/
+            ])
+      ];
+
+      for (const pattern of targets) {
+        const found = limitedSections.find((entry) => pattern.test(normalizeText(entry.section.title)));
+        if (found && !selected.includes(found)) {
+          selected.push(found);
+        }
+      }
+
+      for (const entry of limitedSections) {
+        if (selected.length >= 5) {
+          break;
+        }
+
+        if (!selected.includes(entry)) {
+          selected.push(entry);
+        }
+      }
+
+      return selected.slice(0, 5);
+    }
+
     if (intent === "projects") {
       const projectSections = limitedSections.filter((entry) => entry.section.group === "projects-catalog");
       const portfolioMedia = limitedSections.filter((entry) => entry.section.group === "portfolio-media-index");
+
+      if (ART_DESIGN_QUERY_PATTERN.test(normalizedQuestion)) {
+        const selected = [];
+        const artCatalog = projectSections.find((entry) => entry.section.id === "art-design-catalog");
+        const cruisnPa = projectSections.find((entry) => entry.section.id === "p2-project-cruisn-pa");
+
+        if (artCatalog) {
+          selected.push(artCatalog);
+        }
+
+        if (/cruis n pa|cruisn pa|car club/.test(normalizedQuestion) && cruisnPa) {
+          selected.push(cruisnPa);
+        }
+
+        return selected.length > 0 ? selected : projectSections.slice(0, 3);
+      }
 
       if (matchedProjectEntity) {
         const selected = [];
@@ -1087,7 +1300,7 @@ function pickSections(scoredSections, intent, question = "") {
 
       if (/iron tides|video|videos|media|portfolio media/.test(normalizedQuestion)) {
         const selected = [];
-        const supportingProject = projectSections.find((entry) => /iron shores playable demo/.test(normalizeText(entry.section.title)));
+  const supportingProject = projectSections.find((entry) => /masters of metal|iron shores playable demo/.test(normalizeText(entry.section.title)));
 
         for (const entry of [...portfolioMedia.slice(0, 2), supportingProject]) {
           if (entry && !selected.includes(entry)) {
@@ -1108,7 +1321,7 @@ function pickSections(scoredSections, intent, question = "") {
         return selected;
       }
 
-      if (/live|links|demo|site|website|review|try|projects/.test(normalizedQuestion)) {
+      if (/live|links|demo|site|website|review|try|projects|repo|github|artifact/.test(normalizedQuestion)) {
         const index = projectSections.find((entry) => entry.section.id === "live-project-links-index");
 
         if (index) {
@@ -1299,6 +1512,20 @@ function buildAnswerLines(scoredSections, question, intent) {
 
       if (wantsRoleTitle && entry.section.group === "resume-pdf") {
         items = [entry.section.title, ...items].filter((item, index, allItems) => allItems.indexOf(item) === index);
+      }
+
+      if (
+        intent === "healthContext" &&
+        entry.section.group === "health-accommodations" &&
+        /\b(source|sources|resource|resources|link|links|recommend|recommendation|back up|backed|support|supports)\b/.test(
+          normalizedQuestion
+        )
+      ) {
+        const resourceItems = entry.section.items.filter((item) => /https?:\/\//i.test(item));
+        const contextItems = entry.section.items
+          .filter((item) => !/https?:\/\//i.test(item) && !/^Best accommodation approaches:?$/i.test(item))
+          .slice(0, entry.section.id === "health-accommodations-overview" ? 2 : 3);
+        items = [...contextItems, "Supporting resources:", ...resourceItems].filter(Boolean);
       }
 
       return {

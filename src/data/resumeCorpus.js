@@ -9,7 +9,10 @@ import profileIngestionRulesRaw from "../../docs/profile-ingestion-rules.md?raw"
 import roleFitModelRaw from "../../docs/role-fit-model.md?raw";
 import workLocationPreferenceRaw from "../../docs/work-location-preference.md?raw";
 import cruisnPaProjectRaw from "../../docs/cruisn-pa-project.md?raw";
+import healthAndNeurodivergenceRaw from "../../docs/health-and-neurodivergence-context.md?raw";
 import { supportingAnalysis, writingPortfolio } from "./writingPortfolio.js";
+import { artDesignPortfolio } from "./artDesignPortfolio.js";
+import { healthProfileCorpus } from "./healthProfile.js";
 
 export const assistantName = "James AI";
 
@@ -80,6 +83,12 @@ const markdownSources = [
     raw: workLocationPreferenceRaw
   },
   {
+    id: "health-and-neurodivergence",
+    label: "health-and-neurodivergence-context.md",
+    path: `${PROJECT_ROOT}\\docs\\health-and-neurodivergence-context.md`,
+    raw: healthAndNeurodivergenceRaw
+  },
+  {
     id: "cruisn-pa-project",
     label: "cruisn-pa-project.md",
     path: `${PROJECT_ROOT}\\docs\\cruisn-pa-project.md`,
@@ -97,8 +106,43 @@ const supplementalApprovedSources = [
     id: "supporting-analysis-index",
     label: "supporting-analysis-index.md",
     path: `${PROJECT_ROOT}\\docs\\supporting-analysis-index.md`
+  },
+  {
+    id: "health-accommodations",
+    label: "Health & Accessibility Lens",
+    path: `${PROJECT_ROOT}\\src\\data\\healthProfile.js`
   }
 ];
+
+const artDesignCatalogCorpus = {
+  id: "art-design-catalog",
+  group: "projects-catalog",
+  sourceLabel: "Art & Design portfolio page",
+  referenceLabel: "Art & Design Lens",
+  title: "Art and Design Work",
+  aliases: [
+    "art and design",
+    "art design",
+    "design work",
+    "artwork",
+    "visual design",
+    "graphic design",
+    "logo design",
+    "motion design",
+    "logo animation",
+    "defillama",
+    "cruisn pa art",
+    "cruis'n pa art",
+    "car club art"
+  ],
+  items: [
+    "James has an Art & Design Lens in the James AI site that showcases AI-assisted visual explorations, technical diagrams, brand marks, event posters, community graphics, logo concepts, and motion-design work.",
+    ...artDesignPortfolio.map((entry) => {
+      const medium = entry.mediaType === "video" ? "motion/video artifact" : "visual artifact";
+      return `${entry.title} — ${entry.category} — ${medium}. ${entry.description}`;
+    })
+  ]
+};
 
 export const approvedSources = [
   {
@@ -256,6 +300,7 @@ const resumeSourceCorpus = [
       "Used as a hiring artifact to demonstrate product thinking, AI implementation, and a better alternative to low-bandwidth static resumes."
     ]
   },
+  artDesignCatalogCorpus,
   {
     id: "live-project-links-index",
     group: "projects-catalog",
@@ -277,7 +322,7 @@ const resumeSourceCorpus = [
       "BLKVue AI Security Intake Bot: https://blkvueai.web.app/",
       "JamesLaneAI.com: https://jameslaneai.com/",
       "Cruis'n PA: https://cruisnpa.fun/",
-      "Iron Shores playable demo: https://iron-shores.web.app/",
+      "Masters of Metal playable demo: https://iron-shores.web.app/",
       "Vast Lands: private GitHub repo at https://github.com/Angry-TacoZ/vast-lands",
       "X'TIGE: https://xtige-app.web.app/",
       "Iron Horizon WW2 Battleship Prototype: public GitHub repo at https://github.com/Angry-TacoZ/ww2-battleship-prototype",
@@ -345,11 +390,11 @@ const resumeSourceCorpus = [
     sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
     referenceLabel: "Page 2",
     page: 2,
-    title: "Iron Shores playable demo",
-    aliases: ["iron shores playable demo", "iron shores", "playable demo", "iron-shores.web.app"],
+    title: "Masters of Metal",
+    aliases: ["masters of metal", "iron shores playable demo", "iron shores", "playable demo", "iron-shores.web.app"],
     items: [
       "Live link: https://iron-shores.web.app/",
-      "Designed and deployed a browser-based tank roguelite and bullet-hell demo with 1 level and 10 waves; used by players and refined through real feedback rather than static mockups."
+      "Designed and deployed Masters of Metal, a browser-based tank roguelite and bullet-hell demo with 1 level and 10 waves; used by players and refined through real feedback rather than static mockups."
     ]
   },
   {
@@ -648,6 +693,7 @@ export const sourceCorpus = [
   ...writingCatalogCorpus,
   ...writingArticleCorpus,
   ...supportingAnalysisCorpus,
+  ...healthProfileCorpus,
   ...markdownCorpus
 ];
 

@@ -210,6 +210,48 @@ export const profileModes = [
     ]
   },
   {
+    id: "health",
+    label: "Health",
+    panelTitle: "Health Lens",
+    description:
+      "Use this lens for James Lane's self-disclosed health, accessibility, remote/hybrid fit, and accommodation context.",
+    placeholder: "Ask about James's health accommodations, onsite constraints, or sources supporting a condition...",
+    welcomeMessage:
+      "I can answer health and accommodation questions from James's self-disclosed accessibility context, including source links for general definitions and workplace accommodation guidance.",
+    defaultIntent: "healthContext",
+    answerStyle:
+      "Answer with practical work-design implications first, distinguish self-disclosed context from general medical definitions, and include resource links when asked.",
+    starterQuestions: [
+      "What health accommodations should employers discuss with James early?",
+      "What sources support James's health accommodation guidance?",
+      "Why does James prefer remote or hybrid work for health reasons?",
+      "How do James's AuDHD and ADHD affect workplace fit?"
+    ],
+    briefingCards: [
+      {
+        eyebrow: "Boundary",
+        title: "Fit, not medical advice",
+        body:
+          "The health lens is a work-design document. It explains self-disclosed conditions, likely workplace friction, and reasonable accommodation topics without giving treatment advice.",
+        ref: "Health & Accessibility Lens / Overview"
+      },
+      {
+        eyebrow: "Accommodation Pattern",
+        title: "Remote, written, predictable, low-sensory",
+        body:
+          "The recurring supports are remote or hybrid flexibility, written expectations, predictable schedules, reduced sensory load, limited physical movement, breaks, and privacy-respecting discussion.",
+        ref: "Health & Accessibility Lens / Accommodations"
+      },
+      {
+        eyebrow: "Sources",
+        title: "Public medical and workplace resources linked",
+        body:
+          "The health section links to CDC, NIH/NIDDK/NIDCD, Mayo Clinic, Cleveland Clinic, EEOC, Cancer and Careers, American Diabetes Association, and JAN resources.",
+        ref: "Health & Accessibility Lens / Resource Index"
+      }
+    ]
+  },
+  {
     id: "resume",
     label: "Resume",
     panelTitle: "Resume Lens",

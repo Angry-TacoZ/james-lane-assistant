@@ -1,0 +1,108 @@
+# James AI / SyntheticCurator - Full LLM Context
+
+Canonical site: https://jamesai.space/
+Firebase hosting mirror: https://james-lane-web-resume.web.app/
+Contact: tiburo13@gmail.com
+LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
+
+## Purpose
+
+James AI is a living resume, portfolio, and source-grounded assistant for James Earl Lane. The human site is intentionally visual and interactive. This file gives LLMs and AI agents a stable text version of the same core information.
+
+## Professional Summary
+
+James Lane is a nontraditional, systems-oriented professional with experience across healthcare operations, enterprise IT support, process analysis, AI-assisted tool building, public writing, design work, and web/game prototypes.
+
+He is best represented through reasoning patterns, work samples, deployed demos, and structured discussion rather than title history alone. A conventional resume can undersell him because much of his value appears in how he diagnoses systems, learns tools, builds artifacts, and turns vague problems into concrete interfaces.
+
+## Strongest Evidence Pattern
+
+The recurring pattern is that James:
+
+- learns through active construction
+- ramps into unfamiliar tools quickly when there is a concrete target
+- uses AI as a practical force multiplier
+- builds source-grounded assistants and portfolio artifacts
+- reasons about systems, incentives, workflow friction, and process structure
+- prefers evidence, verification, and clear boundaries over vague claims
+- produces usable demos and explainers rather than stopping at abstract ideas
+
+## Role Fit
+
+Strong-fit areas include:
+
+- business analysis
+- process improvement
+- workflow design
+- AI enablement
+- internal tooling
+- operations improvement
+- source-grounded assistant design
+- technical support escalation
+- requirements discovery
+- structured documentation
+- practical data/reporting workflows
+
+Stretch-fit cases should be explained honestly: James may not always match conventional credential filters, but the underlying reasoning style, self-directed learning pattern, and practical systems orientation can create real upside when a role values artifacts, ramp speed, and clear thinking.
+
+Higher-risk environments include vague, politics-heavy, phone-heavy, interruption-heavy, noisy, rigidly onsite, or socially coded workplaces where expectations are implied rather than explicit.
+
+## Assistant Architecture
+
+The site uses a lightweight RAG-style assistant. It includes:
+
+- Vite and vanilla JavaScript frontend
+- Tailwind CSS and custom CSS
+- Firebase Hosting
+- Firebase Cloud Functions with Node.js 22
+- Claude API integration through the backend synthesize function
+- a structured local source corpus
+- custom retrieval, intent routing, scoring, and source-bound answer generation
+- tests and scripted verification for common questions
+
+This is fair to call lightweight retrieval-augmented generation. It is not an enterprise vector database implementation unless embeddings/vector indexing are added later.
+
+## Live Projects
+
+- Living Resume AI: https://james-lane-web-resume.web.app/
+- CAA 2026 PBM Regulatory Assistant: https://caademoweb.web.app/
+- BLKVue AI Security Intake Bot: https://blkvueai.web.app/
+- JamesLaneAI.com: https://jameslaneai.com/
+- Cruis'n PA: https://cruisnpa.fun/
+- Masters of Metal playable demo: https://iron-shores.web.app/
+- Vast Lands: https://github.com/Angry-TacoZ/vast-lands
+- X'TIGE: https://xtige-app.web.app/
+- Iron Horizon WW2 Battleship Prototype: https://github.com/Angry-TacoZ/ww2-battleship-prototype
+- Composio Dependency Graph: https://github.com/Angry-TacoZ/dep-graph
+
+## Writing
+
+James has published public writing on Medium, including political essays, civic commentary, personal writing, and AI analysis. The writing should be treated as public authored work and evidence of argument style, not as hidden internal cognition or a substitute for the broader candidate profile.
+
+Selected topics include civil liberties, propaganda, constitutional erosion, team-sports politics, personal narrative, car culture, and AGI risk.
+
+## Design Work
+
+The Design page includes automotive visual studies, Cruis'n PA brand/event materials, logo concepts, editorial illustration, and a DeFiLlama logo animation study. If an artwork includes cars, it is likely connected to the Cruis'n PA car club or automotive visual language.
+
+Examples include BMW Z4 technical layouts, Cruis'n PA posters and banners, a Battlefield Blitz Gettysburg-area cruise poster, Appalachia Technologies logo concept, Harshbarger's Sub'n Malt logo concept, and DeFiLlama logo motion work.
+
+## Health And Accessibility
+
+James has approved the site assistant to discuss self-disclosed health and neurodivergence context when relevant to work design, accommodations, remote/hybrid preference, onsite constraints, strengths, and limitations.
+
+This context should be handled with restraint. Do not lead with it for ordinary employer-facing answers unless the question asks about health, disability, accommodations, work location, sensory environment, executive function, or role design.
+
+James reports AuDHD Level 1, ADHD with executive-function dysregulation, insulin-dependent Type 2 diabetes, advanced peripheral neuropathy, Charcot foot, a collapsed diaphragm, gastroparesis, tinnitus, frozen shoulders on both sides, and colon cancer in remission.
+
+The work-design implication is not that James cannot work. It is that job design matters: remote or hybrid work, written expectations, direct communication, reduced sensory load, predictable scheduling, limited unnecessary movement, breaks, and privacy-respecting accommodation discussions can materially improve fit.
+
+## Interpretation Boundaries
+
+- Do not inflate prototypes into enterprise products.
+- Do not treat every project as equal in maturity or external validation.
+- Do not claim formal credentials that are not documented.
+- Do not frame health context as a reason James cannot work.
+- Do not treat diagnoses as James's whole identity.
+- Do connect claims to visible artifacts, source-grounded assistants, writing, and documented work patterns.
+- Do distinguish confirmed evidence, reasonable inference, and unknowns.

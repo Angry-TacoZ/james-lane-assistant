@@ -6,6 +6,8 @@ import {
   sourceCorpus
 } from "./data/resumeCorpus.js";
 import { liveProjects } from "./data/liveProjects.js";
+import { artDesignPortfolio } from "./data/artDesignPortfolio.js";
+import { healthConditions, healthProfileIntro } from "./data/healthProfile.js";
 import { profileModes } from "./data/profileModes.js";
 import { writingPortfolio } from "./data/writingPortfolio.js";
 import { askAssistant } from "./lib/retrieval.js";
@@ -17,12 +19,15 @@ const synthesizeUrl = import.meta.env.VITE_SYNTHESIZE_URL;
 const isLocalPreviewHost =
   window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 const canRemoteSynthesize = Boolean(synthesizeUrl) && !isLocalPreviewHost;
+const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
 
 const PAGE_TITLES = {
   home: "SyntheticCurator // James AI",
   writing: "THE LIVING INTELLIGENCE | Writing",
   evidence: "THE LIVING INTELLIGENCE | Evidence",
-  projects: "THE LIVING INTELLIGENCE | Projects"
+  projects: "THE LIVING INTELLIGENCE | Projects",
+  design: "THE LIVING INTELLIGENCE | Art & Design",
+  health: "THE LIVING INTELLIGENCE | Health & Accessibility"
 };
 
 const CONTACT_EMAIL = "tiburo13@gmail.com";
@@ -103,10 +108,10 @@ const PROJECT_PRESENTATION = {
       "Browser-based tank roguelite demo that demonstrates shipping, iteration, and learning through playable software rather than static concepts.",
     featureBadges: ["Playable Prototype", "Game Systems", "Feedback Loop"],
     icon: "sports_esports",
-    shortLabel: "Playable Demo",
+    shortLabel: "Masters of Metal",
     art: {
       src: "/portfolio/iron-shores/iron-shores-tank-thumb.svg",
-      alt: "Stylized WW2 tank thumbnail for the Iron Shores playable demo"
+      alt: "Stylized WW2 tank thumbnail for the Masters of Metal playable demo"
     },
     highlightActions: [],
     detailBullets: [
@@ -189,6 +194,7 @@ const pageState = {
   focusComposer: false,
   busy: false
 };
+let lastTrackedPath = "";
 
 void init();
 
@@ -235,6 +241,10 @@ function bindGlobalEvents() {
 
       if (targetMode && modeMap.has(targetMode)) {
         pageState.modeId = targetMode;
+      }
+
+      if (nextPage === "home") {
+        await ensureModeSession(pageState.modeId);
       }
 
       navigate(nextPage);
@@ -360,7 +370,7 @@ async function switchMode(modeId) {
   pageState.modeId = modeId;
   pageState.page = "home";
   pageState.focusComposer = false;
-  ensureModeSession(modeId);
+  await ensureModeSession(modeId);
   render();
 }
 
@@ -553,6 +563,12 @@ function render() {
     case "projects":
       app.innerHTML = renderProjectsPage();
       break;
+    case "design":
+      app.innerHTML = renderArtDesignPage();
+      break;
+    case "health":
+      app.innerHTML = renderHealthPage();
+      break;
     case "home":
     default:
       app.innerHTML = renderHomePage();
@@ -563,6 +579,28 @@ function render() {
     const composer = document.querySelector("[data-home-input]");
     composer?.focus();
   }
+
+  trackPageView();
+}
+
+function trackPageView() {
+  if (typeof window.gtag !== "function") {
+    return;
+  }
+
+  const path = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+  if (path === lastTrackedPath) {
+    return;
+  }
+
+  lastTrackedPath = path;
+  window.gtag("event", "page_view", {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: path,
+    send_to: GA_MEASUREMENT_ID
+  });
 }
 
 function scrollHomeChatToBottom() {
@@ -760,6 +798,18 @@ function renderHomePage() {
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Documentation</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Security</a>
       </div>
+      <section class="w-[min(92vw,48rem)] rounded-xl border border-outline-variant/10 bg-surface-container-low/60 px-5 py-5 text-center">
+        <h2 class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-[#B1D09A] mb-2">AI-readable portfolio files</h2>
+        <p class="text-sm text-on-surface-variant mb-4">Static files are available for search engines, AI agents, and non-JavaScript readers.</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms.txt">LLM Guide</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms-full.txt">Full Context</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/profile.html">Static Profile</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/overview.md">Overview</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/portfolio.md">Portfolio</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/source-map.md">Source Map</a>
+        </div>
+      </section>
       <div class="flex flex-col items-center gap-2">
         <div class="font-['Space_Grotesk'] text-[10px] uppercase text-[#84A16F] tracking-widest">© 2024 SYNTHETIC CURATOR // NEURAL ARCHITECTURE</div>
         <div class="font-['Inter'] text-sm text-on-surface">James Earl Lane</div>
@@ -1310,6 +1360,258 @@ function renderEvidenceSourceCards(matches) {
     .join("");
 }
 
+function renderArtDesignPage() {
+  const featured = artDesignPortfolio.find((entry) => entry.variant === "feature") ?? artDesignPortfolio[0];
+  const supporting = artDesignPortfolio.filter((entry) => entry.id !== featured.id);
+
+  return `
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
+      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+        ${renderPrimaryNavLinks("design", "top")}
+      </nav>
+      <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-[#B1D09A]">account_circle</span>
+      </button>
+    </header>
+    <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex-col pt-20 pb-8 z-40 hidden lg:flex">
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant/20 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">palette</span>
+          </div>
+          <div>
+            <h3 class="text-[#B1D09A] font-bold font-label text-[10px] uppercase tracking-widest leading-none">VISUAL SYSTEMS</h3>
+            <p class="text-gray-500 text-[9px] font-label tracking-tighter">Art Direction / Design</p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-grow space-y-1">
+        ${renderPrimaryNavLinks("design", "side")}
+      </nav>
+      <div class="px-4 mt-auto">
+        <button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-[10px] font-bold tracking-widest py-3 rounded-lg hover:opacity-90 transition-all uppercase flex items-center justify-center gap-2" data-page-link="home" data-focus-composer="true">
+          <span class="material-symbols-outlined text-sm">bolt</span>ASK ASSISTANT
+        </button>
+      </div>
+    </aside>
+    <main class="lg:pl-64 pt-16 min-h-screen technical-grid">
+      <div class="max-w-[1500px] mx-auto px-4 sm:px-5 md:px-8 py-8 md:py-12 pb-28 md:pb-16">
+        <section class="relative overflow-hidden rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-lowest/70 mb-8 md:mb-10">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(177,208,154,0.16),transparent_30%),linear-gradient(135deg,rgba(132,161,111,0.12),transparent_55%)]"></div>
+          <div class="relative grid grid-cols-1 xl:grid-cols-12 gap-8 p-6 sm:p-8 md:p-10 xl:p-12 items-end">
+            <div class="xl:col-span-5">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-1.5 h-6 bg-primary"></div>
+                <span class="font-label text-xs uppercase tracking-[0.3em] text-primary">Visual Systems / Art Direction</span>
+              </div>
+              <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold font-headline tracking-tighter text-on-surface mb-5 md:mb-6 leading-none">ART &amp; DESIGN LENS</h1>
+              <p class="text-on-surface-variant text-base sm:text-lg max-w-xl leading-relaxed">
+                A focused gallery of AI-assisted visual explorations: technical diagrams, brand marks, event posters, community graphics, and concept-art packaging.
+              </p>
+              <div class="mt-7 flex flex-wrap gap-2">
+                ${["Technical Layout", "Brand Identity", "Event Art", "Poster Concepts"].map((tag) => `<span class="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label text-[10px] uppercase tracking-[0.18em]">${escapeHtml(tag)}</span>`).join("")}
+              </div>
+            </div>
+            <article class="xl:col-span-7 group cursor-pointer" data-open-url="${escapeAttribute(featured.image)}">
+              <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-surface-container shadow-2xl shadow-black/40">
+                <img class="w-full aspect-[16/10] object-cover opacity-90 group-hover:scale-[1.02] transition-transform duration-700" src="${escapeAttribute(featured.image)}" alt="${escapeAttribute(featured.alt)}"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"></div>
+                <div class="absolute left-5 right-5 bottom-5">
+                  <span class="inline-flex mb-3 px-3 py-1 rounded bg-primary/10 text-primary border border-primary/20 font-label text-[10px] uppercase tracking-widest">${escapeHtml(featured.category)}</span>
+                  <h2 class="text-2xl md:text-4xl font-headline font-extrabold tracking-tighter text-on-surface group-hover:text-primary transition-colors">${escapeHtml(featured.title)}</h2>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="art-design-grid">
+          ${supporting.map((entry) => renderArtDesignCard(entry)).join("")}
+        </section>
+
+        <footer class="mt-16 pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="flex flex-wrap items-center gap-8">
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">VISUAL_ARTIFACTS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${artDesignPortfolio.length}</p></div>
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">FORMAT_RANGE</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">MIXED</p></div>
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">DISPLAY_ASSETS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">OPTIMIZED</p></div>
+          </div>
+          <div class="text-right">
+            <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Designed &amp; Compiled by James AI Core</p>
+            <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2024 THE LIVING INTELLIGENCE. ALL RIGHTS RESERVED.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <div class="hidden md:flex fixed bottom-8 right-8 z-50">
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      </button>
+    </div>
+    ${renderMobileBottomNav("design")}
+  `;
+}
+
+function renderArtDesignCard(entry) {
+  const isWide = entry.variant === "wide";
+  const isPoster = entry.variant === "poster";
+  const cardClass = isWide ? "art-design-card--wide" : isPoster ? "art-design-card--poster" : "";
+  const imageClass = isPoster ? "aspect-[3/4]" : isWide ? "aspect-[16/7]" : "aspect-[4/3]";
+  const contentClass = isWide ? "min-h-[170px]" : "min-h-[230px]";
+  const media = entry.mediaType === "video"
+    ? `<video class="w-full ${imageClass} object-cover opacity-90 group-hover:scale-[1.035] transition-transform duration-700" src="${escapeAttribute(entry.image)}" autoplay muted loop playsinline aria-label="${escapeAttribute(entry.alt)}"></video>`
+    : `<img class="w-full ${imageClass} object-cover opacity-90 group-hover:scale-[1.035] transition-transform duration-700" src="${escapeAttribute(entry.image)}" alt="${escapeAttribute(entry.alt)}"/>`;
+
+  return `
+    <article class="art-design-card ${cardClass} group rounded-xl overflow-hidden border border-outline-variant/10 bg-surface-container-low hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(entry.image)}">
+      <div class="relative overflow-hidden bg-surface-container-lowest">
+        ${media}
+        <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80"></div>
+        <div class="absolute left-4 top-4">
+          <span class="px-2.5 py-1 rounded bg-background/70 border border-primary/20 text-primary font-label text-[9px] uppercase tracking-widest">${escapeHtml(entry.category)}</span>
+        </div>
+      </div>
+      <div class="p-5 md:p-6 flex flex-col ${contentClass}">
+        <h3 class="text-xl md:text-2xl font-headline font-bold tracking-tight text-on-surface mb-3 group-hover:text-primary transition-colors">${escapeHtml(entry.title)}</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-5">${escapeHtml(entry.description)}</p>
+        <div class="mt-auto flex flex-wrap gap-2">
+          ${entry.tags.map((tag) => `<span class="px-2 py-0.5 rounded bg-surface-container-highest text-gray-300 font-label text-[9px] uppercase tracking-[0.14em]">${escapeHtml(tag)}</span>`).join("")}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderHealthPage() {
+  return `
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
+      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+        ${renderPrimaryNavLinks("health", "top")}
+      </nav>
+      <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-[#B1D09A]">account_circle</span>
+      </button>
+    </header>
+    <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex-col pt-20 pb-8 z-40 hidden lg:flex">
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant/20 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+          </div>
+          <div>
+            <h3 class="text-[#B1D09A] font-bold font-label text-[10px] uppercase tracking-widest leading-none">ACCESSIBILITY</h3>
+            <p class="text-gray-500 text-[9px] font-label tracking-tighter">Work Design / Fit</p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-grow space-y-1">
+        ${renderPrimaryNavLinks("health", "side")}
+      </nav>
+      <div class="px-4 mt-auto">
+        <button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-[10px] font-bold tracking-widest py-3 rounded-lg hover:opacity-90 transition-all uppercase flex items-center justify-center gap-2" data-page-link="home" data-target-mode="health" data-focus-composer="true">
+          <span class="material-symbols-outlined text-sm">bolt</span>ASK ASSISTANT
+        </button>
+      </div>
+    </aside>
+    <main class="lg:pl-64 pt-16 min-h-screen technical-grid">
+      <div class="max-w-[1500px] mx-auto px-4 sm:px-5 md:px-8 py-8 md:py-12 pb-28 md:pb-16">
+        <section class="relative overflow-hidden rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-lowest/70 mb-8 md:mb-10">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(177,208,154,0.16),transparent_28%),linear-gradient(135deg,rgba(132,161,111,0.12),transparent_58%)]"></div>
+          <div class="relative grid grid-cols-1 xl:grid-cols-12 gap-8 p-6 sm:p-8 md:p-10 xl:p-12 items-end">
+            <div class="xl:col-span-7">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-1.5 h-6 bg-primary"></div>
+                <span class="font-label text-xs uppercase tracking-[0.3em] text-primary">${escapeHtml(healthProfileIntro.eyebrow)}</span>
+              </div>
+              <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold font-headline tracking-tighter text-on-surface mb-5 md:mb-6 leading-none">${escapeHtml(healthProfileIntro.title)}</h1>
+              <p class="text-on-surface-variant text-base sm:text-lg max-w-3xl leading-relaxed">${escapeHtml(healthProfileIntro.summary)}</p>
+            </div>
+            <article class="xl:col-span-5 rounded-2xl border border-primary/20 bg-surface-container-low p-6 md:p-8 shadow-2xl shadow-black/30">
+              <div class="flex items-center gap-3 mb-5">
+                <span class="material-symbols-outlined text-primary text-3xl">privacy_tip</span>
+                <div>
+                  <p class="font-label text-[10px] text-primary uppercase tracking-[0.24em]">BOUNDARY</p>
+                  <h2 class="text-2xl font-headline font-extrabold tracking-tighter text-on-surface">Fit, Not Medical Advice</h2>
+                </div>
+              </div>
+              <p class="text-on-surface-variant leading-relaxed">${escapeHtml(healthProfileIntro.boundary)}</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="health-condition-grid">
+          ${healthConditions.map((condition) => renderHealthConditionCard(condition)).join("")}
+        </section>
+
+        <footer class="mt-16 pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="flex flex-wrap items-center gap-8">
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">DISCLOSED_CONTEXTS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${healthConditions.length}</p></div>
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">PRIMARY_GOAL</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">EARLY_FIT</p></div>
+            <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">SOURCE_STYLE</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">LINKED</p></div>
+          </div>
+          <div class="text-right">
+            <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Health context is self-disclosed by James Lane</p>
+            <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">Use only when relevant to work design, accommodation, and role fit.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <div class="hidden md:flex fixed bottom-8 right-8 z-50">
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-target-mode="health" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      </button>
+    </div>
+    ${renderMobileBottomNav("health")}
+  `;
+}
+
+function renderHealthConditionCard(condition) {
+  return `
+    <article class="health-condition-card rounded-xl border border-outline-variant/10 bg-surface-container-low p-5 md:p-6 hover:border-primary/30 hover:bg-surface-container-highest/30 transition-all">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <span class="inline-flex mb-3 px-2.5 py-1 rounded bg-primary/10 text-primary border border-primary/20 font-label text-[9px] uppercase tracking-widest">${escapeHtml(condition.label)}</span>
+          <h2 class="text-2xl md:text-3xl font-headline font-extrabold tracking-tight text-on-surface">${escapeHtml(condition.condition)}</h2>
+        </div>
+        <span class="material-symbols-outlined text-primary/60">medical_information</span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed mb-4">${escapeHtml(condition.description)}</p>
+      <p class="text-on-surface text-sm leading-relaxed mb-5">${escapeHtml(condition.workImpact)}</p>
+      <div class="border-t border-outline-variant/10 pt-5 mb-5">
+        <p class="font-label text-[10px] uppercase tracking-[0.22em] text-primary mb-3">Best Accommodation Approaches</p>
+        <ul class="space-y-3">
+          ${condition.accommodations
+            .map(
+              (item) => `
+                <li class="flex gap-3 text-sm text-on-surface-variant leading-relaxed">
+                  <span class="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
+                  <span>${escapeHtml(item)}</span>
+                </li>
+              `
+            )
+            .join("")}
+        </ul>
+      </div>
+      <div class="mt-auto">
+        <p class="font-label text-[10px] uppercase tracking-[0.22em] text-gray-500 mb-3">Resources</p>
+        <div class="flex flex-wrap gap-2">
+          ${condition.resources
+            .map(
+              (resource) => `
+                <a class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary hover:border-primary/30 border border-outline-variant/10 font-label text-[10px] uppercase tracking-[0.14em] transition-colors" href="${escapeAttribute(resource.url)}" target="_blank" rel="noopener noreferrer">
+                  ${escapeHtml(resource.label)}
+                  <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                </a>
+              `
+            )
+            .join("")}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function renderProjectsPage() {
   const filteredProjects = getFilteredProjects();
   const featured = filteredProjects[0] ?? liveProjects[0];
@@ -1428,12 +1730,12 @@ function renderFeaturedProjectCard(project) {
     <div class="artifact-card artifact-card--feature group relative overflow-hidden glass-panel rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all duration-500 cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-80"></div>
       <img alt="Dark aesthetic laboratory setting with holographic data projections" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4BS76XUmGNK-oP5g3xraE1xGQ5uvWTCgZjoHYQBhctlwJp-r6Kzf--nXR_WoM21XPVbrulCIJN2hZFIE7I305LM0dKpRo-NDQ4zLpy1H4tAvxuQF0q7CIgI8-YU8IwTsENmjPnLqr91Ohd8_beuenGWsc8-Fsv57cFQg8S7NwAc69iXMNfEu49xdZdbhBRsEMBrq6j6OHsAiX8a2SKQqlPKk3igWCdRgL7ZRJwPhX1pUozeoJv8klYY_FMm9CB4ecJCWmWMAH1rYo"/>
-      <div class="absolute bottom-0 left-0 p-7 md:p-8 z-20 w-full">
+      <div class="absolute bottom-0 left-0 p-7 md:p-8 z-20 w-full min-w-0">
         <div class="flex items-center gap-3 mb-4">
           <span class="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded font-label text-[10px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span>
           <span class="text-gray-500 font-label text-[10px] tracking-widest">${escapeHtml(meta.version)}</span>
         </div>
-        <h2 class="text-3xl xl:text-4xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter">${escapeHtml(project.title)}</h2>
+        <h2 class="artifact-title text-3xl xl:text-4xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter">${escapeHtml(project.title)}</h2>
         <p class="text-on-surface-variant max-w-xl mb-5">${escapeHtml(meta.summary)}</p>
         <div class="flex items-center gap-4 xl:gap-6 flex-wrap">
           ${meta.featureBadges.map((badge, index) => `<div class="flex items-center gap-2 text-primary"><span class="material-symbols-outlined text-sm">${["psychology", "build", "auto_awesome"][index] ?? "bolt"}</span><span class="font-label text-[10px] uppercase tracking-widest font-bold">${escapeHtml(badge)}</span></div>`).join("")}
@@ -1452,7 +1754,7 @@ function renderProjectSummaryCard(project) {
           <span class="material-symbols-outlined text-primary text-3xl">${meta.icon}</span>
           <span class="bg-surface-container-highest text-gray-400 px-2 py-1 rounded font-label text-[9px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span>
         </div>
-        <h3 class="text-xl font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
+        <h3 class="artifact-title text-xl font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
         <p class="text-on-surface-variant text-sm font-light leading-relaxed">${escapeHtml(meta.summary)}</p>
       </div>
       <div class="pt-6 mt-6 border-t border-outline-variant/10 flex justify-between items-center">
@@ -1466,13 +1768,13 @@ function renderProjectSummaryCard(project) {
 function renderProjectImageCard(project) {
   const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["blkvue-ai-security-intake-bot"];
   return `
-    <div class="artifact-card artifact-card--image glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 hover:bg-surface-container-highest/40 transition-all cursor-pointer group min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--image glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 hover:bg-surface-container-highest/40 transition-all cursor-pointer group min-h-[320px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="h-32 md:h-28 mb-5 bg-surface-container-lowest rounded-lg overflow-hidden relative">
         <img alt="Profile Lens visual" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNd1wlFdIcEyYmVYnTAbEuzmMuyz0yuj1iwfv1XaHKr1ZhggigKkZlZ5jBoemX5kp7PiEBT6Kb5ZHP4tc4WyltYCGJCC1jOLEOCzd-wbyCIO3RX5vhhGwoInYSRYyUpZhZ6p884Dp2e0XL5W3oHu961byWj3Qca6nrDmhpgKvoiLCj2mR4YCFeoNi7Iaf8vOG4PKslOb0Z8HacxU2aXa8mGeTjp9qLEFn9Mol1wSHbFVCBM7pS0bL72i2eMnCkzH8Jf56xouThkc6L"/>
         <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
       </div>
       <div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(177,208,154,0.5)]"></span><span class="font-label text-[10px] uppercase tracking-widest text-primary font-bold">${escapeHtml(meta.emphasis)}</span></div>
-      <h3 class="text-lg font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
+      <h3 class="artifact-title text-lg font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
       <p class="text-on-surface-variant text-sm font-light leading-relaxed mb-4">${escapeHtml(meta.summary)}</p>
       <div class="flex gap-2 flex-wrap">${meta.featureBadges.slice(0, 2).map((badge) => `<span class="px-2 py-0.5 bg-surface-container-highest text-gray-300 rounded font-label text-[9px]">${escapeHtml(badge.toUpperCase())}</span>`).join("")}</div>
     </div>
@@ -1485,18 +1787,18 @@ function renderProjectDetailCard(project) {
     .replace(/([a-z])([A-Z])/g, "$1<wbr>$2")
     .replace(/\./g, "<wbr>.");
   return `
-    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer min-h-[360px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div>
         <div class="flex flex-col items-start gap-3 mb-7">
           <div class="p-3 rounded-lg bg-surface-container-highest border border-outline-variant/20"><span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">${meta.icon}</span></div>
           <div>
             <p class="font-label text-[10px] text-gray-500 tracking-widest uppercase">${escapeHtml(meta.emphasis)}</p>
-            <h3 class="text-lg xl:text-[1.45rem] leading-[1.08] font-headline font-extrabold text-on-surface tracking-tighter break-normal">${detailTitle}</h3>
+            <h3 class="artifact-title text-lg xl:text-[1.45rem] leading-[1.08] font-headline font-extrabold text-on-surface tracking-tighter break-normal">${detailTitle}</h3>
           </div>
         </div>
         <p class="text-on-surface-variant text-[0.96rem] leading-relaxed mb-7">${escapeHtml(meta.summary)}</p>
-        <ul class="space-y-4">${meta.detailBullets.map((bullet) => `<li class="flex items-center gap-3 text-sm text-on-surface font-light"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>${escapeHtml(bullet)}</li>`).join("")}</ul>
+        <ul class="space-y-4">${meta.detailBullets.map((bullet) => `<li class="flex items-start gap-3 text-sm text-on-surface font-light"><span class="material-symbols-outlined text-primary text-lg shrink-0 mt-0.5">check_circle</span><span class="min-w-0">${escapeHtml(bullet)}</span></li>`).join("")}</ul>
       </div>
       <button class="w-full py-4 border border-outline-variant/30 rounded-lg font-label text-[10px] font-bold tracking-widest text-on-surface hover:bg-surface-container-highest hover:border-primary/50 transition-all uppercase" data-open-url="${escapeAttribute(project.url)}">OPEN_PROJECT</button>
     </div>
@@ -1509,7 +1811,7 @@ function renderProjectCompactCard(project) {
     <div class="artifact-card artifact-card--compact glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div>
         <div class="flex items-center gap-2 mb-4"><span class="material-symbols-outlined text-gray-500 text-xl">${meta.icon}</span><span class="text-gray-500 font-label text-[9px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span></div>
-        <h3 class="text-lg font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
+        <h3 class="artifact-title text-lg font-headline font-bold text-on-surface mb-2 tracking-tight">${escapeHtml(project.title)}</h3>
         <p class="text-on-surface-variant text-sm font-light leading-relaxed">${escapeHtml(meta.summary)}</p>
       </div>
       <div class="flex items-center justify-between mt-4"><div class="flex gap-2"><span class="w-2 h-2 rounded-full bg-[#333537]"></span><span class="w-2 h-2 rounded-full bg-[#333537]"></span><span class="w-2 h-2 rounded-full bg-[#333537]"></span></div><span class="font-label text-[10px] text-primary uppercase">${escapeHtml(meta.shortLabel)}</span></div>
@@ -1525,10 +1827,10 @@ function renderProjectHighlightCard(project) {
   };
   const highlightActions = meta.highlightActions ?? [];
   return `
-    <div class="artifact-card artifact-card--highlight glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex items-center justify-between gap-6 xl:gap-8 group cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
-      <div class="max-w-md">
+    <div class="artifact-card artifact-card--highlight glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex items-center justify-between gap-6 xl:gap-8 group cursor-pointer min-h-[320px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+      <div class="max-w-md min-w-0">
         <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-highest rounded-full mb-4"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase font-bold">${escapeHtml(meta.emphasis)}</span></div>
-        <h3 class="text-2xl xl:text-3xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter leading-none">${escapeHtml(project.title)}</h3>
+        <h3 class="artifact-title text-2xl xl:text-3xl font-headline font-extrabold text-on-surface mb-3 tracking-tighter leading-none">${escapeHtml(project.title)}</h3>
         <p class="text-on-surface-variant text-sm font-light leading-relaxed mb-4">${escapeHtml(meta.summary)}</p>
         ${
           highlightActions.length
@@ -1577,13 +1879,13 @@ function renderSupplementalProjectCards(projects) {
           const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
 
           return `
-            <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[320px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+            <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[360px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
               <div>
                 <div class="flex items-start justify-between gap-4 mb-8">
                   <span class="material-symbols-outlined text-primary text-3xl">${escapeHtml(meta.icon)}</span>
                   <span class="bg-surface-container-highest text-gray-400 px-2 py-1 rounded font-label text-[9px] tracking-widest uppercase">${escapeHtml(meta.emphasis)}</span>
                 </div>
-                <h3 class="text-xl font-headline font-bold text-on-surface mb-3 tracking-tight">${escapeHtml(project.title)}</h3>
+                <h3 class="artifact-title text-xl font-headline font-bold text-on-surface mb-3 tracking-tight">${escapeHtml(project.title)}</h3>
                 <p class="text-on-surface-variant text-sm font-light leading-relaxed">${escapeHtml(project.description)}</p>
               </div>
               <div class="pt-6 mt-6 border-t border-outline-variant/10 flex items-center justify-between gap-4">
@@ -1649,7 +1951,7 @@ function extractMatchUrl(match) {
 
 function getPageFromHash() {
   const hash = window.location.hash.replace(/^#/, "").trim().toLowerCase();
-  if (hash === "writing" || hash === "evidence" || hash === "projects") {
+  if (hash === "writing" || hash === "evidence" || hash === "projects" || hash === "design" || hash === "health") {
     return hash;
   }
   return "home";
@@ -1662,6 +1964,7 @@ function deriveModeSupportTags(mode) {
     evidence: ["Source Grounded", "Build Pattern", "Practical Reasoning"],
     projects: ["Live Projects", "Shipped Work", "Public Demos"],
     writing: ["Published Essays", "AI Analysis", "Public Argument"],
+    health: ["Self-Disclosed Context", "Accommodation Fit", "Source Links"],
     resume: ["Current Role", "Enterprise Background", "Tools And Platforms"]
   };
 
@@ -1716,6 +2019,7 @@ function modeProgress(modeId) {
     evidence: 92,
     projects: 88,
     writing: 81,
+    health: 79,
     resume: 73
   }[modeId] ?? 80;
 }
@@ -1864,6 +2168,8 @@ function renderPrimaryNavLinks(activePage, variant = "top") {
     { page: "home", label: "Nexus" },
     { page: "writing", label: "Evolution" },
     { page: "projects", label: "Artifacts" },
+    { page: "design", label: "Design" },
+    { page: "health", label: "Health" },
     { page: "evidence", label: "Intelligence" }
   ];
 
@@ -1893,16 +2199,18 @@ function renderMobileBottomNav(activePage) {
     { page: "home", label: "Nexus", shortLabel: "NEXUS" },
     { page: "writing", label: "Evolution", shortLabel: "EVO" },
     { page: "projects", label: "Artifacts", shortLabel: "ART" },
+    { page: "design", label: "Design", shortLabel: "DES" },
+    { page: "health", label: "Health", shortLabel: "HLTH" },
     { page: "evidence", label: "Intelligence", shortLabel: "INTEL" }
   ];
 
   return `
-    <div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-high border-t border-outline-variant/10 px-4 py-3 flex justify-between items-center z-50">
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-high border-t border-outline-variant/10 px-2 py-3 flex justify-around items-center z-50">
       ${items
         .map((item) => {
           const active = item.page === activePage;
           return `
-            <div class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[64px]" data-page-link="${item.page}">
+            <div class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" data-page-link="${item.page}">
               <span class="material-symbols-outlined" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
               <span class="text-[9px] font-label uppercase">${item.shortLabel}</span>
             </div>
@@ -1921,6 +2229,10 @@ function primaryPageIcon(page) {
       return "article";
     case "projects":
       return "hub";
+    case "design":
+      return "palette";
+    case "health":
+      return "health_and_safety";
     case "evidence":
       return "fact_check";
     default:

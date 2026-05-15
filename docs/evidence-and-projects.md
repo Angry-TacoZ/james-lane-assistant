@@ -190,10 +190,10 @@ This is evidence of:
 
 This should be treated as a serious portfolio project, not as a trivial hobby mention.
 
-### 9. Game prototypes - Iron Shores and unnamed sci-fi RTS
+### 9. Game prototypes - Masters of Metal and unnamed sci-fi RTS
 
 In addition to Iron Tides, James prototyped:
-- Iron Shores, a tank-oriented counterpart concept
+- Masters of Metal, formerly listed as Iron Shores, a tank-oriented counterpart concept
 - an unnamed sci-fi RTS concept
 
 This is evidence of:
@@ -257,6 +257,31 @@ This is evidence of:
 - knowledge compression
 - interest in explainable systems
 - translating complexity into usable tools
+
+### 13. Art and design portfolio work
+
+James has an Art & Design Lens in the James AI site that showcases AI-assisted visual explorations and design artifacts.
+
+Current examples include:
+- BMW Z4 Anatomy Plate: a Cruis'n PA-adjacent automotive technical layout study using product callouts, dimensions, and brochure-style hierarchy
+- BMW Z4 Blueprint Sheet: a Cruis'n PA-adjacent blueprint treatment focused on measurement rhythm, linework clarity, and technical automotive visual language
+- Appalachia Technologies: a regional technology brand-mark concept using mountain forms, keystone geometry, and bold utility lettering
+- Cruis'n PA Event Poster: a car-club route flyer built around scenic roads, castles, and clear meet-up details
+- Cruis'n PA Scenic Banner and Cruis'n PA Car Club logo: brand surfaces for the Cruis'n PA car-club concept and website at `https://cruisnpa.fun/`
+- Editorial Freedom Poster: an editorial illustration study built around conflict, speech, protest, and symbolic contrast
+- DeFiLlama Logo Animation: a motion-design artifact James created from a static company logo, showing brand-motion and click-response animation work rather than a full product build
+- Battlefield Blitz Poster: a Cruis'n PA cruise poster for a Gettysburg-area battlefield route, not a game poster
+- Harshbarger's Sub'n Malt: a playful restaurant logo exploration using bold lettering, circular packaging, and retro food-sign energy
+
+This is evidence of:
+- visual concepting
+- AI-assisted image direction
+- brand and event packaging
+- technical-layout instincts
+- motion-design experimentation
+- ability to turn local/community concepts into public-facing visual assets
+
+Represent this as design and visual-communication evidence, not as formal agency experience unless separately established.
 
 ## Productive Build Pattern
 

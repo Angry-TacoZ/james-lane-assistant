@@ -41,11 +41,11 @@ export const liveProjects = [
   },
   {
     id: "iron-shores-playable-demo",
-    title: "Iron Shores playable demo",
+    title: "Masters of Metal",
     description:
       "Browser-based tank roguelite and bullet-hell demo refined through real player use rather than static mockups alone.",
     url: "https://iron-shores.web.app/",
-    ref: "Page 2 / Iron Shores playable demo"
+    ref: "Page 2 / Masters of Metal"
   },
   {
     id: "vast-lands",

@@ -14,6 +14,7 @@ const PROJECT_NAME_PATTERNS = [
   /\bcaa 2026 pbm regulatory assistant\b/i,
   /\bblkvue ai security intake bot\b/i,
   /\bjameslaneai\.com\b/i,
+  /\bmasters of metal\b/i,
   /\biron shores\b/i,
   /\biron tides\b/i
 ];

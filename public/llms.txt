@@ -1,0 +1,45 @@
+# James AI / James Lane
+
+> James AI is a source-grounded living resume and portfolio site for James Earl Lane. It is designed for both human review and AI-agent reading.
+
+Canonical site: https://jamesai.space/
+Firebase hosting mirror: https://james-lane-web-resume.web.app/
+Primary contact: tiburo13@gmail.com
+LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
+
+## Purpose
+
+James AI is a source-grounded living resume and portfolio for James Lane.
+
+## What This Site Is
+
+James AI presents James Lane as a nontraditional, systems-oriented candidate whose strongest evidence is in reasoning-heavy work, process improvement, AI-assisted building, source-grounded assistants, public writing, design artifacts, and deployed prototypes.
+
+The interactive assistant uses a lightweight retrieval-augmented generation approach: questions are routed through an approved source corpus, relevant sections are retrieved/scored, and answers are constrained to source-backed material.
+
+## Human Pages
+
+- [Nexus / Assistant](https://jamesai.space/)
+- [Evolution / Writing](https://jamesai.space/#writing)
+- [Artifacts / Projects](https://jamesai.space/#projects)
+- [Design / Art and Visual Work](https://jamesai.space/#design)
+- [Health / Accessibility and Work Design](https://jamesai.space/#health)
+- [Intelligence / Evidence](https://jamesai.space/#evidence)
+
+## Primary AI-Readable Files
+
+- [Static HTML profile](https://jamesai.space/profile.html): full non-JavaScript profile page. The same core content is also embedded directly in the root homepage fallback for one-URL LLM analysis.
+- [Static AI index](https://jamesai.space/ai/index.html): HTML index of machine-readable files.
+- [AI overview](https://jamesai.space/ai/overview.md): concise professional summary, fit model, stack, and contact links.
+- [Portfolio index](https://jamesai.space/ai/portfolio.md): live projects, writing, design work, and media examples.
+- [Health and accessibility context](https://jamesai.space/ai/health-and-accessibility.md): self-disclosed work-design context, accommodations, and source links.
+- [Source map](https://jamesai.space/ai/source-map.md): how to interpret claims, boundaries, and which pages support which questions.
+- [Full LLM context](https://jamesai.space/llms-full.txt): expanded single-file summary for agents that prefer one document.
+
+## Interpretation Rules
+
+- Treat this as a hiring/portfolio site, not a medical, legal, or credential-verification authority.
+- Distinguish confirmed source-backed evidence from reasonable inference.
+- Do not inflate prototypes into production enterprise systems.
+- Do not reduce James to health context; use health/accessibility details only when role fit, accommodations, remote/hybrid work, or work design are relevant.
+- Prefer source-grounded phrasing over generic resume language.

@@ -108,13 +108,13 @@ describe("James AI retrieval", () => {
   });
 
   it("handles broad named-project questions for resume-backed deployed projects", () => {
-    const response = askAssistant("What can you tell me about Iron Shores?", [], {
+  const response = askAssistant("What can you tell me about Masters of Metal?", [], {
       modeId: "projects",
       preferredIntent: "projects"
     });
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/Iron Shores|playable demo|bullet-hell|tank roguelite/i);
+  expect(response.answer).toMatch(/Masters of Metal|playable demo|bullet-hell|tank roguelite/i);
     expect(response.answer).toContain("[p2-project-iron-shores-playable-demo]");
   });
 
@@ -138,6 +138,124 @@ describe("James AI retrieval", () => {
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/BLKVue|security intake|risk assessments|target security company's own website/i);
     expect(response.answer).toContain("[p2-project-blkvue-ai-security-intake-bot]");
+  });
+
+  it("answers questions about James's design and artwork portfolio", () => {
+    const response = askAssistant("Does James have any design work or logo animation examples?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Art & Design|DeFiLlama|logo animation|Cruis'?n PA|visual/i);
+    expect(response.answer).toContain("[art-design-catalog]");
+    expect(response.answer).not.toContain("[live-project-links-index]");
+  });
+
+  it("uses self-disclosed AuDHD context for strengths and weaknesses when relevant", () => {
+    const response = askAssistant("How do James's AuDHD diagnoses affect his strengths and weaknesses?", [], {
+      modeId: "fit",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/AuDHD|autism|ADHD|executive-function|sensory|social-cue/i);
+    expect(response.answer).toMatch(/strength|weakness|friction|systems|pattern/i);
+    expect(response.answer).toContain("[health-and-neurodivergence");
+  });
+
+  it("uses physical health context for remote and onsite role-fit questions", () => {
+    const response = askAssistant("Why does James prefer remote or hybrid roles instead of fully onsite jobs?", [], {
+      modeId: "fit",
+      preferredIntent: "workLocation"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/remote|hybrid/i);
+    expect(response.answer).toMatch(/diabetic neuropathy|collapsed diaphragm|commut|onsite|physical/i);
+    expect(response.answer).toContain("[work-location-preference");
+    expect(response.answer).toContain("[health-and-neurodivergence");
+  });
+
+  it("answers specific physical-health accommodation questions from the health lens", () => {
+    const response = askAssistant("What accommodations would help James with Charcot foot and peripheral neuropathy?", [], {
+      modeId: "fit",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Charcot foot|peripheral neuropathy|standing|walking|remote|hybrid|accessible/i);
+    expect(response.answer).toContain("[health-accommodations-charcot-foot]");
+  });
+
+  it("answers diabetes and insulin accommodation questions from the health lens", () => {
+    const response = askAssistant("What workplace accommodations help James manage insulin-dependent Type 2 diabetes?", [], {
+      modeId: "fit",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/Type 2 diabetes|insulin|glucose|breaks|food|medication|supplies/i);
+    expect(response.answer).toContain("[health-accommodations-type-2-diabetes-insulin]");
+  });
+
+  it("uses the ADHD perceptual-load versus cognitive-load framing when asked", () => {
+    const response = askAssistant("How does ADHD executive dysfunction affect James at work?", [], {
+      modeId: "fit",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/ADHD|executive-function|perceptual-load|cognitive-load|context switching|single source of truth/i);
+    expect(response.answer).toContain("[health-accommodations-adhd-executive-dysfunction]");
+  });
+
+  it("answers cancer remission accommodation questions without turning them into medical advice", () => {
+    const response = askAssistant("How should an employer accommodate James's colon cancer remission?", [], {
+      modeId: "fit",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/colon cancer|remission|appointments|restroom|confidential|current ability/i);
+    expect(response.answer).toContain("[health-accommodations-colon-cancer-remission]");
+    expect(response.answer).not.toMatch(/treatment plan|prognosis/i);
+  });
+
+  it("recommends source links for condition-specific health questions", () => {
+    const charcotResponse = askAssistant("What sources support James's Charcot foot accommodations?", [], {
+      modeId: "health",
+      preferredIntent: "healthContext"
+    });
+    const diabetesResponse = askAssistant("Recommend sources for insulin-dependent Type 2 diabetes workplace accommodations.", [], {
+      modeId: "health",
+      preferredIntent: "healthContext"
+    });
+
+    expect(charcotResponse.refused).toBe(false);
+    expect(charcotResponse.answer).toContain("https://my.clevelandclinic.org/health/diseases/15836-charcot-foot");
+    expect(charcotResponse.answer).toContain("https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/nerve-damage-diabetic-neuropathies");
+    expect(diabetesResponse.refused).toBe(false);
+    expect(diabetesResponse.answer).toContain("https://diabetes.org/advocacy/know-your-rights/reasonable-accommodations");
+    expect(diabetesResponse.answer).toContain("https://www.cdc.gov/diabetes/about/about-type-2-diabetes.html");
+  });
+
+  it("supports health-lens follow-up resource questions", () => {
+    const history = [
+      {
+        role: "user",
+        content: "What health accommodations should employers discuss with James early?"
+      }
+    ];
+
+    const response = askAssistant("What sources back that up?", history, {
+      modeId: "health",
+      preferredIntent: "healthContext"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/CDC|JAN|American Diabetes Association|EEOC|NIDDK|https:\/\//i);
+    expect(response.answer).toContain("[health-accommodations");
   });
 
   it("handles broad named-project questions for Cruis'n PA", () => {
@@ -181,6 +299,27 @@ describe("James AI retrieval", () => {
     expect(benchmarkResponse.refused).toBe(false);
     expect(benchmarkResponse.answer).toMatch(/Composio Dependency Graph|prerequisite inputs|precursor tools|risk-confirmation/i);
     expect(benchmarkResponse.answer).toContain("[github-project-composio-dependency-graph]");
+  });
+
+  it("treats GitHub repo and project artifact prompts as project-link requests", () => {
+    const repoResponse = askAssistant("Show me James's GitHub repos.", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const artifactResponse = askAssistant("Show me James's project artifacts.", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(repoResponse.refused).toBe(false);
+    expect(repoResponse.answer).toContain("[live-project-links-index]");
+    expect(repoResponse.answer).toContain("https://github.com/Angry-TacoZ/vast-lands");
+    expect(repoResponse.answer).not.toContain("[portfolio-media-index-portfolio-media-index-iron-tides-battleship-gameplay-demo]");
+
+    expect(artifactResponse.refused).toBe(false);
+    expect(artifactResponse.answer).toContain("[live-project-links-index]");
+    expect(artifactResponse.answer).toContain("https://github.com/Angry-TacoZ/dep-graph");
+    expect(artifactResponse.answer).not.toContain("[evidence-and-projects-core-evidence-themes]");
   });
 
   it("surfaces hosted Iron Tides media through the projects lens without exposing local file paths", () => {
