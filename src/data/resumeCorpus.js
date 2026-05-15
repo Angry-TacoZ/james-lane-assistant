@@ -147,8 +147,8 @@ const artDesignCatalogCorpus = {
 export const approvedSources = [
   {
     id: "resume-pdf",
-    label: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
-    path: "C:\\Users\\angry\\Downloads\\James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf"
+    label: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    path: "C:\\Users\\angry\\Downloads\\Resumes Job Search and Consulting\\James_Lane_Resume_dy_Full_t_v2.pdf"
   },
   ...markdownSources.map(({ id, label, path }) => ({
     id,
@@ -176,7 +176,7 @@ const resumeSourceCorpus = [
   {
     id: "p1-contact",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
     title: "Contact",
@@ -192,83 +192,80 @@ const resumeSourceCorpus = [
   {
     id: "p1-headline",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
     title: "Headline",
-    aliases: ["headline", "roles", "title", "position", "ai product operations", "business analysis", "workflow automation"],
-    items: ["AI Product Operations | Business Analysis | Workflow Automation"]
+    aliases: ["headline", "roles", "title", "position", "ai builder", "workflow intelligence", "product operations"],
+    items: ["AI Builder | Workflow Intelligence | Product Operations"]
   },
   {
     id: "p1-summary",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
     title: "Professional Summary",
     aliases: ["summary", "overview", "background", "profile", "about"],
     items: [
-      "Enterprise workflow analyst and builder with live AI prototypes, stakeholder-facing tools, and an approved internal pilot.",
-      "Systems-first analyst and applied AI builder with 7+ years in enterprise IT operations and current healthcare claims experience at Capital Blue Cross.",
-      "Known for translating ambiguous workflows into clear requirements, repeatable guidance, and working prototypes.",
-      "Built multiple live AI and web applications for stakeholder review, decision support, and hiring workflows.",
-      "Advanced a PHI-safe claims AI assistant from concept through committee review to approved pilot launch."
+      "Self-taught technical builder and AI operator with 7+ years inside enterprise IT and healthcare operations.",
+      "At Capital Blue Cross, entered through a claims role, learned the workflow from the inside, and helped move a PHI-safe claims AI assistant from operational pain-point discovery to committee-approved pilot launch.",
+      "The retitled roles in the resume are intentionally optimized to foreground the analytical and AI-enablement thread already present in the work."
     ]
   },
   {
-    id: "p1-core-strengths",
+    id: "p2-tools-and-platforms",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Core Strengths",
-    aliases: ["skills", "core strengths", "strengths", "capabilities", "competencies", "technical stack", "enterprise context"],
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "Tools & Platforms",
+    aliases: ["skills", "core strengths", "strengths", "capabilities", "competencies", "technical stack", "tools", "platforms", "enterprise context"],
     items: [
-      "Business analysis: Requirements discovery, process mapping, workflow clarification, acceptance thinking, and operational documentation.",
-      "AI product work: Prompt design, grounded assistants, FAQ tools, intake flows, interactive demos, and rapid prototype-to-deployment execution.",
-      "Change support: Job aids, stakeholder explanations, rollout support, training-oriented documentation, and feedback-driven iteration.",
-      "Technical stack: ChatGPT, Claude, Gemini APIs, Codex, Firebase Hosting, Zapier, Airtable, Power BI, SQL, ServiceNow, Microsoft 365.",
-      "Enterprise context: Healthcare operations, PHI-safe boundaries, audit-sensitive workflows, identity and access support, and escalation discipline."
+      "AI and orchestration: ChatGPT, Claude, Claude Code, Gemini, Gemini APIs, Perplexity, Grok, Meta AI, Codex.",
+      "Build: Firebase Hosting, React, Vite, Phaser, Zapier, Airtable, Google Workspace.",
+      "Data and operations: Power BI, SQL, Excel, ServiceNow, Microsoft 365, Active Directory, Azure AD, FACETS."
     ]
   },
   {
     id: "p1-exp-capital-blue-cross",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
-    title: "Claims Examiner I - Capital Blue Cross | Nov 2025-Present | Remote",
-    aliases: ["capital blue cross", "cbc", "claims examiner", "claims examiner i", "claims", "current role", "facets"],
+    title: "Claims Workflow Intelligence Analyst (Embedded Claims Examiner) - Capital Blue Cross | Nov 2025-Present | Remote",
+    aliases: ["capital blue cross", "cbc", "claims workflow intelligence analyst", "embedded claims examiner", "claims examiner", "claims examiner i", "claims", "current role", "facets"],
     items: [
-      "Maintained 99% audit quality during ramp while learning FACETS and high-accuracy claims workflows under production constraints.",
-      "Submitted process-improvement recommendations that were accepted and implemented before finishing training.",
-      "Created quick-reference job aids and decision notes to reduce ambiguity in high-variation scenarios and improve repeatability.",
-      "Developed a PHI-safe claims AI assistant proposal that was presented to the CBC AI Innovation Committee and Governance Committee and approved to begin pilot launch."
+      "Operated above title level: used embedded claims work to surface workflow pain points, manual friction, and application blind spots that informed a PHI-safe claims AI pilot.",
+      "Pitched, structured, and advanced that initiative from idea to committee-approved pilot launch within the first months at CBC.",
+      "Maintained 99% audit quality while ramping into FACETS and production claim workflows, proving the ability to handle accuracy-sensitive operations while pushing improvement work in parallel.",
+      "Spotted process friction early and submitted improvement recommendations that were accepted before training was complete.",
+      "Built quick-reference job aids and decision notes that reduced ambiguity in high-variation claim scenarios and made repeatable handling easier for others."
     ]
   },
   {
     id: "p1-exp-randstad-icu-medical",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
-    title: "Help Desk Analyst L1.5 - ICU Medical (Randstad Digital contractor) | Jul 2018-Aug 2025",
-    aliases: ["randstad", "icu medical", "help desk analyst", "enterprise it", "it analyst", "oracle e-business suite", "active directory", "azure ad"],
+    title: "Enterprise Automation and Systems Analyst (Help Desk Analyst L1.5) - ICU Medical | Jul 2018-Aug 2025 | Remote / Mechanicsburg, PA",
+    aliases: ["randstad", "icu medical", "enterprise automation and systems analyst", "help desk analyst", "enterprise it", "it analyst", "oracle e-business suite", "active directory", "azure ad"],
     items: [
-      "Translated user and business needs into reproducible resolution steps, escalation packets, and audit-ready documentation.",
+      "Translated user pain points and business needs into reproducible fixes, escalation packets, and audit-ready documentation across enterprise support environments.",
       "Administered Active Directory and Azure AD access for 3,000+ users; verified permissions, licensing, and least-privilege alignment.",
       "Supported Oracle E-Business Suite user access administration and Java launch troubleshooting; documented repeatable fixes for reuse.",
-      "Reduced repetitive handling time through ServiceNow templates, macros, and Python automation while preserving quality and consistency."
+      "Taught himself Python and built macros, templates, and ServiceNow workflow aids that cut repetitive handling time while preserving consistency and quality."
     ]
   },
   {
     id: "p1-exp-go-wireless",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
-    title: "Sales and Device Support Associate - Go Wireless | Jul 2016-Jun 2018",
-    aliases: ["go wireless", "verizon", "sales and device support associate"],
+    title: "Customer Technology Solutions Analyst (Sales and Device Support Associate) - Go Wireless / Verizon Authorized Retailer | Jul 2016-Jun 2018",
+    aliases: ["go wireless", "verizon", "customer technology solutions analyst", "sales and device support associate"],
     items: [
       "Gathered customer requirements, diagnosed device issues, and explained solutions clearly while documenting outcomes and escalations.",
       "Balanced technical troubleshooting with inventory, warranty, and operational accuracy responsibilities."
@@ -277,11 +274,11 @@ const resumeSourceCorpus = [
   {
     id: "p1-exp-office-depot",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
-    title: "PC Technician - Office Depot | Jan 2016-Jul 2016",
-    aliases: ["office depot", "pc technician"],
+    title: "Technical Diagnostics Analyst (PC Technician) - Office Depot | Jan 2016-Jul 2016",
+    aliases: ["office depot", "technical diagnostics analyst", "pc technician"],
     items: [
       "Performed diagnostics, malware removal, reinstalls, and post-repair validation with clear repair documentation."
     ]
@@ -289,7 +286,7 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-living-resume-ai",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "Living Resume AI",
@@ -332,7 +329,7 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-caa-2026-pbm-regulatory-assistant",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "CAA 2026 PBM Regulatory Assistant",
@@ -346,7 +343,7 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-blkvue-ai-security-intake-bot",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "BLKVue AI Security Intake Bot",
@@ -360,7 +357,7 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-jameslaneai-com",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "JamesLaneAI.com",
@@ -387,7 +384,7 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-iron-shores-playable-demo",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "Masters of Metal",
@@ -455,21 +452,21 @@ const resumeSourceCorpus = [
   {
     id: "p2-tools",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "Tools",
     aliases: ["tools", "tool stack", "build and deployment", "data and operations", "ai tools"],
     items: [
-      "AI: ChatGPT, Claude, Gemini, Perplexity, Grok, Meta AI, Codex, Claude Code, Gemini APIs.",
-      "Build and deployment: Firebase Hosting, Vite, React, Phaser, Zapier, Airtable, Google Workspace.",
+      "AI and orchestration: ChatGPT, Claude, Claude Code, Gemini, Gemini APIs, Perplexity, Grok, Meta AI, Codex.",
+      "Build: Firebase Hosting, React, Vite, Phaser, Zapier, Airtable, Google Workspace.",
       "Data and operations: Power BI, SQL, Excel, ServiceNow, Microsoft 365, Active Directory, Azure AD, FACETS."
     ]
   },
   {
     id: "p2-education",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_General_Tech_Analysis_Builder_Resume_2026-03.pdf",
+    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 2",
     page: 2,
     title: "Education",
@@ -696,5 +693,6 @@ export const sourceCorpus = [
   ...healthProfileCorpus,
   ...markdownCorpus
 ];
+
 
 

@@ -357,14 +357,15 @@ describe("James AI retrieval", () => {
 
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/systems|reasoning|process improvement|strength/i);
-    expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p1-core-strengths|evidence-and-projects)-?/) ;
+    expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p2-tools-and-platforms|evidence-and-projects)-?/) ;
   });
 
   it("uses the corrected current CBC title in retrieval answers", () => {
     const response = askAssistant("What is James Lane's current role at Capital Blue Cross?");
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toContain("Claims Examiner I");
+    expect(response.answer).toContain("Claims Workflow Intelligence Analyst");
+    expect(response.answer).toContain("Embedded Claims Examiner");
     expect(response.answer).not.toContain("Claims Operations Analyst");
   });
 
@@ -403,7 +404,7 @@ describe("James AI retrieval", () => {
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/business analysis|requirements|process mapping|workflow/i);
     expect(response.answer).toMatch(/Power BI|SQL|Tableau|analytics|reporting/i);
-    expect(response.answer).toMatch(/\[(p1-core-strengths|p2-tools|p1-summary|core-identity|role-fit-model)-/);
+    expect(response.answer).toMatch(/\[(p2-tools-and-platforms|p2-tools|p1-summary|core-identity|role-fit-model)-/);
   });
 
   it("handles adjacent hiring-manager phrasing for analyst-style work", () => {
@@ -415,7 +416,7 @@ describe("James AI retrieval", () => {
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/requirements|workflow|reporting|process mapping/i);
     expect(response.answer).toMatch(/Power BI|SQL|analytics|documentation/i);
-    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|p2-tools|p1-exp-capital-blue-cross|p1-exp-randstad-icu-medical|core-identity|environment-fit-model|role-fit-model)-/);
+    expect(response.answer).toMatch(/\[(p1-summary|p2-tools-and-platforms|p2-tools|p1-exp-capital-blue-cross|p1-exp-randstad-icu-medical|core-identity|environment-fit-model|role-fit-model)-/);
   });
 
   it("handles broader job-fit questions for roles without a custom keyword pack", () => {
@@ -425,8 +426,8 @@ describe("James AI retrieval", () => {
     });
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/stakeholder explanations|training-oriented documentation|public-facing|published public AI-analysis piece|accessible explanation|writing/i);
-    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|core-identity|evidence-and-projects|writing-p-doom-or-big-boon|cognitive-profile|role-fit-model)-/);
+    expect(response.answer).toMatch(/technical, analytical, and presentation layers|communication fit is good|gets to the point|source-grounded|workflow|implementation/i);
+    expect(response.answer).toMatch(/\[(p1-summary|p2-tools-and-platforms|core-identity|evidence-and-projects|writing-p-doom-or-big-boon|cognitive-profile|role-fit-model)-/);
   });
 
   it("handles generic engineering-title fit questions with conditional evidence instead of refusing", () => {
@@ -437,7 +438,7 @@ describe("James AI retrieval", () => {
 
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/prototype|deployment|React|Vite|Phaser|Firebase|build|technical troubleshooting|software engineering breadth/i);
-    expect(response.answer).toMatch(/\[(p1-summary|p1-core-strengths|p2-tools|evidence-and-projects|core-identity|cognitive-profile|role-fit-model)-/);
+    expect(response.answer).toMatch(/\[(p1-summary|p2-tools-and-platforms|p2-tools|evidence-and-projects|core-identity|cognitive-profile|role-fit-model)-/);
   });
 
   it("uses communication and presentation evidence for meeting-leadership questions", () => {

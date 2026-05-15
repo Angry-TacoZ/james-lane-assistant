@@ -1,15 +1,26 @@
 # James Lane Assistant
 
-A Firebase-hosted living-resume assistant that answers only from the approved source document:
+A Firebase-hosted living-resume assistant that answers only from the approved local source corpus.
 
-- `C:\Users\angry\Downloads\James_Lane_BA_Resume_With_BI_Additions.pdf`
+Current resume source:
+
+- `C:\Users\angry\Downloads\Resumes Job Search and Consulting\James_Lane_Resume_dy_Full_t_v2.pdf`
+
+Additional approved sources are bundled as Markdown/data files in this repository, including:
+
+- condensed cognitive/profile guidance in `docs/cognitive-profile.md`
+- representation and communication rules in `docs/communication-rules.md`
+- role-fit and environment-fit models in `docs/role-fit-model.md` and `docs/environment-fit-model.md`
+- evidence/project context in `docs/evidence-and-projects.md`
+- health, accessibility, and work-design context in `docs/health-and-neurodivergence-context.md`
+- public writing, art/design, live-project, and portfolio indexes
 
 ## Guarantees
 
 - No web browsing or external search.
-- Answers come only from resume excerpts stored in the local source corpus.
+- Answers come only from approved resume excerpts, Markdown profile files, and curated local data modules stored in the source corpus.
 - If an answer is not explicitly supported, the assistant refuses with the required exact message.
-- Each answer includes stable internal references such as `p1-tools-platforms`.
+- Each answer includes stable internal references such as `p1-summary`, `cognitive-profile-*`, or `p2-tools`.
 
 ## Commands
 
