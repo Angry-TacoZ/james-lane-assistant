@@ -12,7 +12,7 @@ const questions = [
   "Are these writing samples opinion pieces or internal cognition?",
   "What was the full ChatGPT analysis linked from The Constitution needs you?",
   "What can you tell me about Iron Tides?",
-  "What can you tell me about Iron Shores?",
+  "What can you tell me about Masters of Metal?",
   "What can you tell me about Cruis'n PA?",
   "Tell me about the BLKVue AI Security Intake Bot.",
   "What Iron Tides portfolio examples can I watch?",

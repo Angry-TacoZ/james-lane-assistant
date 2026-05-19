@@ -272,10 +272,10 @@ export const profileModes = [
     briefingCards: [
       {
         eyebrow: "Current Role",
-        title: "Claims Examiner I at Capital Blue Cross",
+        title: "Claims Workflow Intelligence Analyst at Capital Blue Cross",
         body:
-          "The resume lists James's current role as Claims Examiner I at Capital Blue Cross, remote, beginning in 2025.",
-        ref: "resume-pdf / Capital Blue Cross - Claims Examiner I"
+          "The resume lists James's current role as Claims Workflow Intelligence Analyst (Embedded Claims Examiner) at Capital Blue Cross, remote, beginning in 2025.",
+        ref: "resume-pdf / Claims Workflow Intelligence Analyst (Embedded Claims Examiner) - Capital Blue Cross | Nov 2025-Present | Remote"
       },
       {
         eyebrow: "Background",
@@ -288,7 +288,7 @@ export const profileModes = [
         eyebrow: "Tools",
         title: "BI, data, and workflow tooling",
         body:
-          "The resume specifically lists Power BI, Tableau, SQL, DAX, Excel, Python, ServiceNow, Zapier, Airtable, Microsoft 365, Active Directory, and Azure AD.",
+          "The resume specifically lists Power BI, SQL, Excel, ServiceNow, Zapier, Airtable, Microsoft 365, Active Directory, Azure AD, FACETS, plus AI and build tools such as ChatGPT, Claude, Gemini, Codex, React, Vite, and Firebase Hosting.",
         ref: "resume-pdf / Tools & Platforms"
       }
     ]
