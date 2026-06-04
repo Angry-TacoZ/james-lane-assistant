@@ -270,6 +270,10 @@ describe("James AI retrieval", () => {
   });
 
   it("handles named questions for repo-backed showcase artifacts", () => {
+    const lqriResponse = askAssistant("What can you tell me about LQRI?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
     const vastResponse = askAssistant("What can you tell me about Vast Lands?", [], {
       modeId: "projects",
       preferredIntent: "projects"
@@ -287,6 +291,9 @@ describe("James AI retrieval", () => {
       preferredIntent: "projects"
     });
 
+    expect(lqriResponse.refused).toBe(false);
+    expect(lqriResponse.answer).toMatch(/Legitimate Question Response Index|LQRI v2|100-point|diagnostic flags/i);
+    expect(lqriResponse.answer).toContain("[project-lqri]");
     expect(vastResponse.refused).toBe(false);
     expect(vastResponse.answer).toMatch(/Vast Lands|Babylon\.js|city-state builder|resident needs/i);
     expect(vastResponse.answer).toContain("[github-project-vast-lands]");
@@ -301,6 +308,17 @@ describe("James AI retrieval", () => {
     expect(benchmarkResponse.answer).toContain("[github-project-composio-dependency-graph]");
   });
 
+  it("keeps the older PBM demo as offline historical evidence", () => {
+    const response = askAssistant("What happened to the CAA 2026 PBM Regulatory Assistant?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/older demo|offline|formerly hosted/i);
+    expect(response.answer).toContain("[p2-project-caa-2026-pbm-regulatory-assistant]");
+  });
+
   it("treats GitHub repo and project artifact prompts as project-link requests", () => {
     const repoResponse = askAssistant("Show me James's GitHub repos.", [], {
       modeId: "projects",
@@ -313,6 +331,7 @@ describe("James AI retrieval", () => {
 
     expect(repoResponse.refused).toBe(false);
     expect(repoResponse.answer).toContain("[live-project-links-index]");
+    expect(repoResponse.answer).toContain("https://github.com/Angry-TacoZ/lqri-site");
     expect(repoResponse.answer).toContain("https://github.com/Angry-TacoZ/vast-lands");
     expect(repoResponse.answer).not.toContain("[portfolio-media-index-portfolio-media-index-iron-tides-battleship-gameplay-demo]");
 

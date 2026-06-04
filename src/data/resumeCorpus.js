@@ -186,6 +186,7 @@ const resumeSourceCorpus = [
       "717-701-7089",
       "tiburo13@gmail.com",
       "LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9",
+      "X: https://x.com/JamesLaneAI",
       "Living Resume: https://james-lane-web-resume.web.app/"
     ]
   },
@@ -310,12 +311,15 @@ const resumeSourceCorpus = [
       "artifacts",
       "github repos with live links",
       "public demos",
+      "lqri",
+      "legitimate question response index",
       "showcase projects",
       "portfolio links"
     ],
     items: [
       "Living Resume AI: https://james-lane-web-resume.web.app/",
-      "CAA 2026 PBM Regulatory Assistant: https://caademoweb.web.app/",
+      "Legitimate Question Response Index: https://lqri.web.app/ and public GitHub repo at https://github.com/Angry-TacoZ/lqri-site",
+      "CAA 2026 PBM Regulatory Assistant: older source-grounded healthcare policy demo that is now offline; formerly hosted at https://caademoweb.web.app/.",
       "BLKVue AI Security Intake Bot: https://blkvueai.web.app/",
       "JamesLaneAI.com: https://jameslaneai.com/",
       "Cruis'n PA: https://cruisnpa.fun/",
@@ -327,6 +331,21 @@ const resumeSourceCorpus = [
     ]
   },
   {
+    id: "project-lqri",
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub repo and LQRI methodology files",
+    referenceLabel: "LQRI / Legitimate Question Response Index",
+    title: "Legitimate Question Response Index",
+    aliases: ["lqri", "lqri v2", "legitimate question response index", "lqri-site", "lqri.web.app", "model benchmark", "llm benchmark"],
+    items: [
+      "Live link: https://lqri.web.app/",
+      "Public GitHub repo: https://github.com/Angry-TacoZ/lqri-site",
+      "Public React/Vite dashboard for the Legitimate Question Response Index, a benchmark for evaluating how LLMs handle lawful, non-operational, sensitive, ambiguous, and self-referential questions.",
+      "LQRI v2 uses a low-scaffold five-question chain, preserved transcripts, 100-point aggregate scoring, six scored dimensions, diagnostic flags, model reports, and data-quality caveats.",
+      "The project demonstrates benchmark design, research-log discipline, static publication workflow, and transparent model-evaluation artifacts."
+    ]
+  },
+  {
     id: "p2-project-caa-2026-pbm-regulatory-assistant",
     group: "projects-catalog",
     sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
@@ -335,7 +354,7 @@ const resumeSourceCorpus = [
     title: "CAA 2026 PBM Regulatory Assistant",
     aliases: ["caa 2026 pbm regulatory assistant", "pbm regulatory assistant", "caa 2026", "caademoweb"],
     items: [
-      "Live link: https://caademoweb.web.app/",
+      "CAA 2026 PBM Regulatory Assistant is an older demo that is now offline; formerly hosted at https://caademoweb.web.app/.",
       "Built a source-grounded assistant focused on how recent legislation affects healthcare relationships with PBMs, translating dense policy content into practical answers.",
       "Created for a healthcare business-analysis interview context to show domain understanding and applied AI execution."
     ]

@@ -8,12 +8,12 @@ export const liveProjects = [
     ref: "Page 2 / Living Resume AI"
   },
   {
-    id: "caa-2026-pbm-regulatory-assistant",
-    title: "CAA 2026 PBM Regulatory Assistant",
+    id: "lqri",
+    title: "Legitimate Question Response Index",
     description:
-      "Source-grounded assistant built around recent legislation and healthcare PBM impacts for a business-analysis interview context.",
-    url: "https://caademoweb.web.app/",
-    ref: "Page 2 / CAA 2026 PBM Regulatory Assistant"
+      "Public React/Vite benchmark dashboard for LQRI v2, evaluating how LLMs handle lawful sensitive and self-referential questions using preserved transcripts, 100-point scoring, diagnostic flags, and data-quality caveats.",
+    url: "https://lqri.web.app/",
+    ref: "Public GitHub repo and live Firebase site / LQRI"
   },
   {
     id: "blkvue-ai-security-intake-bot",

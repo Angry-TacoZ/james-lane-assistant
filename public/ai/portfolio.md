@@ -7,10 +7,11 @@
 - URL: https://james-lane-web-resume.web.app/
 - Description: Interactive hiring artifact that turns James Lane's approved corpus, retrieval logic, response boundaries, portfolio, writing, and work-style evidence into a browsable assistant experience.
 
-### CAA 2026 PBM Regulatory Assistant
+### Legitimate Question Response Index
 
-- URL: https://caademoweb.web.app/
-- Description: Source-grounded assistant built around recent legislation and healthcare PBM impacts for a business-analysis interview context.
+- URL: https://lqri.web.app/
+- GitHub: https://github.com/Angry-TacoZ/lqri-site
+- Description: Public React/Vite benchmark dashboard for LQRI v2, evaluating how LLMs handle lawful, non-operational, sensitive, ambiguous, and self-referential questions using preserved transcripts, 100-point scoring, diagnostic flags, and data-quality caveats.
 
 ### BLKVue AI Security Intake Bot
 
@@ -51,6 +52,13 @@
 
 - URL: https://github.com/Angry-TacoZ/dep-graph
 - Description: Benchmark-style tool dependency graph that maps prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges for agent workflows.
+
+## Older Offline Demos
+
+### CAA 2026 PBM Regulatory Assistant
+
+- Status: Older demo now offline; formerly hosted at https://caademoweb.web.app/
+- Description: Source-grounded healthcare policy assistant built around recent legislation and PBM impacts for a business-analysis interview context.
 
 ## Art And Design Work
 

@@ -4,6 +4,9 @@ Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
 Contact: tiburo13@gmail.com
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
+GitHub: https://github.com/Angry-TacoZ
+X: https://x.com/JamesLaneAI
+Medium: https://medium.com/@Angry_TacoZ
 
 ## Purpose
 
@@ -65,7 +68,8 @@ This is fair to call lightweight retrieval-augmented generation. It is not an en
 ## Live Projects
 
 - Living Resume AI: https://james-lane-web-resume.web.app/
-- CAA 2026 PBM Regulatory Assistant: https://caademoweb.web.app/
+- Legitimate Question Response Index: https://lqri.web.app/ and https://github.com/Angry-TacoZ/lqri-site
+- CAA 2026 PBM Regulatory Assistant: older demo now offline; formerly hosted at https://caademoweb.web.app/
 - BLKVue AI Security Intake Bot: https://blkvueai.web.app/
 - JamesLaneAI.com: https://jameslaneai.com/
 - Cruis'n PA: https://cruisnpa.fun/

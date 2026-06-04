@@ -3,6 +3,9 @@
 Canonical site: https://jamesai.space/
 Contact: tiburo13@gmail.com
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
+GitHub: https://github.com/Angry-TacoZ
+X: https://x.com/JamesLaneAI
+Medium: https://medium.com/@Angry_TacoZ
 
 ## One-Sentence Summary
 
@@ -52,5 +55,4 @@ James tends to:
 - Projects: https://jamesai.space/#projects
 - Art and Design: https://jamesai.space/#design
 - Health and Accessibility: https://jamesai.space/#health
-- Evidence: https://jamesai.space/#evidence
-
+- Contact: https://jamesai.space/#contact

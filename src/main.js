@@ -24,7 +24,7 @@ const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
 const PAGE_TITLES = {
   home: "SyntheticCurator // James AI",
   writing: "THE LIVING INTELLIGENCE | Writing",
-  evidence: "THE LIVING INTELLIGENCE | Evidence",
+  contact: "THE LIVING INTELLIGENCE | Contact",
   projects: "THE LIVING INTELLIGENCE | Projects",
   design: "THE LIVING INTELLIGENCE | Art & Design",
   health: "THE LIVING INTELLIGENCE | Health & Accessibility"
@@ -33,7 +33,13 @@ const PAGE_TITLES = {
 const CONTACT_EMAIL = "tiburo13@gmail.com";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("James AI Inquiry")}&body=${encodeURIComponent("Hi James,%0D%0A%0D%0AI'd like to talk about working together.%0D%0A%0D%0AName:%0D%0ACompany:%0D%0AWhat I'm looking for:%0D%0A")}`;
 const LINKEDIN_URL = "https://www.linkedin.com/in/james-lane-1051291a9";
+const GITHUB_URL = "https://github.com/Angry-TacoZ";
+const X_URL = "https://x.com/JamesLaneAI";
+const MEDIUM_URL = "https://medium.com/@Angry_TacoZ";
+const CONSULTING_URL = "https://jameslaneai.com/";
 const PROFILE_PHOTO_URL = "/images/profile/jamesprofile3.jpg";
+const AUDIO_GUIDE_URL = "/audio/james-ai-audio-guide.mp3";
+const AUDIO_GUIDE_STORAGE_KEY = "james-ai-audio-guide-dismissed";
 
 const PROJECT_PRESENTATION = {
   "living-resume-ai": {
@@ -49,17 +55,17 @@ const PROJECT_PRESENTATION = {
       "Demonstrates retrieval, synthesis, boundary enforcement, and product framing in one surface."
     ]
   },
-  "caa-2026-pbm-regulatory-assistant": {
-    emphasis: "INFRASTRUCTURE",
-    version: "POLICY_GROUNDED",
+  lqri: {
+    emphasis: "RESEARCH_DASHBOARD",
+    version: "PUBLIC_REPO",
     summary:
-      "Healthcare policy assistant grounded in legislation and built to translate dense regulatory material into usable business-facing answers.",
-    featureBadges: ["Policy Translation", "Domain Grounding"],
-    icon: "gavel",
-    shortLabel: "PBM Assistant",
+      "Public benchmark dashboard for evaluating whether LLMs answer legitimate sensitive and self-referential questions with substance, restraint, and clear uncertainty boundaries.",
+    featureBadges: ["Benchmark Design", "React/Vite", "Transcript Scoring"],
+    icon: "query_stats",
+    shortLabel: "LQRI",
     detailBullets: [
-      "Built to show business-analysis reasoning in a healthcare interview context.",
-      "Focuses on practical implications instead of abstract summarization."
+      "Uses preserved transcripts, v2 scoring dimensions, diagnostic flags, and data-quality caveats.",
+      "The public repo is available at https://github.com/Angry-TacoZ/lqri-site."
     ]
   },
   "blkvue-ai-security-intake-bot": {
@@ -192,9 +198,11 @@ const pageState = {
   sessions: {},
   latestContext: null,
   focusComposer: false,
-  busy: false
+  busy: false,
+  audioGuideStatus: getInitialAudioGuideStatus()
 };
 let lastTrackedPath = "";
+let audioGuide = null;
 
 void init();
 
@@ -211,6 +219,79 @@ function seedInitialState() {
 
 function ensureHead() {
   document.documentElement.classList.add("dark");
+}
+
+function getInitialAudioGuideStatus() {
+  try {
+    return window.localStorage.getItem(AUDIO_GUIDE_STORAGE_KEY) === "true" ? "closed" : "prompt";
+  } catch {
+    return "prompt";
+  }
+}
+
+function rememberAudioGuideDismissed() {
+  try {
+    window.localStorage.setItem(AUDIO_GUIDE_STORAGE_KEY, "true");
+  } catch {
+    // Local storage can be unavailable in strict privacy contexts.
+  }
+}
+
+function getAudioGuide() {
+  if (!audioGuide) {
+    audioGuide = new Audio(AUDIO_GUIDE_URL);
+    audioGuide.preload = "metadata";
+    audioGuide.addEventListener("play", renderAudioGuideControls);
+    audioGuide.addEventListener("pause", renderAudioGuideControls);
+    audioGuide.addEventListener("ended", renderAudioGuideControls);
+  }
+
+  return audioGuide;
+}
+
+function renderAudioGuideControls() {
+  const playIcon = document.querySelector("[data-audio-guide-play-icon]");
+  const playLabel = document.querySelector("[data-audio-guide-play-label]");
+
+  if (!playIcon || !playLabel || !audioGuide) {
+    return;
+  }
+
+  const isPlaying = !audioGuide.paused && !audioGuide.ended;
+  playIcon.textContent = isPlaying ? "pause" : "play_arrow";
+  playLabel.textContent = isPlaying ? "Pause" : "Play";
+}
+
+async function playAudioGuide({ restart = false } = {}) {
+  const guide = getAudioGuide();
+
+  if (restart) {
+    guide.currentTime = 0;
+  }
+
+  try {
+    await guide.play();
+  } catch (err) {
+    console.error("Audio guide playback failed:", err);
+  }
+
+  renderAudioGuideControls();
+}
+
+function pauseAudioGuide() {
+  if (!audioGuide) {
+    return;
+  }
+
+  audioGuide.pause();
+  renderAudioGuideControls();
+}
+
+function closeAudioGuide() {
+  pauseAudioGuide();
+  pageState.audioGuideStatus = "closed";
+  rememberAudioGuideDismissed();
+  render();
 }
 
 function bindGlobalEvents() {
@@ -272,6 +353,53 @@ function bindGlobalEvents() {
     if (homeSubmit) {
       event.preventDefault();
       await handleAsk(pageState.homeDraft);
+      return;
+    }
+
+    const audioGuideAction = event.target.closest("[data-audio-guide-action]");
+
+    if (audioGuideAction) {
+      event.preventDefault();
+      const action = audioGuideAction.dataset.audioGuideAction;
+
+      if (action === "start") {
+        pageState.audioGuideStatus = "dock";
+        render();
+        await playAudioGuide({ restart: true });
+        return;
+      }
+
+      if (action === "open") {
+        pauseAudioGuide();
+        pageState.audioGuideStatus = "prompt";
+        render();
+        return;
+      }
+
+      if (action === "skip") {
+        closeAudioGuide();
+        return;
+      }
+
+      if (action === "toggle") {
+        const guide = getAudioGuide();
+        if (guide.paused || guide.ended) {
+          await playAudioGuide();
+        } else {
+          pauseAudioGuide();
+        }
+        return;
+      }
+
+      if (action === "replay") {
+        await playAudioGuide({ restart: true });
+        return;
+      }
+
+      if (action === "close") {
+        closeAudioGuide();
+      }
+
       return;
     }
 
@@ -557,8 +685,8 @@ function render() {
     case "writing":
       app.innerHTML = renderWritingPage();
       break;
-    case "evidence":
-      app.innerHTML = renderEvidencePage();
+    case "contact":
+      app.innerHTML = renderContactPage();
       break;
     case "projects":
       app.innerHTML = renderProjectsPage();
@@ -580,6 +708,7 @@ function render() {
     composer?.focus();
   }
 
+  renderAudioGuideControls();
   trackPageView();
 }
 
@@ -675,7 +804,9 @@ function renderHomePage() {
         ${renderHomeSideModeLink("evidence", "visibility", "Review")}
         ${renderHomeSideModeLink("projects", "architecture", "Architect")}
       </div>
+      ${renderAudioGuideDock("desktop")}
       <div class="px-6 py-8 mt-auto">
+        ${renderAudioGuideLauncher()}
         <button class="w-full bg-surface-container-high border border-outline-variant/20 text-on-surface py-3 rounded-lg flex items-center justify-center gap-2 mb-4 hover:bg-surface-container-highest transition-all" data-page-link="home" data-focus-composer="true">
           <span class="material-symbols-outlined text-primary">add</span>
           <span class="hidden md:block font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">Ask Intelligence</span>
@@ -780,11 +911,11 @@ function renderHomePage() {
             <div class="space-y-6">
               ${renderHomeEvidenceCards(evidenceCards)}
               <div class="pt-8 border-t border-outline-variant/10">
-                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/40 uppercase tracking-widest mb-4">Connected Knowledge Bases</div>
+                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/40 uppercase tracking-widest mb-4">Quick Links</div>
                 <div class="flex gap-4">
                   <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-on-surface-variant">terminal</span></div>
                   <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="writing"><span class="material-symbols-outlined text-on-surface-variant">description</span></div>
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="evidence"><span class="material-symbols-outlined text-on-surface-variant">analytics</span></div>
+                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="contact"><span class="material-symbols-outlined text-on-surface-variant">contact_mail</span></div>
                 </div>
               </div>
             </div>
@@ -794,7 +925,7 @@ function renderHomePage() {
     </main>
     <footer class="bg-[#121415] w-full py-12 border-t border-[#44483E]/15 flex flex-col items-center gap-4 w-full">
       <div class="flex gap-4 md:gap-8 items-center mb-4">
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#evidence" data-page-link="evidence">Source</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Documentation</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Security</a>
       </div>
@@ -813,10 +944,130 @@ function renderHomePage() {
       <div class="flex flex-col items-center gap-2">
         <div class="font-['Space_Grotesk'] text-[10px] uppercase text-[#84A16F] tracking-widest">© 2024 SYNTHETIC CURATOR // NEURAL ARCHITECTURE</div>
         <div class="font-['Inter'] text-sm text-on-surface">James Earl Lane</div>
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.2em] text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors duration-300" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.2em] text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors duration-300" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+          <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.2em] text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors duration-300" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+        </div>
       </div>
     </footer>
     ${renderMobileBottomNav("home")}
+    ${renderAudioGuideOverlay()}
+  `;
+}
+
+function renderAudioGuideLauncher() {
+  if (pageState.audioGuideStatus !== "closed") {
+    return "";
+  }
+
+  return `
+    <button class="w-full bg-surface-container-low border border-primary/20 text-on-surface py-3 rounded-lg flex items-center justify-center gap-2 mb-3 hover:bg-surface-container-high transition-all" data-audio-guide-action="open">
+      <span class="material-symbols-outlined text-primary text-base">spatial_audio</span>
+      <span class="hidden md:block font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">Audio Guide</span>
+    </button>
+  `;
+}
+
+function renderAudioGuideOverlay() {
+  if (pageState.audioGuideStatus === "closed") {
+    return "";
+  }
+
+  if (pageState.audioGuideStatus === "dock") {
+    return renderAudioGuideDock("mobile");
+  }
+
+  return `
+    <div class="fixed inset-0 z-[70] bg-background/70 backdrop-blur-xl flex items-end sm:items-center justify-center px-4 py-6" role="dialog" aria-modal="true" aria-labelledby="audio-guide-title">
+      <section class="w-full max-w-lg glass-panel bg-surface-container-low/95 border border-primary/20 rounded-xl shadow-[0_30px_100px_rgba(0,0,0,0.65)] overflow-hidden">
+        <div class="p-6 sm:p-7">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-primary">spatial_audio</span>
+            </div>
+            <div>
+              <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.26em] text-primary mb-2">First-run guide</div>
+              <h2 id="audio-guide-title" class="text-2xl sm:text-3xl font-black tracking-tight text-on-surface leading-tight">Listen to a short orientation?</h2>
+            </div>
+          </div>
+          <p class="text-sm sm:text-base text-on-surface-variant leading-relaxed mb-6">
+            This audio guide explains what James AI can answer, how the source-backed modes work, and where the system intentionally refuses unsupported claims.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest rounded-lg px-5 py-4 hover:opacity-90 active:scale-[0.99] transition-all" data-audio-guide-action="start">
+              Yes, play guide
+            </button>
+            <button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest rounded-lg px-5 py-4 border border-outline-variant/20 transition-all" data-audio-guide-action="skip">
+              No, skip
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderAudioGuideDock(variant = "desktop") {
+  if (pageState.audioGuideStatus !== "dock") {
+    return "";
+  }
+
+  if (variant === "desktop") {
+    return `
+      <aside class="hidden md:block mx-6 mb-4 glass-panel bg-surface-container-low/95 border border-primary/20 rounded-xl shadow-[0_18px_50px_rgba(0,0,0,0.35)] overflow-hidden" aria-label="Audio guide player">
+        <div class="px-4 py-3">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="min-w-0">
+              <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.22em] text-primary">Audio Guide</div>
+              <div class="text-xs text-on-surface-variant/70 truncate">James AI orientation</div>
+            </div>
+            <button class="w-9 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center transition-colors shrink-0" data-audio-guide-action="close" aria-label="Close audio guide">
+              <span class="material-symbols-outlined text-base text-on-surface-variant">close</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-[1fr_auto] gap-2">
+            <button class="min-w-0 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary flex items-center justify-center gap-2 px-3 py-2.5 shadow-lg shadow-primary/10 active:scale-[0.99] transition-transform" data-audio-guide-action="toggle" aria-label="Play or pause audio guide">
+              <span class="material-symbols-outlined text-base" data-audio-guide-play-icon>play_arrow</span>
+              <span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest" data-audio-guide-play-label>Play</span>
+            </button>
+            <button class="w-11 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center transition-colors" data-audio-guide-action="replay" aria-label="Replay audio guide">
+              <span class="material-symbols-outlined text-base text-primary">replay</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+    `;
+  }
+
+  const shellClass =
+    "md:hidden fixed right-4 left-4 bottom-24 z-[60] glass-panel bg-surface-container-low/95 border border-primary/20 rounded-xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl overflow-hidden";
+
+  return `
+    <aside class="${shellClass}" aria-label="Audio guide player">
+      <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-outline-variant/10">
+        <div class="min-w-0">
+          <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.22em] text-primary">Audio Guide</div>
+          <div class="text-xs text-on-surface-variant/70 truncate">James AI orientation</div>
+        </div>
+        <button class="w-9 h-9 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center transition-colors" data-audio-guide-action="close" aria-label="Close audio guide">
+          <span class="material-symbols-outlined text-base text-on-surface-variant">close</span>
+        </button>
+      </div>
+      <div class="px-4 py-4">
+        <div class="flex items-center gap-3">
+          <button class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary flex items-center justify-center shadow-lg shadow-primary/10 scale-100 active:scale-95 transition-transform shrink-0" data-audio-guide-action="toggle" aria-label="Play or pause audio guide">
+            <span class="material-symbols-outlined" data-audio-guide-play-icon>play_arrow</span>
+          </button>
+          <button class="w-10 h-10 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center transition-colors shrink-0" data-audio-guide-action="replay" aria-label="Replay audio guide">
+            <span class="material-symbols-outlined text-base text-primary">replay</span>
+          </button>
+          <div class="min-w-0">
+            <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface" data-audio-guide-play-label>Play</div>
+            <p class="text-xs text-on-surface-variant/60 leading-relaxed mt-1">Modes, source boundaries, and better questions.</p>
+          </div>
+        </div>
+      </div>
+    </aside>
   `;
 }
 
@@ -1127,6 +1378,155 @@ function renderWritingPageButtons(totalPages, currentPage) {
   }
 
   return buttons.join("");
+}
+
+function renderContactPage() {
+  const contactLinks = [
+    {
+      label: "Email",
+      title: CONTACT_EMAIL,
+      description: "Best starting point for work, project, or collaboration inquiries.",
+      url: CONTACT_MAILTO,
+      icon: "mail",
+      action: "Send Email"
+    },
+    {
+      label: "LinkedIn",
+      title: "James Lane on LinkedIn",
+      description: "Professional profile, work history, and direct professional outreach.",
+      url: LINKEDIN_URL,
+      icon: "badge",
+      action: "Open Profile"
+    },
+    {
+      label: "GitHub",
+      title: "Angry-TacoZ",
+      description: "Public repositories, portfolio code, prototypes, and technical artifacts.",
+      url: GITHUB_URL,
+      icon: "code",
+      action: "Open GitHub"
+    },
+    {
+      label: "X",
+      title: "@JamesLaneAI",
+      description: "Public updates, AI workflow notes, and short-form project context.",
+      url: X_URL,
+      icon: "alternate_email",
+      action: "Open X"
+    },
+    {
+      label: "Medium",
+      title: "@Angry_TacoZ",
+      description: "Published essays, AI analysis, civic commentary, and personal narrative writing.",
+      url: MEDIUM_URL,
+      icon: "article",
+      action: "Read Writing"
+    },
+    {
+      label: "Consulting",
+      title: "JamesLaneAI.com",
+      description: "Public-facing AI consulting and workflow automation services site.",
+      url: CONSULTING_URL,
+      icon: "language",
+      action: "Open Site"
+    }
+  ];
+
+  return `
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
+      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar">
+        ${renderPrimaryNavLinks("contact", "top")}
+      </nav>
+      <div class="flex items-center gap-4">
+        <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true" aria-label="Ask assistant">
+          <span class="material-symbols-outlined text-[#B1D09A]">account_circle</span>
+        </button>
+      </div>
+    </header>
+    <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex-col h-full pt-20 pb-8 hidden lg:flex">
+      <div class="px-6 mb-8">
+        <div class="text-[#B1D09A] font-bold font-label text-xs uppercase tracking-widest mb-1">CONTACT HUB</div>
+        <div class="text-gray-500 font-label text-[10px] tracking-widest">Public Profiles</div>
+      </div>
+      <nav class="flex-grow">
+        ${renderPrimaryNavLinks("contact", "side")}
+      </nav>
+      <div class="px-4 mb-8">
+        <button class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-label text-[10px] font-bold tracking-widest rounded-lg shadow-lg shadow-primary/10" data-open-url="${escapeAttribute(CONTACT_MAILTO)}">EMAIL JAMES</button>
+      </div>
+      <div class="border-t border-[#282A2C]/50 pt-6">
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-sm">hub</span><span>Artifacts</span></div>
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>Nexus</span></div>
+      </div>
+    </aside>
+    <main class="lg:ml-64 pt-24 px-4 sm:px-5 md:px-12 pb-28 md:pb-24 min-h-screen">
+      <section class="max-w-7xl mx-auto mb-14">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-12 bg-primary"></div>
+          <span class="font-label text-primary text-xs uppercase tracking-[0.3em]">Direct Channels</span>
+        </div>
+        <div class="grid grid-cols-1 xl:grid-cols-[1.05fr_0.95fr] gap-10 items-end">
+          <div>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-headline font-extrabold tracking-tighter mb-6 text-on-surface">CONTACT <span class="text-primary">JAMES</span></h1>
+            <p class="max-w-2xl text-base sm:text-lg text-gray-400 font-body leading-relaxed">Use these public channels for work inquiries, profile review, writing, code, and project context. Email is the cleanest path for direct outreach.</p>
+          </div>
+          <div class="glass-panel rounded-xl p-6 border border-primary/20 bg-surface-container-low/70">
+            <div class="font-label text-[10px] uppercase tracking-[0.25em] text-primary mb-3">Primary Contact</div>
+            <a class="text-2xl sm:text-3xl font-headline font-bold tracking-tight text-on-surface hover:text-primary transition-colors [overflow-wrap:anywhere]" href="${CONTACT_MAILTO}">${CONTACT_EMAIL}</a>
+            <p class="text-sm text-on-surface-variant mt-4 leading-relaxed">For roles, collaborations, project questions, or consulting conversations, start here and include the context you want reviewed.</p>
+          </div>
+        </div>
+      </section>
+      <section class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        ${contactLinks.map(renderContactLinkCard).join("")}
+      </section>
+      <section class="max-w-7xl mx-auto mt-16">
+        <div class="bg-surface-container-lowest border border-outline-variant/5 rounded-2xl p-8 md:p-10">
+          <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-center">
+            <div>
+              <h2 class="text-2xl md:text-3xl font-headline font-bold tracking-tight mb-3">Need context before reaching out?</h2>
+              <p class="text-gray-400 font-body leading-relaxed">The assistant can answer source-backed questions about James's work style, projects, writing, role fit, and accessibility context before you contact him directly.</p>
+            </div>
+            <button class="px-8 py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-label font-bold text-xs uppercase tracking-widest rounded-lg transition-transform active:scale-95 shadow-xl shadow-primary/10" data-page-link="home" data-focus-composer="true">ASK ASSISTANT</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="bg-surface-container-lowest py-12 px-4 md:px-8 border-t border-outline-variant/10">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="text-[#B1D09A] font-bold font-headline tracking-tighter text-lg">THE LIVING INTELLIGENCE</div>
+        <div class="flex flex-wrap justify-center gap-8">
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${CONTACT_MAILTO}">Email</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${X_URL}" target="_blank" rel="noopener noreferrer">X</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${MEDIUM_URL}" target="_blank" rel="noopener noreferrer">Medium</a>
+        </div>
+        <div class="text-gray-600 font-label text-[10px] uppercase tracking-widest">PUBLIC CONTACT SURFACE</div>
+      </div>
+    </footer>
+    ${renderMobileBottomNav("contact")}
+  `;
+}
+
+function renderContactLinkCard(link) {
+  return `
+    <article class="glass-panel bg-surface-container-low rounded-xl border border-outline-variant/10 p-6 hover:border-primary/30 hover:bg-surface-container-high/70 transition-all cursor-pointer min-h-[230px] flex flex-col" data-open-url="${escapeAttribute(link.url)}">
+      <div class="flex items-start justify-between gap-4 mb-6">
+        <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary">${escapeHtml(link.icon)}</span>
+        </div>
+        <span class="font-label text-[10px] uppercase tracking-widest text-primary">${escapeHtml(link.label)}</span>
+      </div>
+      <h2 class="text-2xl font-headline font-bold tracking-tight text-on-surface mb-3 [overflow-wrap:anywhere]">${escapeHtml(link.title)}</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">${escapeHtml(link.description)}</p>
+      <div class="mt-auto flex items-center justify-between pt-5 border-t border-outline-variant/10">
+        <span class="font-label text-[10px] uppercase tracking-widest text-gray-500">${escapeHtml(link.action)}</span>
+        <span class="material-symbols-outlined text-primary">arrow_forward</span>
+      </div>
+    </article>
+  `;
 }
 
 function renderEvidencePage() {
@@ -1708,6 +2108,7 @@ function renderProjectsPage() {
             </div>
             <div class="text-right">
               <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Designed &amp; Compiled by James AI Core</p>
+              <a class="inline-flex mt-3 font-label text-[10px] text-primary hover:text-on-surface uppercase tracking-[0.2em] transition-colors" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
               <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2024 THE LIVING INTELLIGENCE. ALL RIGHTS RESERVED.</p>
             </div>
           </div>
@@ -1951,7 +2352,10 @@ function extractMatchUrl(match) {
 
 function getPageFromHash() {
   const hash = window.location.hash.replace(/^#/, "").trim().toLowerCase();
-  if (hash === "writing" || hash === "evidence" || hash === "projects" || hash === "design" || hash === "health") {
+  if (hash === "evidence") {
+    return "contact";
+  }
+  if (hash === "writing" || hash === "contact" || hash === "projects" || hash === "design" || hash === "health") {
     return hash;
   }
   return "home";
@@ -2170,7 +2574,7 @@ function renderPrimaryNavLinks(activePage, variant = "top") {
     { page: "projects", label: "Artifacts" },
     { page: "design", label: "Design" },
     { page: "health", label: "Health" },
-    { page: "evidence", label: "Intelligence" }
+    { page: "contact", label: "Contact" }
   ];
 
   if (variant === "top") {
@@ -2201,7 +2605,7 @@ function renderMobileBottomNav(activePage) {
     { page: "projects", label: "Artifacts", shortLabel: "ART" },
     { page: "design", label: "Design", shortLabel: "DES" },
     { page: "health", label: "Health", shortLabel: "HLTH" },
-    { page: "evidence", label: "Intelligence", shortLabel: "INTEL" }
+    { page: "contact", label: "Contact", shortLabel: "CONT" }
   ];
 
   return `
@@ -2233,8 +2637,8 @@ function primaryPageIcon(page) {
       return "palette";
     case "health":
       return "health_and_safety";
-    case "evidence":
-      return "fact_check";
+    case "contact":
+      return "contact_mail";
     default:
       return "apps";
   }

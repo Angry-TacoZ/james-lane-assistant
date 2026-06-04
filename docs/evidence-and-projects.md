@@ -101,7 +101,7 @@ This should be represented as a deployed internal-facing or demonstration-orient
 James built a bot for an internal interview context related to a Pharmacy Technical BA position.
 
 Current state:
-- deployed at `https://caademoweb.web.app/`
+- older demo that is now offline; formerly hosted at `https://caademoweb.web.app/`
 - allows users to ask questions about recent CAA 2026 legislation
 - focuses on how the legislation affects CBC's relationship with PBMs
 - uses a PDF of the actual bill as the source of truth

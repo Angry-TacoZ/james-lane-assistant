@@ -6,6 +6,8 @@ Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
 Primary contact: tiburo13@gmail.com
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
+GitHub: https://github.com/Angry-TacoZ
+X: https://x.com/JamesLaneAI
 
 ## Purpose
 
@@ -24,7 +26,7 @@ The interactive assistant uses a lightweight retrieval-augmented generation appr
 - [Artifacts / Projects](https://jamesai.space/#projects)
 - [Design / Art and Visual Work](https://jamesai.space/#design)
 - [Health / Accessibility and Work Design](https://jamesai.space/#health)
-- [Intelligence / Evidence](https://jamesai.space/#evidence)
+- [Contact](https://jamesai.space/#contact)
 
 ## Primary AI-Readable Files
 

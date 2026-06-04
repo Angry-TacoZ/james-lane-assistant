@@ -91,6 +91,8 @@ const SAFE_ALIASES = {
   accommodations: ["remote", "hybrid", "work style", "health"],
   legislation: ["policy", "pbm", "caa"],
   pbm: ["legislation", "policy"],
+  lqri: ["benchmark", "model", "evaluation", "transcripts"],
+  benchmark: ["lqri", "model", "evaluation", "scoring"],
   proposal: ["claims", "assistant", "innovation", "governance"],
   governance: ["committee", "proposal"],
   cbc: ["proposal faq assistant", "claims ai pilot"],
@@ -247,6 +249,11 @@ const PROJECT_ENTITIES = [
     id: "living-resume-ai",
     questionPattern: /\b(living resume ai|living resume|interactive resume|james ai)\b/,
     sectionPattern: /\b(living resume ai|interactive resume|james ai)\b/
+  },
+  {
+    id: "lqri",
+    questionPattern: /\b(lqri|lqri v2|legitimate question response index|lqri-site|lqri\.web\.app|llm benchmark|model benchmark)\b/,
+    sectionPattern: /\b(lqri|lqri v2|legitimate question response index|lqri-site|lqri\.web\.app|llm benchmark|model benchmark)\b/
   },
   {
     id: "caa-2026-pbm-regulatory-assistant",
@@ -602,6 +609,8 @@ function getQueryPhrases(question) {
     "business analyst",
     "business analysis",
     "living resume ai",
+    "legitimate question response index",
+    "lqri v2",
     "caa 2026 pbm regulatory assistant",
     "blkvue ai security intake bot",
     "jameslaneai com",
@@ -810,11 +819,11 @@ function scoreSection(section, question, intent, modeId = null) {
     score += 5;
   }
 
-if (intent === "projects" && /project artifact links|art and design work|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
+if (intent === "projects" && /project artifact links|art and design work|living resume ai|legitimate question response index|lqri|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 10;
   }
 
-if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github|artifact|design|art|artwork|logo|motion/.test(normalizedQuestion) && /project artifact links|art and design work|living resume ai|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
+if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github|artifact|design|art|artwork|logo|motion|benchmark/.test(normalizedQuestion) && /project artifact links|art and design work|living resume ai|legitimate question response index|lqri|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
     score += 8;
   }
 
