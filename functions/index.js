@@ -2,7 +2,21 @@ const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 
 const anthropicKey = defineSecret("ANTHROPIC_API_KEY");
-const ALLOWED_ORIGIN = "https://james-lane-web-resume.web.app";
+const ALLOWED_ORIGINS = new Set([
+  "https://jamesai.space",
+  "https://www.jamesai.space",
+  "https://james-lane-web-resume.web.app"
+]);
+const MAX_QUESTION_CHARS = 500;
+const MAX_MATCHES = 8;
+const MAX_ITEMS_PER_MATCH = 8;
+const MAX_ITEM_CHARS = 800;
+const MAX_SOURCE_LABEL_CHARS = 80;
+const MAX_TITLE_CHARS = 160;
+const MAX_REQUEST_BYTES = 32000;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 25;
+const rateLimitBuckets = new Map();
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b(does not contain (any )?information about|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
@@ -11,6 +25,8 @@ const PROJECT_NAME_PATTERNS = [
   /\bliving resume ai\b/i,
   /\bliving resume\b/i,
   /\bcbc proposal faq assistant\b/i,
+  /\blegitimate question response index\b/i,
+  /\blqri\b/i,
   /\bcaa 2026 pbm regulatory assistant\b/i,
   /\bblkvue ai security intake bot\b/i,
   /\bjameslaneai\.com\b/i,
@@ -43,6 +59,76 @@ function delay(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+function applyCors(req, res) {
+  const origin = req.get("origin");
+  if (ALLOWED_ORIGINS.has(origin)) {
+    res.set("Access-Control-Allow-Origin", origin);
+  }
+  res.set("Vary", "Origin");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  return origin;
+}
+
+function isAllowedBrowserOrigin(req) {
+  const origin = req.get("origin");
+  return ALLOWED_ORIGINS.has(origin);
+}
+
+function isAllowedHost(req) {
+  const host = req.get("x-forwarded-host") || req.get("host") || "";
+  return /^(jamesai\.space|www\.jamesai\.space|james-lane-web-resume\.web\.app)$/i.test(host);
+}
+
+function isAllowedFetchMetadata(req) {
+  const fetchSite = req.get("sec-fetch-site");
+  if (!fetchSite) {
+    return false;
+  }
+  return fetchSite === "same-origin" || fetchSite === "same-site";
+}
+
+function getClientKey(req) {
+  return req.ip || req.socket?.remoteAddress || "unknown";
+}
+
+function isRateLimited(req) {
+  const now = Date.now();
+  const clientKey = getClientKey(req);
+  const existing = rateLimitBuckets.get(clientKey);
+
+  if (!existing || now - existing.startedAt >= RATE_LIMIT_WINDOW_MS) {
+    rateLimitBuckets.set(clientKey, { startedAt: now, count: 1 });
+    return false;
+  }
+
+  existing.count += 1;
+  return existing.count > MAX_REQUESTS_PER_WINDOW;
+}
+
+function cleanupRateLimitBuckets() {
+  const now = Date.now();
+  for (const [key, bucket] of rateLimitBuckets.entries()) {
+    if (now - bucket.startedAt >= RATE_LIMIT_WINDOW_MS * 2) {
+      rateLimitBuckets.delete(key);
+    }
+  }
+}
+
+function isValidMatch(match) {
+  return (
+    match &&
+    typeof match === "object" &&
+    typeof match.title === "string" &&
+    match.title.length <= MAX_TITLE_CHARS &&
+    typeof match.sourceLabel === "string" &&
+    match.sourceLabel.length <= MAX_SOURCE_LABEL_CHARS &&
+    Array.isArray(match.items) &&
+    match.items.length <= MAX_ITEMS_PER_MATCH &&
+    match.items.every((item) => typeof item === "string" && item.length <= MAX_ITEM_CHARS)
+  );
 }
 
 async function requestAnthropic({ apiKey, system, userMessage, maxAttempts = 3 }) {
@@ -175,13 +261,17 @@ function hasNamedWritingEvidence(question, matches) {
 }
 
 exports.synthesize = onRequest(
-  { secrets: [anthropicKey], cors: true },
+  { secrets: [anthropicKey], maxInstances: 2, concurrency: 10, timeoutSeconds: 30 },
   async (req, res) => {
+    applyCors(req, res);
+
     if (req.method === "OPTIONS") {
-      res.set("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
-      res.set("Access-Control-Allow-Methods", "POST");
-      res.set("Access-Control-Allow-Headers", "Content-Type");
-      res.status(204).send("");
+      res.status(isAllowedBrowserOrigin(req) ? 204 : 403).send("");
+      return;
+    }
+
+    if (!isAllowedBrowserOrigin(req) || !isAllowedHost(req) || !isAllowedFetchMetadata(req)) {
+      res.status(403).json({ error: "Forbidden origin" });
       return;
     }
 
@@ -190,9 +280,27 @@ exports.synthesize = onRequest(
       return;
     }
 
+    if (Number(req.get("content-length") || "0") > MAX_REQUEST_BYTES) {
+      res.status(413).json({ error: "Request too large" });
+      return;
+    }
+
+    cleanupRateLimitBuckets();
+    if (isRateLimited(req)) {
+      res.status(429).json({ error: "Too many requests" });
+      return;
+    }
+
     const { question, matches, mode } = req.body;
 
-    if (!question || !matches || !Array.isArray(matches)) {
+    if (
+      typeof question !== "string" ||
+      question.length > MAX_QUESTION_CHARS ||
+      !Array.isArray(matches) ||
+      matches.length === 0 ||
+      matches.length > MAX_MATCHES ||
+      !matches.every(isValidMatch)
+    ) {
       res.status(400).json({ error: "Missing question or matches" });
       return;
     }
@@ -254,7 +362,6 @@ ${getModePrompt(mode)}`;
       });
 
       if (!initialResponse.ok) {
-        res.set("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
         res.status(200).json({ answer: fallbackFormat(matches) });
         return;
       }
@@ -348,7 +455,6 @@ ${getModePrompt(mode)}`;
         }
       }
 
-      res.set("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
       res.status(200).json({ answer });
     } catch (err) {
       console.error("Synthesizer error:", err);
