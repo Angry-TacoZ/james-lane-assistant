@@ -274,6 +274,10 @@ describe("James AI retrieval", () => {
       modeId: "projects",
       preferredIntent: "projects"
     });
+    const cogfitResponse = askAssistant("What can you tell me about CogFit Jobs?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
     const vastResponse = askAssistant("What can you tell me about Vast Lands?", [], {
       modeId: "projects",
       preferredIntent: "projects"
@@ -294,6 +298,9 @@ describe("James AI retrieval", () => {
     expect(lqriResponse.refused).toBe(false);
     expect(lqriResponse.answer).toMatch(/Legitimate Question Response Index|LQRI v2|100-point|diagnostic flags/i);
     expect(lqriResponse.answer).toContain("[project-lqri]");
+    expect(cogfitResponse.refused).toBe(false);
+    expect(cogfitResponse.answer).toMatch(/CogFit Jobs|job ads|cognitive-fit|work-style-fit|environment-fit/i);
+    expect(cogfitResponse.answer).toContain("[project-cogfit-jobs]");
     expect(vastResponse.refused).toBe(false);
     expect(vastResponse.answer).toMatch(/Vast Lands|Babylon\.js|city-state builder|resident needs/i);
     expect(vastResponse.answer).toContain("[github-project-vast-lands]");
@@ -332,6 +339,7 @@ describe("James AI retrieval", () => {
     expect(repoResponse.refused).toBe(false);
     expect(repoResponse.answer).toContain("[live-project-links-index]");
     expect(repoResponse.answer).toContain("https://github.com/Angry-TacoZ/lqri-site");
+    expect(repoResponse.answer).toContain("https://cogfit-jobs.web.app/");
     expect(repoResponse.answer).toContain("https://github.com/Angry-TacoZ/vast-lands");
     expect(repoResponse.answer).not.toContain("[portfolio-media-index-portfolio-media-index-iron-tides-battleship-gameplay-demo]");
 

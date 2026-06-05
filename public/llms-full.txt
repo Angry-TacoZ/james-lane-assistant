@@ -72,6 +72,7 @@ This is fair to call lightweight retrieval-augmented generation. It is not an en
 - CAA 2026 PBM Regulatory Assistant: older demo now offline; formerly hosted at https://caademoweb.web.app/
 - BLKVue AI Security Intake Bot: https://blkvueai.web.app/
 - JamesLaneAI.com: https://jameslaneai.com/
+- CogFit Jobs: https://cogfit-jobs.web.app/
 - Cruis'n PA: https://cruisnpa.fun/
 - Masters of Metal playable demo: https://iron-shores.web.app/
 - Vast Lands: https://github.com/Angry-TacoZ/vast-lands

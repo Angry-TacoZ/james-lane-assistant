@@ -322,6 +322,7 @@ const resumeSourceCorpus = [
       "CAA 2026 PBM Regulatory Assistant: older source-grounded healthcare policy demo that is now offline; formerly hosted at https://caademoweb.web.app/.",
       "BLKVue AI Security Intake Bot: https://blkvueai.web.app/",
       "JamesLaneAI.com: https://jameslaneai.com/",
+      "CogFit Jobs: https://cogfit-jobs.web.app/",
       "Cruis'n PA: https://cruisnpa.fun/",
       "Masters of Metal playable demo: https://iron-shores.web.app/",
       "Vast Lands: private GitHub repo at https://github.com/Angry-TacoZ/vast-lands",
@@ -384,6 +385,19 @@ const resumeSourceCorpus = [
     items: [
       "Live link: https://jameslaneai.com/",
       "Created a public-facing AI consulting site with working business email infrastructure to package AI capabilities into client-understandable services and offerings."
+    ]
+  },
+  {
+    id: "project-cogfit-jobs",
+    group: "projects-catalog",
+    sourceLabel: "Live Firebase site",
+    referenceLabel: "CogFit Jobs",
+    title: "CogFit Jobs",
+    aliases: ["cogfit jobs", "cogfit", "cogfit-jobs.web.app", "job fit evaluator", "job ad evaluator", "job fit tool"],
+    items: [
+      "Live link: https://cogfit-jobs.web.app/",
+      "CogFit Jobs evaluates job ads against how James actually works.",
+      "The tool reframes hiring language into a clearer cognitive-fit, work-style-fit, and environment-fit signal instead of relying only on title matching."
     ]
   },
   {

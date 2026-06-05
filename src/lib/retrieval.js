@@ -93,6 +93,7 @@ const SAFE_ALIASES = {
   pbm: ["legislation", "policy"],
   lqri: ["benchmark", "model", "evaluation", "transcripts"],
   benchmark: ["lqri", "model", "evaluation", "scoring"],
+  cogfit: ["jobs", "fit", "job fit", "job ads", "evaluation"],
   proposal: ["claims", "assistant", "innovation", "governance"],
   governance: ["committee", "proposal"],
   cbc: ["proposal faq assistant", "claims ai pilot"],
@@ -269,6 +270,11 @@ const PROJECT_ENTITIES = [
     id: "jameslaneai-com",
     questionPattern: /\b(jameslaneai\.com|james lane ai dot com|consulting site)\b/,
     sectionPattern: /\b(jameslaneai\.com|james lane ai dot com|consulting site)\b/
+  },
+  {
+    id: "cogfit-jobs",
+    questionPattern: /\b(cogfit jobs|cogfit|cogfit-jobs\.web\.app|job fit tool|job fit evaluator|job ad evaluator)\b/,
+    sectionPattern: /\b(cogfit jobs|cogfit|cogfit-jobs\.web\.app|job fit tool|job fit evaluator|job ad evaluator)\b/
   },
   {
     id: "cruisn-pa",

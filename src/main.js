@@ -94,6 +94,19 @@ const PROJECT_PRESENTATION = {
       "Acts as the outward-facing commercial layer for James's AI work."
     ]
   },
+  "cogfit-jobs": {
+    emphasis: "FIT_ANALYSIS",
+    version: "LIVE_TOOL",
+    summary:
+      "Job-fit evaluation tool that checks posted roles against how James actually works instead of relying on title-level assumptions alone.",
+    featureBadges: ["Job Analysis", "Fit Framing", "Workflow Logic"],
+    icon: "work_history",
+    shortLabel: "CogFit Jobs",
+    detailBullets: [
+      "Frames job ads through practical cognitive fit, work-style fit, and environment-fit reasoning.",
+      "Turns vague hiring language into a more legible match or mismatch signal."
+    ]
+  },
   "cruisn-pa": {
     emphasis: "EXPERIMENTAL",
     version: "COMMUNITY_BUILD",

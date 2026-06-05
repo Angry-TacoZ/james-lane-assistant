@@ -32,6 +32,14 @@ export const liveProjects = [
     ref: "Page 2 / JamesLaneAI.com"
   },
   {
+    id: "cogfit-jobs",
+    title: "CogFit Jobs",
+    description:
+      "Job-fit evaluation tool that scores job ads against how James actually works, translating role language into a clearer cognitive and work-style fit signal.",
+    url: "https://cogfit-jobs.web.app/",
+    ref: "Live Firebase site / CogFit Jobs"
+  },
+  {
     id: "cruisn-pa",
     title: "Cruis'n PA",
     description:

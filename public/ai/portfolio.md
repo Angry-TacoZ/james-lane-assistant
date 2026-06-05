@@ -23,6 +23,11 @@
 - URL: https://jameslaneai.com/
 - Description: Public consulting site created to package James's AI capabilities into client-understandable services and offerings.
 
+### CogFit Jobs
+
+- URL: https://cogfit-jobs.web.app/
+- Description: Job-fit evaluation tool that scores job ads against how James actually works, translating role language into a clearer cognitive and work-style fit signal.
+
 ### Cruis'n PA
 
 - URL: https://cruisnpa.fun/
