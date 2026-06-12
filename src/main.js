@@ -592,13 +592,14 @@ async function runAssistantQuestion(modeId, question, options = {}) {
   });
 
   let answerText = retrieval.answer;
+  const answerQuestion = retrieval.effectiveQuestion ?? question;
 
   if (!retrieval.refused) {
-    answerText = composeLocalAnswer(retrieval.matches, mode, question);
+    answerText = composeLocalAnswer(retrieval.matches, mode, answerQuestion);
 
     if (canRemoteSynthesize) {
       try {
-        answerText = await synthesize(question, retrieval.matches, { mode: modeId });
+        answerText = await synthesize(answerQuestion, retrieval.matches, { mode: modeId });
       } catch (error) {
         console.error("Synthesis fallback used", error);
       }

@@ -18,7 +18,7 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 25;
 const rateLimitBuckets = new Map();
 
-const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document)\b/i;
+const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b(does not contain (any )?information about|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
 const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|approved sources do not define the role requirements|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
 const PROJECT_NAME_PATTERNS = [
@@ -30,6 +30,8 @@ const PROJECT_NAME_PATTERNS = [
   /\bcaa 2026 pbm regulatory assistant\b/i,
   /\bblkvue ai security intake bot\b/i,
   /\bjameslaneai\.com\b/i,
+  /\bcogfit jobs\b/i,
+  /\bcogfit-jobs\.web\.app\b/i,
   /\bmasters of metal\b/i,
   /\biron shores\b/i,
   /\biron tides\b/i
@@ -339,6 +341,8 @@ STRICT RULES:
 - Start by answering the user's real question directly instead of opening with long framing.
 - If the matched source material contains concrete tools, methods, projects, or work examples that bear on the question, mention the strongest ones instead of speaking only in generalities.
 - If the matched source material already contains concrete examples, do not say there are no concrete examples.
+- If the user asks for an example, choose the clearest concrete project, work item, process change, or artifact in the matched excerpts and explain what it demonstrates.
+- Do not say you need a more specific example when the matched excerpts contain any project, job, tool, artifact, workflow, or documented behavior that can illustrate the answer.
 - When the matched source material is public writing, treat it as published essays or analysis that James chose to make public, not as hidden internal cognition or private thought beyond the text itself.
 - Use bullets only when they make the answer clearer than prose.
 
@@ -378,7 +382,7 @@ ${getModePrompt(mode)}`;
       if (BAD_META_RESPONSE_PATTERN.test(answer)) {
         const repairResponse = await requestAnthropic({
           apiKey: anthropicKey.value(),
-          system: `${SYSTEM_PROMPT}\n\nREPAIR RULES:\n- Your previous answer improperly talked about the source excerpts as if they were incomplete or cut off. Do not do that.\n- Answer directly from the provided source material.\n- If the excerpts support a partial answer, give the partial answer directly.\n- If limits remain, describe them plainly without asking for more material or saying the excerpts are incomplete.`,
+          system: `${SYSTEM_PROMPT}\n\nREPAIR RULES:\n- Your previous answer improperly talked about the source excerpts as if they were incomplete, cut off, or lacked a usable example. Do not do that.\n- Answer directly from the provided source material.\n- If the user asked for an example, choose the clearest concrete project, work item, process change, or artifact from the excerpts and explain what it demonstrates.\n- If the excerpts support a partial answer, give the partial answer directly.\n- If limits remain, describe them plainly without asking for more material or saying the excerpts are incomplete.`,
           userMessage,
           maxAttempts: 2
         });

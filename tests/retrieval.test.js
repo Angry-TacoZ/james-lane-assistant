@@ -35,6 +35,43 @@ describe("James AI retrieval", () => {
     expect(response.answer).toContain("[evidence-and-projects-");
   });
 
+  it("answers vague example follow-ups from recent context instead of refusing", () => {
+    const response = askAssistant(
+      "give me an example",
+      [
+        {
+          role: "user",
+          content: "Who is James Lane as a candidate?"
+        },
+        {
+          role: "assistant",
+          content:
+            "James is a nontraditional candidate whose strongest value appears in reasoning-heavy, improvement-oriented work."
+        }
+      ],
+      {
+        modeId: "profile",
+        preferredIntent: "identity"
+      }
+    );
+
+    expect(response.refused).toBe(false);
+    expect(response.effectiveQuestion).toMatch(/Who is James Lane as a candidate\?.*give me an example/s);
+    expect(response.answer).toMatch(/proposal|assistant|workflow|project|artifact|process|build/i);
+    expect(response.answer).not.toBe(refusalMessage);
+  });
+
+  it("uses concrete approved work examples for broad example requests", () => {
+    const response = askAssistant("Give me a concrete example of James applying systems thinking to a problem.", [], {
+      modeId: "evidence",
+      preferredIntent: "evidence"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toMatch(/proposal|assistant|workflow|legislation|LQRI|CogFit|artifact/i);
+    expect(response.answer).not.toMatch(/need.*source material|specific example|meaningful example/i);
+  });
+
   it("prioritizes business-facing AI and process-improvement evidence over game-dev examples for broad employer-facing questions", () => {
     const response = askAssistant("What projects best show James Lane's AI and process-improvement work?", [], {
       modeId: "evidence",

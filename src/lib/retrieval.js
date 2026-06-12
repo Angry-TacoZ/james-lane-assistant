@@ -433,6 +433,10 @@ function isFollowUpQuestion(question) {
     return true;
   }
 
+  if (/\b(example|examples|specific example|concrete example|show me one|give me one)\b/i.test(trimmed)) {
+    return true;
+  }
+
   return /\b(there|that|those|them|it|he|his|this role|that role)\b/i.test(trimmed);
 }
 
@@ -459,6 +463,14 @@ function getIntent(question, preferredIntent = null) {
   const matchedProjectEntity = getMatchedProjectEntity(normalized);
   const matchedWritingEntity = getMatchedWritingEntity(normalized);
 
+  if (ART_DESIGN_QUERY_PATTERN.test(normalized)) {
+    return "projects";
+  }
+
+  if (isExampleRequest(normalized) && /\b(project|work|built|build|process|workflow|systems thinking|example|evidence)\b/.test(normalized)) {
+    return "evidence";
+  }
+
   if (/\b(email|phone|linkedin|contact)\b/.test(normalized)) {
     return "contact";
   }
@@ -476,10 +488,6 @@ function getIntent(question, preferredIntent = null) {
 
   if (/\b(location|remote|hybrid|relocate|relocation)\b/.test(normalized)) {
     return "workLocation";
-  }
-
-  if (ART_DESIGN_QUERY_PATTERN.test(normalized)) {
-    return "projects";
   }
 
   if (
@@ -571,6 +579,10 @@ function getIntent(question, preferredIntent = null) {
   }
 
   return preferredIntent;
+}
+
+function isExampleRequest(normalizedQuestion) {
+  return /\b(example|examples|specific example|concrete example|show me one|give me one)\b/.test(normalizedQuestion);
 }
 
 function getMatchedProjectEntity(normalizedQuestion) {
@@ -823,6 +835,16 @@ function scoreSection(section, question, intent, modeId = null) {
 
   if (intent === "evidence" && /evidence pattern summary|core evidence themes|major project and evidence areas|productive build pattern/.test(normalizedTitle)) {
     score += 5;
+  }
+
+  if (
+    intent === "evidence" &&
+    isExampleRequest(normalizedQuestion) &&
+    /claims ai proposal|proposal faq assistant bot|pharmacy technical ba interview bot grounded in legislation|living resume ai|legitimate question response index|cogfit jobs|blkvue ai security intake bot|project artifact links|productive build pattern|major project and evidence areas/.test(
+      normalizedTitle
+    )
+  ) {
+    score += 12;
   }
 
 if (intent === "projects" && /project artifact links|art and design work|living resume ai|legitimate question response index|lqri|caa 2026 pbm regulatory assistant|blkvue ai security intake bot|jameslaneai com|cruisn pa|masters of metal|iron shores playable demo|vast lands|x tige|iron horizon ww2 battleship prototype|composio dependency graph|portfolio media index/.test(normalizedTitle)) {
@@ -1349,6 +1371,38 @@ function pickSections(scoredSections, intent, question = "") {
       return [...projectSections.slice(0, 4), ...portfolioMedia.slice(0, 1)].slice(0, 5);
     }
 
+    if (intent === "evidence" && isExampleRequest(normalizedQuestion)) {
+      const selected = [];
+      const targets = [
+        /claims ai proposal and governance track internal innovation work/,
+        /proposal faq assistant bot/,
+        /pharmacy technical ba interview bot grounded in legislation/,
+        /living resume ai/,
+        /legitimate question response index/,
+        /cogfit jobs/,
+        /evidence pattern summary|core evidence themes|productive build pattern/
+      ];
+
+      for (const pattern of targets) {
+        const found = limitedSections.find((entry) => pattern.test(normalizeText(entry.section.title)));
+        if (found && !selected.includes(found)) {
+          selected.push(found);
+        }
+      }
+
+      for (const entry of limitedSections) {
+        if (selected.length >= 4) {
+          break;
+        }
+
+        if (!selected.includes(entry)) {
+          selected.push(entry);
+        }
+      }
+
+      return selected;
+    }
+
     if (intent === "writing") {
       const catalogSections = limitedSections.filter((entry) => entry.section.group === "writing-catalog");
       const articleSections = limitedSections.filter((entry) => entry.section.group === "writing-corpus");
@@ -1615,24 +1669,28 @@ function formatMatchItems(items) {
 }
 
 export function askAssistant(question, history = [], options = {}) {
-  const { intent, matches: scoredSections } = findMatches(question, history, options);
+  const { intent, effectiveQuestion, matches: scoredSections } = findMatches(question, history, options);
 
   if (isOutOfScope(scoredSections, question)) {
     return {
       assistantName,
       answer: refusalMessage,
       refused: true,
+      intent,
+      effectiveQuestion,
       matches: []
     };
   }
 
-  const matches = buildAnswerLines(scoredSections, question, intent);
+  const matches = buildAnswerLines(scoredSections, effectiveQuestion, intent);
 
   if (matches.length === 0) {
     return {
       assistantName,
       answer: refusalMessage,
       refused: true,
+      intent,
+      effectiveQuestion,
       matches: []
     };
   }
@@ -1649,6 +1707,8 @@ export function askAssistant(question, history = [], options = {}) {
     assistantName,
     answer,
     refused: false,
+    intent,
+    effectiveQuestion,
     matches
   };
 }
