@@ -69,7 +69,6 @@
 
 - BMW Z4 Anatomy Plate: automotive technical layout study.
 - BMW Z4 Blueprint Sheet: automotive blueprint and measurement study.
-- Appalachia Technologies: regional technology logo concept.
 - Cruis'n PA Event Poster: car-club event flyer for scenic route packaging.
 - Cruis'n PA Scenic Banner: wide-format car-club banner system.
 - Cruis'n PA Car Club: badge-style club logo concept.

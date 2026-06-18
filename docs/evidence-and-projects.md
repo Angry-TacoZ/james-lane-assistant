@@ -265,7 +265,6 @@ James has an Art & Design Lens in the James AI site that showcases AI-assisted v
 Current examples include:
 - BMW Z4 Anatomy Plate: a Cruis'n PA-adjacent automotive technical layout study using product callouts, dimensions, and brochure-style hierarchy
 - BMW Z4 Blueprint Sheet: a Cruis'n PA-adjacent blueprint treatment focused on measurement rhythm, linework clarity, and technical automotive visual language
-- Appalachia Technologies: a regional technology brand-mark concept using mountain forms, keystone geometry, and bold utility lettering
 - Cruis'n PA Event Poster: a car-club route flyer built around scenic roads, castles, and clear meet-up details
 - Cruis'n PA Scenic Banner and Cruis'n PA Car Club logo: brand surfaces for the Cruis'n PA car-club concept and website at `https://cruisnpa.fun/`
 - Editorial Freedom Poster: an editorial illustration study built around conflict, speech, protest, and symbolic contrast

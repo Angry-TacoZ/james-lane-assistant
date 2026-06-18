@@ -22,16 +22,6 @@ export const artDesignPortfolio = [
     variant: "wide"
   },
   {
-    id: "appalachia-technologies",
-    title: "Appalachia Technologies",
-    category: "Brand mark",
-    image: "/images/art-design/appalachia-technologies-logo.jpg",
-    alt: "Appalachia Technologies logo with green mountains inside a keystone-shaped mark.",
-    description:
-      "Regional technology identity concept using mountain forms, keystone geometry, and bold utility lettering.",
-    tags: ["logo", "regional", "brand"]
-  },
-  {
     id: "cruisn-pa-castles",
     title: "Cruis'n PA Event Poster",
     category: "Event poster",
