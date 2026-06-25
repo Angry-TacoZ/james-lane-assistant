@@ -1873,7 +1873,7 @@ function renderArtDesignCard(entry) {
   const imageClass = isPoster ? "aspect-[3/4]" : isWide ? "aspect-[16/7]" : "aspect-[4/3]";
   const contentClass = isWide ? "min-h-[170px]" : "min-h-[230px]";
   const media = entry.mediaType === "video"
-    ? `<video class="w-full ${imageClass} object-cover opacity-90 group-hover:scale-[1.035] transition-transform duration-700" src="${escapeAttribute(entry.image)}" autoplay muted loop playsinline aria-label="${escapeAttribute(entry.alt)}"></video>`
+    ? `<video class="w-full ${imageClass} object-contain opacity-90 group-hover:scale-[1.035] transition-transform duration-700" src="${escapeAttribute(entry.image)}" autoplay muted loop playsinline aria-label="${escapeAttribute(entry.alt)}"></video>`
     : `<img class="w-full ${imageClass} object-cover opacity-90 group-hover:scale-[1.035] transition-transform duration-700" src="${escapeAttribute(entry.image)}" alt="${escapeAttribute(entry.alt)}"/>`;
 
   return `

@@ -184,7 +184,7 @@ describe("James AI retrieval", () => {
     });
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/Art & Design|DeFiLlama|logo animation|Cruis'?n PA|visual/i);
+    expect(response.answer).toMatch(/Art & Design|DeFiLlama|CogFit|logo animation|Cruis'?n PA|visual/i);
     expect(response.answer).toContain("[art-design-catalog]");
     expect(response.answer).not.toContain("[live-project-links-index]");
   });

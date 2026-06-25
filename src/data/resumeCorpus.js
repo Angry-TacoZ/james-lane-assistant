@@ -131,6 +131,9 @@ const artDesignCatalogCorpus = {
     "motion design",
     "logo animation",
     "defillama",
+    "cogfit animation",
+    "cogfit cog animation",
+    "cogfit logo motion",
     "cruisn pa art",
     "cruis'n pa art",
     "car club art"

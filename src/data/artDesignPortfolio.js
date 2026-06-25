@@ -75,6 +75,17 @@ export const artDesignPortfolio = [
     tags: ["motion", "logo", "interaction"]
   },
   {
+    id: "cogfit-cog-animation",
+    title: "CogFit Cog Animation",
+    category: "Logo motion",
+    image: "/images/art-design/cogfit-cog-animation.mp4",
+    mediaType: "video",
+    alt: "Animated CogFit cog mark rotating as a short logo-motion study.",
+    description:
+      "A Codex-assisted motion-design asset for CogFit, turning the product's cog motif into a short animated identity piece for the job-fit tool.",
+    tags: ["CogFit", "motion", "logo"]
+  },
+  {
     id: "battlefield-blitz",
     title: "Battlefield Blitz Poster",
     category: "Cruis'n PA route poster",

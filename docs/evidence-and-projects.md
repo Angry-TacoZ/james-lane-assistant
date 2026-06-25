@@ -269,6 +269,7 @@ Current examples include:
 - Cruis'n PA Scenic Banner and Cruis'n PA Car Club logo: brand surfaces for the Cruis'n PA car-club concept and website at `https://cruisnpa.fun/`
 - Editorial Freedom Poster: an editorial illustration study built around conflict, speech, protest, and symbolic contrast
 - DeFiLlama Logo Animation: a motion-design artifact James created from a static company logo, showing brand-motion and click-response animation work rather than a full product build
+- CogFit Cog Animation: a Codex-assisted motion-design asset for CogFit, turning the product's cog motif into a short animated identity piece for the job-fit tool
 - Battlefield Blitz Poster: a Cruis'n PA cruise poster for a Gettysburg-area battlefield route, not a game poster
 - Harshbarger's Sub'n Malt: a playful restaurant logo exploration using bold lettering, circular packaging, and retro food-sign energy
 

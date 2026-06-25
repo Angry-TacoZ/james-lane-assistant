@@ -74,6 +74,7 @@
 - Cruis'n PA Car Club: badge-style club logo concept.
 - Editorial Freedom Poster: symbolic editorial illustration.
 - DeFiLlama Logo Animation: click-response logo animation based on a static DeFiLlama company mark.
+- CogFit Cog Animation: Codex-assisted logo-motion asset for the CogFit job-fit tool.
 - Battlefield Blitz Poster: Cruis'n PA cruise poster for a Gettysburg-area battlefield route.
 - Harshbarger's Sub'n Malt: retro restaurant logo concept.
 
