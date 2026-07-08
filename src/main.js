@@ -40,6 +40,8 @@ const CONSULTING_URL = "https://jameslaneai.com/";
 const PROFILE_PHOTO_URL = "/images/profile/jamesprofile3.jpg";
 const AUDIO_GUIDE_URL = "/audio/james-ai-audio-guide.mp3";
 const AUDIO_GUIDE_STORAGE_KEY = "james-ai-audio-guide-dismissed";
+// Temporary voiceover hold: use "prompt" here to restore the original first-visit popup.
+const AUDIO_GUIDE_FIRST_VISIT_STATUS = "dock";
 
 const PROJECT_PRESENTATION = {
   "living-resume-ai": {
@@ -236,9 +238,11 @@ function ensureHead() {
 
 function getInitialAudioGuideStatus() {
   try {
-    return window.localStorage.getItem(AUDIO_GUIDE_STORAGE_KEY) === "true" ? "closed" : "prompt";
+    return window.localStorage.getItem(AUDIO_GUIDE_STORAGE_KEY) === "true"
+      ? "closed"
+      : AUDIO_GUIDE_FIRST_VISIT_STATUS;
   } catch {
-    return "prompt";
+    return AUDIO_GUIDE_FIRST_VISIT_STATUS;
   }
 }
 
@@ -694,28 +698,31 @@ function composeLocalAnswer(matches, mode, question) {
 
 function render() {
   document.title = PAGE_TITLES[pageState.page] ?? PAGE_TITLES.home;
+  let pageHtml = "";
 
   switch (pageState.page) {
     case "writing":
-      app.innerHTML = renderWritingPage();
+      pageHtml = renderWritingPage();
       break;
     case "contact":
-      app.innerHTML = renderContactPage();
+      pageHtml = renderContactPage();
       break;
     case "projects":
-      app.innerHTML = renderProjectsPage();
+      pageHtml = renderProjectsPage();
       break;
     case "design":
-      app.innerHTML = renderArtDesignPage();
+      pageHtml = renderArtDesignPage();
       break;
     case "health":
-      app.innerHTML = renderHealthPage();
+      pageHtml = renderHealthPage();
       break;
     case "home":
     default:
-      app.innerHTML = renderHomePage();
+      pageHtml = renderHomePage();
       break;
   }
+
+  app.innerHTML = `${pageHtml}${renderGlobalAudioGuideSurface()}`;
 
   if (pageState.focusComposer && pageState.page === "home") {
     const composer = document.querySelector("[data-home-input]");
@@ -965,7 +972,6 @@ function renderHomePage() {
       </div>
     </footer>
     ${renderMobileBottomNav("home")}
-    ${renderAudioGuideOverlay()}
   `;
 }
 
@@ -1018,6 +1024,23 @@ function renderAudioGuideOverlay() {
         </div>
       </section>
     </div>
+  `;
+}
+
+function renderGlobalAudioGuideSurface() {
+  if (pageState.audioGuideStatus === "closed") {
+    return renderMobileAudioGuideLauncher();
+  }
+
+  return renderAudioGuideOverlay();
+}
+
+function renderMobileAudioGuideLauncher() {
+  return `
+    <button class="md:hidden fixed left-4 bottom-24 z-[60] bg-surface-container-low/95 border border-primary/20 text-on-surface rounded-xl px-4 py-3 shadow-[0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl flex items-center gap-2 active:scale-[0.98] transition-transform" data-audio-guide-action="open" aria-label="Open audio guide">
+      <span class="material-symbols-outlined text-primary text-base">spatial_audio</span>
+      <span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">Guide</span>
+    </button>
   `;
 }
 

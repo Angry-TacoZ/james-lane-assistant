@@ -2,6 +2,9 @@
   "name": "james-ai-functions",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "test": "node --test"
+  },
   "engines": {
     "node": ">=22"
   },

@@ -24,6 +24,7 @@ export default defineConfig({
     }
   },
   test: {
-    environment: "node"
+    environment: "node",
+    exclude: ["functions/**/*.test.js", "node_modules/**", "dist/**"]
   }
 });

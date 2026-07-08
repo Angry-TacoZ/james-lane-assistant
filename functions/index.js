@@ -1,5 +1,6 @@
 const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
+const approvedSourceAllowlist = require("./approved-source-allowlist.json");
 
 const anthropicKey = defineSecret("ANTHROPIC_API_KEY");
 const ALLOWED_ORIGINS = new Set([
@@ -11,12 +12,14 @@ const MAX_QUESTION_CHARS = 500;
 const MAX_MATCHES = 8;
 const MAX_ITEMS_PER_MATCH = 8;
 const MAX_ITEM_CHARS = 800;
+const MAX_REF_CHARS = 180;
 const MAX_SOURCE_LABEL_CHARS = 80;
 const MAX_TITLE_CHARS = 160;
 const MAX_REQUEST_BYTES = 32000;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 25;
 const rateLimitBuckets = new Map();
+const approvedMatchesByRef = new Map(Object.entries(approvedSourceAllowlist.refs || {}));
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b(does not contain (any )?information about|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
@@ -120,16 +123,26 @@ function cleanupRateLimitBuckets() {
 }
 
 function isValidMatch(match) {
+  const approvedMatch = match?.ref ? approvedMatchesByRef.get(match.ref) : null;
+  const approvedItems = approvedMatch ? new Set(approvedMatch.items) : null;
+
   return (
     match &&
     typeof match === "object" &&
+    typeof match.ref === "string" &&
+    match.ref.length <= MAX_REF_CHARS &&
+    Boolean(approvedMatch) &&
     typeof match.title === "string" &&
     match.title.length <= MAX_TITLE_CHARS &&
+    match.title === approvedMatch.title &&
     typeof match.sourceLabel === "string" &&
     match.sourceLabel.length <= MAX_SOURCE_LABEL_CHARS &&
+    match.sourceLabel === approvedMatch.sourceLabel &&
+    typeof match.referenceLabel === "string" &&
+    match.referenceLabel === approvedMatch.referenceLabel &&
     Array.isArray(match.items) &&
     match.items.length <= MAX_ITEMS_PER_MATCH &&
-    match.items.every((item) => typeof item === "string" && item.length <= MAX_ITEM_CHARS)
+    match.items.every((item) => typeof item === "string" && item.length <= MAX_ITEM_CHARS && approvedItems.has(item.trim()))
   );
 }
 
@@ -466,3 +479,7 @@ ${getModePrompt(mode)}`;
     }
   }
 );
+
+exports._test = {
+  isValidMatch
+};

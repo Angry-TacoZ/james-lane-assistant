@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:functions-allowlist": "vite-node ./scripts/generate-functions-source-allowlist.mjs",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:functions": "npm --prefix functions test",
     "verify": "vite-node ./scripts/verify-questions.mjs"
   },
   "devDependencies": {
