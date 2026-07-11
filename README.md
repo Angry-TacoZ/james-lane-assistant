@@ -64,11 +64,15 @@ npm run test
 npm run test:functions
 npm run build
 npm run verify
+npm run perf:lighthouse
 npm run verify:responsive
 npm run verify:all
 ```
 
 `verify:all` regenerates the Functions allowlist, runs application and Functions tests, builds the site, exercises the retrieval evaluation set, and checks all primary routes plus the audio-guide flow at desktop and mobile viewports. GitHub Actions runs the same verification workflow on pull requests and pushes to `main`.
+- `verify:responsive` builds on the current `dist` output by starting a local preview and checking each major route on mobile and desktop viewports.
+- `perf:lighthouse` creates a local production build, runs a Lighthouse performance audit, and writes the current report to `output/lighthouse-performance.json`. The baseline and comparison method are documented in `docs/performance.md`.
+- Playwright-managed Chromium must be installed once with `npx playwright install chromium`. CI installs Chromium and its Linux system dependencies before running the full gate.
 
 When changes affect the source corpus, commit the regenerated `functions/approved-source-allowlist.json` alongside the source change. It is part of the Function's server-side validation contract.
 
