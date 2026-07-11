@@ -29,7 +29,10 @@ npm install
 npm run test
 npm run verify
 npm run build
+npm run perf:lighthouse
 ```
+
+`perf:lighthouse` creates a local production build, runs a Lighthouse performance audit, and writes the current report to `output/lighthouse-performance.json`. The baseline and measured before/after results are in `docs/performance.md`.
 
 ## Firebase
 

@@ -1,17 +1,8 @@
-import "./styles.css";
-
-import {
-  approvedSources,
-  refusalMessage,
-  sourceCorpus
-} from "./data/resumeCorpus.js";
 import { liveProjects } from "./data/liveProjects.js";
 import { artDesignPortfolio } from "./data/artDesignPortfolio.js";
 import { healthConditions, healthProfileIntro } from "./data/healthProfile.js";
 import { profileModes } from "./data/profileModes.js";
 import { writingPortfolio } from "./data/writingPortfolio.js";
-import { askAssistant } from "./lib/retrieval.js";
-import { synthesize } from "./lib/synthesizer.js";
 
 const app = document.querySelector("#app");
 const modeMap = new Map(profileModes.map((mode) => [mode.id, mode]));
@@ -218,6 +209,8 @@ const pageState = {
 };
 let lastTrackedPath = "";
 let audioGuide = null;
+let assistantModules = null;
+let assistantModulesPromise = null;
 
 void init();
 
@@ -226,10 +219,66 @@ async function init() {
   seedInitialState();
   render();
   bindGlobalEvents();
+  scheduleNonCriticalWork(loadAnalytics);
+  scheduleNonCriticalWork(async () => {
+    await ensureModeSession(pageState.modeId);
+    if (pageState.page === "home") {
+      render();
+    }
+  });
 }
 
 function seedInitialState() {
-  ensureModeSession(pageState.modeId);
+  const mode = modeMap.get(pageState.modeId);
+
+  if (!mode || pageState.sessions[mode.id]) {
+    return;
+  }
+
+  pageState.sessions[mode.id] = {
+    history: [
+      {
+        role: "assistant",
+        content: mode.welcomeMessage
+      }
+    ],
+    lastMatches: [],
+    lastQuestion: mode.starterQuestions[0],
+    lastAnswer: mode.welcomeMessage,
+    seedStarted: false,
+    seedPromise: null
+  };
+  pageState.latestContext = buildLatestContext(mode.id);
+}
+
+function scheduleNonCriticalWork(callback) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, { timeout: 3000 });
+    return;
+  }
+
+  window.setTimeout(callback, 1200);
+}
+
+async function getAssistantModules() {
+  if (assistantModules) {
+    return assistantModules;
+  }
+
+  assistantModulesPromise ??= Promise.all([
+    import("./data/resumeCorpus.js"),
+    import("./lib/retrieval.js"),
+    import("./lib/synthesizer.js")
+  ]).then(([resumeCorpus, retrieval, synthesizer]) => {
+    assistantModules = {
+      ...resumeCorpus,
+      askAssistant: retrieval.askAssistant,
+      synthesize: synthesizer.synthesize
+    };
+    return assistantModules;
+  });
+
+  return assistantModulesPromise;
 }
 
 function ensureHead() {
@@ -530,6 +579,7 @@ async function handleAsk(question) {
   render();
 
   try {
+    await ensureModeSession(pageState.modeId);
     await runAssistantQuestion(pageState.modeId, trimmed);
     pageState.homeDraft = "";
     pageState.focusComposer = false;
@@ -590,6 +640,7 @@ async function runAssistantQuestion(modeId, question, options = {}) {
     return;
   }
 
+  const { askAssistant, refusalMessage, synthesize } = await getAssistantModules();
   const retrieval = askAssistant(question, session.history, {
     modeId,
     preferredIntent: mode.defaultIntent
@@ -648,7 +699,7 @@ function buildLatestContext(modeId) {
 
 function composeLocalAnswer(matches, mode, question) {
   if (!matches.length) {
-    return refusalMessage;
+    return assistantModules?.refusalMessage ?? "I don't have enough approved source material to answer that.";
   }
 
   const lead = matches[0];
@@ -751,6 +802,22 @@ function trackPageView() {
     page_path: path,
     send_to: GA_MEASUREMENT_ID
   });
+}
+
+function loadAnalytics() {
+  const analyticsScript = document.createElement("script");
+  analyticsScript.async = true;
+  analyticsScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+  analyticsScript.addEventListener("load", () => {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag("js", new Date());
+    window.gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
+    trackPageView();
+  });
+  document.head.append(analyticsScript);
 }
 
 function scrollHomeChatToBottom() {
@@ -2141,7 +2208,7 @@ function renderProjectsPage() {
             <div class="flex items-center gap-12">
               <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">PROJECT_ARTIFACTS</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${liveProjects.length}</p></div>
               <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">RESPONSE_FIDELITY</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">SOURCE-BOUND</p></div>
-              <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">VERIFIED_SOURCES</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${approvedSources.length}</p></div>
+              <div><p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">VERIFIED_SOURCES</p><p class="text-2xl font-headline font-bold text-on-surface tracking-tighter">${assistantModules?.approvedSources?.length ?? "SOURCE-BOUND"}</p></div>
             </div>
             <div class="text-right">
               <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Designed &amp; Compiled by James AI Core</p>
@@ -2537,7 +2604,7 @@ function fallbackEvidenceMatches() {
 function sourceGroupBreakdown(matches) {
   const raw = {};
   for (const match of matches) {
-    const source = sourceCorpus.find((entry) => entry.id === match.ref);
+    const source = assistantModules?.sourceCorpus?.find((entry) => entry.id === match.ref);
     const group = source?.group ?? "resume-pdf";
     raw[group] = (raw[group] ?? 0) + 1;
   }
@@ -2567,7 +2634,7 @@ function sourceGroupLabel(group) {
 }
 
 function deriveEvidenceLabel(match, index) {
-  const source = sourceCorpus.find((entry) => entry.id === match.ref);
+  const source = assistantModules?.sourceCorpus?.find((entry) => entry.id === match.ref);
   const group = source?.group ?? "resume-pdf";
   const prefix =
     {

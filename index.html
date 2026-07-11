@@ -29,25 +29,20 @@
       content="AI portfolio and living resume for James Lane, focused on practical AI implementation and workflow improvement."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/src/styles.css" as="style" />
+    <link rel="stylesheet" href="/src/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;700&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap&text=addsettingsfact_checkterminaldescriptioncontact_mailspatial_audiocloseplay_arrowreplayforumrobot_2sendhourglass_topopen_in_newaccount_circlequery_statshomeboltauto_storieschevron_leftchevron_rightsearchhubarrow_forwardverifiedspeedshieldlockcheck_circlepalettehealth_and_safetyprivacy_tipmedical_informationarticlepsychologybuildauto_awesomework_historysports_esportsdeployed_codeanchoraccount_treedirections_carlanguageroutemailbadgecodealternate_email"
     />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EVR1CM68J6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-EVR1CM68J6", { send_page_view: false });
-    </script>
     <style>
       html,
       body {
@@ -149,6 +144,49 @@
         padding-left: 1rem;
       }
 
+      .app-loading-shell {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 2rem;
+        background: #121415;
+        color: #e2e2e5;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      .app-loading-shell__content {
+        width: min(100%, 70rem);
+      }
+
+      .app-loading-shell__label,
+      .app-loading-shell__line {
+        display: block;
+        border-radius: 0.25rem;
+        background: #282a2c;
+      }
+
+      .app-loading-shell__label {
+        width: 12rem;
+        height: 0.75rem;
+        margin-bottom: 2rem;
+      }
+
+      .app-loading-shell__line--title {
+        width: min(100%, 33rem);
+        height: clamp(3.5rem, 9vw, 6rem);
+        margin-bottom: 1rem;
+      }
+
+      .app-loading-shell__line--copy {
+        width: min(100%, 42rem);
+        height: 1.25rem;
+        margin-top: 0.75rem;
+      }
+
+      .app-loading-shell__line--copy-short {
+        width: min(72%, 28rem);
+      }
+
       @view-transition {
         navigation: none;
       }
@@ -213,7 +251,15 @@
       </main>
     </noscript>
     <div id="app">
-      <main class="static-agent-fallback">
+      <main class="app-loading-shell" aria-label="Loading James AI">
+        <div class="app-loading-shell__content">
+          <span class="app-loading-shell__label"></span>
+          <span class="app-loading-shell__line app-loading-shell__line--title"></span>
+          <span class="app-loading-shell__line app-loading-shell__line--copy"></span>
+          <span class="app-loading-shell__line app-loading-shell__line--copy app-loading-shell__line--copy-short"></span>
+        </div>
+      </main>
+      <main class="static-agent-fallback" hidden>
         <span class="static-agent-fallback__eyebrow">Static crawler fallback / JavaScript app shell</span>
         <h1>James AI: source-grounded living resume and portfolio.</h1>
         <p>
