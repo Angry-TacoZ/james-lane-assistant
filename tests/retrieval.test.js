@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { refusalMessage } from "../src/data/resumeCorpus.js";
+import { refusalMessage, sourceCorpus } from "../src/data/resumeCorpus.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
@@ -537,6 +537,40 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/nontraditional|credential|degree|reasoning|interaction|work samples|resume/i);
     expect(response.answer).toMatch(/\[(core-identity|role-fit-model)-/);
     expect(response.answer).not.toMatch(/Credentials do not matter|James can do anything if given a chance/i);
+  });
+
+  it("preserves prohibited representation claims as boundary metadata, not answer evidence", () => {
+    const prohibitedClaims = sourceCorpus.flatMap((section) =>
+      (section.boundaries ?? []).flatMap((boundary) => boundary.prohibitedClaims)
+    );
+    const answerEvidence = sourceCorpus.flatMap((section) => section.items);
+
+    expect(prohibitedClaims).toContain('"He is secretly a perfect fit."');
+    expect(prohibitedClaims).toContain("James is anti-authority");
+    expect(answerEvidence).not.toContain('"He is secretly a perfect fit."');
+    expect(answerEvidence).not.toContain("James is anti-authority");
+    expect(answerEvidence).not.toContain("Those summaries are too crude and often false.");
+    expect(answerEvidence).not.toContain("That is nonsense seasoning.");
+  });
+
+  it("does not turn prohibited stretch-fit language into affirmative evidence", () => {
+    const response = askAssistant("What roles look like a strong fit versus a stretch fit for James Lane?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).not.toMatch(/secretly a perfect fit|can do anything if given a chance|credentials do not matter/i);
+  });
+
+  it("does not return misleading tradeoff labels as evidence", () => {
+    const response = askAssistant("What are James Lane's main tradeoffs or friction points?", [], {
+      modeId: "fit",
+      preferredIntent: "tradeoffs"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).not.toMatch(/James is (difficult|negative|anti-authority)|cannot handle ambiguity|summaries are too crude/i);
   });
 
   it("refuses unsupported comparison questions", () => {

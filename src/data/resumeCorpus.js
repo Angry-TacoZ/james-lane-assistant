@@ -668,11 +668,57 @@ function parseMarkdownSource(doc) {
   const headingStack = [];
   let buffer = [];
 
+  const PROHIBITION_LEADS = new Set([
+    "Do not summarize these tradeoffs with statements like:",
+    "Do not explain it like this:"
+  ]);
+  const PROHIBITION_CLOSERS = new Set([
+    "Those summaries are too crude and often false.",
+    "That is nonsense seasoning."
+  ]);
+
+  function parseBufferedLines(rawLines) {
+    const items = [];
+    const boundaries = [];
+    let activeBoundary = null;
+
+    for (const rawLine of rawLines) {
+      const trimmed = rawLine.trim();
+
+      if (!trimmed) {
+        continue;
+      }
+
+      if (PROHIBITION_LEADS.has(trimmed)) {
+        activeBoundary = {
+          instruction: trimmed,
+          prohibitedClaims: []
+        };
+        boundaries.push(activeBoundary);
+        continue;
+      }
+
+      const bulletMatch = /^[-*]\s+(.+)$/.exec(trimmed);
+      if (activeBoundary && bulletMatch) {
+        activeBoundary.prohibitedClaims.push(bulletMatch[1].trim());
+        continue;
+      }
+
+      if (activeBoundary && PROHIBITION_CLOSERS.has(trimmed)) {
+        activeBoundary.explanation = trimmed;
+        activeBoundary = null;
+        continue;
+      }
+
+      activeBoundary = null;
+      items.push(trimmed.replace(/^[-*]\s+/, "").trim());
+    }
+
+    return { items, boundaries };
+  }
+
   function flushBuffer() {
-    const items = buffer
-      .map((line) => line.trimEnd())
-      .filter((line) => line.trim())
-      .map((line) => line.replace(/^\s*[-*]\s+/, "").trim());
+    const { items, boundaries } = parseBufferedLines(buffer);
 
     buffer = [];
 
@@ -691,7 +737,8 @@ function parseMarkdownSource(doc) {
       referenceLabel: doc.label,
       title,
       aliases: extractAliases(headingTitles, items),
-      items
+      items,
+      boundaries
     });
   }
 
