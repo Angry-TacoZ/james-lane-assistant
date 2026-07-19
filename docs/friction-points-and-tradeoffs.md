@@ -153,6 +153,7 @@ If a role offers only compliance without agency or intellectual traction, sustai
 
 ## Misleading Simplifications to Avoid
 
+<!-- rag-boundary:start prohibition -->
 Do not summarize these tradeoffs with statements like:
 
 - James is difficult
@@ -163,7 +164,9 @@ Do not summarize these tradeoffs with statements like:
 - James is negative
 - James is anti-authority
 
+<!-- rag-boundary:explanation -->
 Those summaries are too crude and often false.
+<!-- rag-boundary:end prohibition -->
 
 More accurate interpretations are:
 

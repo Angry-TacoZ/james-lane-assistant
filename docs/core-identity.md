@@ -119,13 +119,16 @@ More accurate framing:
 - capable of building enough structure around himself to make nontraditional growth real
 - better evaluated through reasoning, artifacts, and interaction than by pedigree alone
 
+<!-- rag-boundary:start prohibition -->
 Avoid framing him as:
 - an outsider genius
 - an underdog myth
 - proof that credentials never matter
 - someone who should be excused from real standards
 
+<!-- rag-boundary:explanation -->
 The correct framing is that his background is unconventional, but his seriousness is real.
+<!-- rag-boundary:end prohibition -->
 
 ## Work Orientation
 

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { refusalMessage } from "../src/data/resumeCorpus.js";
+import { readdirSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { parseMarkdownSource, refusalMessage, sourceCorpus } from "../src/data/resumeCorpus.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
@@ -537,6 +539,143 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/nontraditional|credential|degree|reasoning|interaction|work samples|resume/i);
     expect(response.answer).toMatch(/\[(core-identity|role-fit-model)-/);
     expect(response.answer).not.toMatch(/Credentials do not matter|James can do anything if given a chance/i);
+  });
+
+  it("preserves prohibited representation claims as boundary metadata, not answer evidence", () => {
+    const prohibitedClaims = sourceCorpus.flatMap((section) =>
+      (section.boundaries ?? []).flatMap((boundary) => boundary.prohibitedClaims)
+    );
+    const answerEvidence = sourceCorpus.flatMap((section) => section.items);
+
+    expect(prohibitedClaims).toContain('"He is secretly a perfect fit."');
+    expect(prohibitedClaims).toContain("James is anti-authority");
+    expect(answerEvidence).not.toContain('"He is secretly a perfect fit."');
+    expect(answerEvidence).not.toContain("James is anti-authority");
+    expect(answerEvidence).not.toContain("Those summaries are too crude and often false.");
+    expect(answerEvidence).not.toContain("That is nonsense seasoning.");
+    expect(prohibitedClaims).toContain("sounding polished at the expense of truth");
+    expect(prohibitedClaims).toContain("exceptional");
+    expect(answerEvidence).not.toContain("sounding polished at the expense of truth");
+    expect(answerEvidence).not.toContain("exceptional");
+    expect(prohibitedClaims).toContain("an outsider genius");
+    expect(prohibitedClaims).toContain("romanticize struggle");
+    expect(prohibitedClaims).toContain("wall-of-text branding copy");
+    expect(prohibitedClaims).toContain("thought leader");
+    expect(answerEvidence).not.toContain("an outsider genius");
+    expect(answerEvidence).not.toContain("romanticize struggle");
+    expect(answerEvidence).not.toContain("wall-of-text branding copy");
+    expect(answerEvidence).not.toContain("thought leader");
+    expect(sourceCorpus.flatMap((section) => section.boundaries ?? [])).toHaveLength(10);
+
+    const antiShrineSection = sourceCorpus.find((section) => section.title.endsWith("Anti-Shrine Rules"));
+    expect(antiShrineSection?.items).toEqual([]);
+    expect(antiShrineSection?.boundaries[0].prohibitedClaims).toContain("romanticize struggle");
+  });
+
+  it("requires prohibition-shaped Markdown blocks to use explicit boundary sentinels", () => {
+    const docsDirectory = resolve("docs");
+    const unmarkedLeads = [];
+
+    for (const filename of readdirSync(docsDirectory).filter((name) => name.endsWith(".md"))) {
+      const lines = readFileSync(resolve(docsDirectory, filename), "utf8").replace(/\r/g, "").split("\n");
+
+      for (const [index, line] of lines.entries()) {
+        if (!/^(?:Do not|Avoid|Never|Must not)(?:\s+.*)?:$/i.test(line.trim())) {
+          continue;
+        }
+
+        let previousIndex = index - 1;
+        while (previousIndex >= 0 && !lines[previousIndex].trim()) {
+          previousIndex -= 1;
+        }
+        if (lines[previousIndex]?.trim() !== "<!-- rag-boundary:start prohibition -->") {
+          unmarkedLeads.push(`${filename}:${index + 1}:${line.trim()}`);
+        }
+      }
+    }
+
+    expect(unmarkedLeads).toEqual([]);
+  });
+
+  it("recognizes prohibition metadata structurally when its prose is paraphrased", () => {
+    const [section] = parseMarkdownSource({
+      id: "test-boundary",
+      label: "test-boundary.md",
+      raw: `# Test boundary
+
+Visible evidence.
+
+<!-- rag-boundary:start prohibition -->
+Never represent this concept using any of these labels:
+- brittle label one
+- brittle label two
+
+<!-- rag-boundary:explanation -->
+These labels discard necessary context.
+<!-- rag-boundary:end prohibition -->`
+    });
+
+    expect(section.items).toEqual(["Visible evidence."]);
+    expect(section.boundaries).toEqual([
+      {
+        instruction: "Never represent this concept using any of these labels:",
+        prohibitedClaims: ["brittle label one", "brittle label two"],
+        explanation: "These labels discard necessary context."
+      }
+    ]);
+  });
+
+  it.each([
+    {
+      name: "nested",
+      body: `<!-- rag-boundary:start prohibition -->
+Do not say:
+- unsafe claim
+<!-- rag-boundary:start prohibition -->`
+    },
+    {
+      name: "empty",
+      body: `<!-- rag-boundary:start prohibition -->
+<!-- rag-boundary:end prohibition -->`
+    },
+    {
+      name: "unterminated",
+      body: `<!-- rag-boundary:start prohibition -->
+Do not say:
+- unsafe claim`
+    },
+    {
+      name: "misplaced explanation",
+      body: `<!-- rag-boundary:explanation -->`
+    }
+  ])("rejects $name prohibition boundary syntax", ({ body }) => {
+    expect(() =>
+      parseMarkdownSource({
+        id: "malformed-boundary",
+        label: "malformed-boundary.md",
+        raw: `# Malformed boundary\n\n${body}`
+      })
+    ).toThrow(/RAG prohibition boundary/);
+  });
+
+  it("does not turn prohibited stretch-fit language into affirmative evidence", () => {
+    const response = askAssistant("What roles look like a strong fit versus a stretch fit for James Lane?", [], {
+      modeId: "fit",
+      preferredIntent: "roleFit"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).not.toMatch(/secretly a perfect fit|can do anything if given a chance|credentials do not matter/i);
+  });
+
+  it("does not return misleading tradeoff labels as evidence", () => {
+    const response = askAssistant("What are James Lane's main tradeoffs or friction points?", [], {
+      modeId: "fit",
+      preferredIntent: "tradeoffs"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).not.toMatch(/James is (difficult|negative|anti-authority)|cannot handle ambiguity|summaries are too crude/i);
   });
 
   it("refuses unsupported comparison questions", () => {

@@ -662,21 +662,110 @@ function extractAliases(headings, items) {
   return [...aliasSet];
 }
 
-function parseMarkdownSource(doc) {
+const PROHIBITION_BOUNDARY_START = "<!-- rag-boundary:start prohibition -->";
+const PROHIBITION_BOUNDARY_EXPLANATION = "<!-- rag-boundary:explanation -->";
+const PROHIBITION_BOUNDARY_END = "<!-- rag-boundary:end prohibition -->";
+
+export function parseMarkdownSource(doc) {
   const lines = doc.raw.replace(/\r/g, "").split("\n");
   const sections = [];
   const headingStack = [];
   let buffer = [];
 
+  function parseBufferedLines(rawLines) {
+    const items = [];
+    const boundaries = [];
+    let activeBoundary = null;
+
+    function boundaryError(message) {
+      const section = headingStack.map((entry) => entry.text).join(" / ") || "document root";
+      throw new Error(`${doc.label} (${section}): ${message}`);
+    }
+
+    for (const rawLine of rawLines) {
+      const trimmed = rawLine.trim();
+
+      if (trimmed === PROHIBITION_BOUNDARY_START) {
+        if (activeBoundary) {
+          boundaryError("nested RAG prohibition boundary");
+        }
+        activeBoundary = {
+          instruction: "",
+          prohibitedClaims: [],
+          explanationLines: [],
+          phase: "instruction"
+        };
+        continue;
+      }
+
+      if (trimmed === PROHIBITION_BOUNDARY_END) {
+        if (!activeBoundary) {
+          boundaryError("closing RAG prohibition boundary without a matching start");
+        }
+        if (!activeBoundary.instruction || activeBoundary.prohibitedClaims.length === 0) {
+          boundaryError("empty or incomplete RAG prohibition boundary");
+        }
+
+        const { instruction, prohibitedClaims, explanationLines } = activeBoundary;
+        boundaries.push({
+          instruction,
+          prohibitedClaims,
+          ...(explanationLines.length > 0 ? { explanation: explanationLines.join(" ") } : {})
+        });
+        activeBoundary = null;
+        continue;
+      }
+
+      if (trimmed === PROHIBITION_BOUNDARY_EXPLANATION) {
+        if (!activeBoundary || activeBoundary.phase !== "claims") {
+          boundaryError("RAG prohibition boundary has a misplaced explanation marker");
+        }
+        activeBoundary.phase = "explanation";
+        continue;
+      }
+
+      if (!trimmed) {
+        continue;
+      }
+
+      if (activeBoundary) {
+        const bulletMatch = /^[-*]\s+(.+)$/.exec(trimmed);
+
+        if (activeBoundary.phase === "instruction") {
+          if (bulletMatch) {
+            boundaryError("RAG prohibition boundary must begin with an instruction line");
+          }
+          activeBoundary.instruction = trimmed;
+          activeBoundary.phase = "claims";
+          continue;
+        }
+
+        if (activeBoundary.phase === "claims") {
+          if (!bulletMatch) {
+            boundaryError("RAG prohibition claims must be bullets or followed by an explanation marker");
+          }
+          activeBoundary.prohibitedClaims.push(bulletMatch[1].trim());
+        } else {
+          activeBoundary.explanationLines.push(bulletMatch ? bulletMatch[1].trim() : trimmed);
+        }
+        continue;
+      }
+      items.push(trimmed.replace(/^[-*]\s+/, "").trim());
+    }
+
+    if (activeBoundary) {
+      boundaryError("unterminated RAG prohibition boundary");
+    }
+
+    return { items, boundaries };
+  }
+
   function flushBuffer() {
-    const items = buffer
-      .map((line) => line.trimEnd())
-      .filter((line) => line.trim())
-      .map((line) => line.replace(/^\s*[-*]\s+/, "").trim());
+    const { items, boundaries } = parseBufferedLines(buffer);
 
     buffer = [];
 
-    if (headingStack.length === 0 || items.length === 0) {
+    if (headingStack.length === 0 || (items.length === 0 && boundaries.length === 0)) {
       return;
     }
 
@@ -691,7 +780,8 @@ function parseMarkdownSource(doc) {
       referenceLabel: doc.label,
       title,
       aliases: extractAliases(headingTitles, items),
-      items
+      items,
+      boundaries
     });
   }
 
