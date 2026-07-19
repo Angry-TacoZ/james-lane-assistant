@@ -26,6 +26,7 @@ Additional approved sources are bundled as Markdown/data files in this repositor
 
 ```powershell
 npm install
+npx playwright install chromium
 npm run test
 npm run test:functions
 npm run verify
@@ -36,6 +37,7 @@ npm run verify:all
 
 - `verify:responsive` builds on the current `dist` output by starting a local preview and checking each major route on mobile and desktop viewports.
 - `verify:all` runs the source allowlist generation, unit tests, function tests, build, answer smoke check, and responsive browser check.
+- Playwright-managed Chromium must be installed once with `npx playwright install chromium`. CI installs Chromium and its Linux system dependencies before running the full gate.
 
 ## Firebase
 
