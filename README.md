@@ -27,9 +27,15 @@ Additional approved sources are bundled as Markdown/data files in this repositor
 ```powershell
 npm install
 npm run test
+npm run test:functions
 npm run verify
 npm run build
+npm run verify:responsive
+npm run verify:all
 ```
+
+- `verify:responsive` builds on the current `dist` output by starting a local preview and checking each major route on mobile and desktop viewports.
+- `verify:all` runs the source allowlist generation, unit tests, function tests, build, answer smoke check, and responsive browser check.
 
 ## Firebase
 

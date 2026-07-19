@@ -2225,7 +2225,7 @@ function renderProjectDetailCard(project) {
     .replace(/([a-z])([A-Z])/g, "$1<wbr>$2")
     .replace(/\./g, "<wbr>.");
   return `
-    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div>
         <div class="flex flex-col items-start gap-3 mb-7">
