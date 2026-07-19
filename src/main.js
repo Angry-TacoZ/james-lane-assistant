@@ -797,18 +797,18 @@ function renderHomePage() {
   const evidenceCards = (latestContext?.matches ?? []).slice(0, 3);
 
   return `
-    <nav class="fixed top-0 w-full z-50 bg-[#121415]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full">
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full">
       <div class="text-lg md:text-xl font-black text-[#B1D09A] tracking-tighter font-['Inter']">SyntheticCurator</div>
-      <div class="hidden md:flex gap-4 md:gap-8 items-center font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex gap-4 md:gap-8 items-center font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("home", "top")}
-      </div>
+      </nav>
       <div class="flex items-center gap-2 md:gap-4">
         <button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-3 sm:px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-[9px] md:text-[10px] font-['Space_Grotesk'] font-bold uppercase tracking-[0.18em] md:tracking-widest hover:opacity-90 transition-all duration-300" data-open-url="${escapeAttribute(CONTACT_MAILTO)}">Hire Intelligence</button>
         <div class="hidden sm:flex w-10 h-10 rounded-full bg-surface-container-high border border-primary/20 items-center justify-center">
           <span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest text-primary">SC</span>
         </div>
       </div>
-    </nav>
+    </header>
     <aside class="hidden md:flex fixed left-0 top-0 h-full w-64 z-40 bg-[#0C0E10]/80 backdrop-blur-2xl flex-col h-full py-6 ambient occlusion glow shadow-2xl">
       <div class="px-6 mb-12 mt-20 hidden md:block">
         <div class="flex items-center gap-3 mb-6">
@@ -1233,7 +1233,7 @@ function renderWritingPage() {
         <span class="text-lg font-bold tracking-tighter text-[#B1D09A] font-headline md:hidden">JAMES AI</span>
         <span class="hidden md:inline text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">THE LIVING INTELLIGENCE</span>
       </div>
-      <nav class="hidden md:flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("writing", "top")}
       </nav>
       <div class="flex items-center gap-4">
@@ -1472,7 +1472,7 @@ function renderContactPage() {
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
-      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("contact", "top")}
       </nav>
       <div class="flex items-center gap-4">
@@ -1575,17 +1575,17 @@ function renderEvidencePage() {
   const progressBars = buildEvidenceBars(groupBreakdown);
 
   return `
-    <nav class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
-      <div class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("evidence", "top")}
-      </div>
+      </nav>
       <div class="flex items-center gap-4">
         <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true">
           <span class="material-symbols-outlined text-[#B1D09A]">account_circle</span>
         </button>
       </div>
-    </nav>
+    </header>
     <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex flex-col h-full pt-20 pb-8 hidden lg:flex">
       <div class="px-6 mb-8">
         <div class="text-[#B1D09A] font-bold font-label text-xs uppercase tracking-widest mb-1">SYNTHETIC CURATOR</div>
@@ -1804,7 +1804,7 @@ function renderArtDesignPage() {
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
-      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("design", "top")}
       </nav>
       <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true">
@@ -1923,7 +1923,7 @@ function renderHealthPage() {
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
-      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("health", "top")}
       </nav>
       <button class="hover:bg-[#282A2C] transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 transition-transform" data-page-link="home" data-focus-composer="true">
@@ -2062,7 +2062,7 @@ function renderProjectsPage() {
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
-      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar">
+      <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("projects", "top")}
       </nav>
       <div class="flex items-center gap-4">
@@ -2225,7 +2225,7 @@ function renderProjectDetailCard(project) {
     .replace(/([a-z])([A-Z])/g, "$1<wbr>$2")
     .replace(/\./g, "<wbr>.");
   return `
-    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
+    <div class="artifact-card artifact-card--detail glass-panel rounded-xl border border-outline-variant/10 p-7 md:p-8 flex flex-col justify-between relative overflow-hidden cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div>
         <div class="flex flex-col items-start gap-3 mb-7">
@@ -2646,7 +2646,7 @@ function renderMobileBottomNav(activePage) {
   ];
 
   return `
-    <div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-high border-t border-outline-variant/10 px-2 py-3 flex justify-around items-center z-50">
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-high border-t border-outline-variant/10 px-2 py-3 flex justify-around items-center z-50" data-responsive-nav="mobile" aria-label="Primary navigation">
       ${items
         .map((item) => {
           const active = item.page === activePage;
@@ -2658,7 +2658,7 @@ function renderMobileBottomNav(activePage) {
           `;
         })
         .join("")}
-    </div>
+    </nav>
   `;
 }
 
