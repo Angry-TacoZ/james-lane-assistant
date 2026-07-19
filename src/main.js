@@ -797,7 +797,7 @@ function renderHomePage() {
   const evidenceCards = (latestContext?.matches ?? []).slice(0, 3);
 
   return `
-    <nav class="fixed top-0 w-full z-50 bg-[#121415]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full">
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full">
       <div class="text-lg md:text-xl font-black text-[#B1D09A] tracking-tighter font-['Inter']">SyntheticCurator</div>
       <nav class="hidden md:flex gap-4 md:gap-8 items-center font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("home", "top")}
@@ -808,7 +808,7 @@ function renderHomePage() {
           <span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest text-primary">SC</span>
         </div>
       </div>
-    </nav>
+    </header>
     <aside class="hidden md:flex fixed left-0 top-0 h-full w-64 z-40 bg-[#0C0E10]/80 backdrop-blur-2xl flex-col h-full py-6 ambient occlusion glow shadow-2xl">
       <div class="px-6 mb-12 mt-20 hidden md:block">
         <div class="flex items-center gap-3 mb-6">
@@ -1575,7 +1575,7 @@ function renderEvidencePage() {
   const progressBars = buildEvidenceBars(groupBreakdown);
 
   return `
-    <nav class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
+    <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
       <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("evidence", "top")}
@@ -1585,7 +1585,7 @@ function renderEvidencePage() {
           <span class="material-symbols-outlined text-[#B1D09A]">account_circle</span>
         </button>
       </div>
-    </nav>
+    </header>
     <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex flex-col h-full pt-20 pb-8 hidden lg:flex">
       <div class="px-6 mb-8">
         <div class="text-[#B1D09A] font-bold font-label text-xs uppercase tracking-widest mb-1">SYNTHETIC CURATOR</div>
