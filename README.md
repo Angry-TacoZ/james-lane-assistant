@@ -1,24 +1,20 @@
 # James Lane Assistant
 
-A Firebase-hosted living-resume assistant that answers only from the approved local source corpus.
+A Firebase-hosted living-resume assistant that answers only from a deliberately curated, approved source corpus.
 
-Current resume source:
+The corpus combines resume material with project evidence, representation guidance, and intentionally public context about working style, accessibility, and work design. That personal context helps explain the environments and tools where I do my best work; it is not a medical assessment or a substitute for evaluating my technical work and experience.
 
-- `C:\Users\angry\Downloads\Resumes Job Search and Consulting\James_Lane_Resume_dy_Full_t_v2.pdf`
+Approved source modules include:
 
-Additional approved sources are bundled as Markdown/data files in this repository, including:
-
-- condensed cognitive/profile guidance in `docs/cognitive-profile.md`
-- representation and communication rules in `docs/communication-rules.md`
-- role-fit and environment-fit models in `docs/role-fit-model.md` and `docs/environment-fit-model.md`
-- evidence/project context in `docs/evidence-and-projects.md`
-- health, accessibility, and work-design context in `docs/health-and-neurodivergence-context.md`
-- public writing, art/design, live-project, and portfolio indexes
+- representation and communication rules
+- role-fit, environment-fit, and work-design models
+- project and portfolio evidence
+- public writing, art/design, and live-project indexes
 
 ## Guarantees
 
 - No web browsing or external search.
-- Answers come only from approved resume excerpts, Markdown profile files, and curated local data modules stored in the source corpus.
+- Answers come only from approved resume excerpts, Markdown profile files, and curated data modules stored in the source corpus.
 - If an answer is not explicitly supported, the assistant refuses with the required exact message.
 - Each answer includes stable internal references such as `p1-summary`, `cognitive-profile-*`, or `p2-tools`.
 
