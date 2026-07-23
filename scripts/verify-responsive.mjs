@@ -155,6 +155,20 @@ async function verifyPage(browser, viewport, pageTarget) {
           document.querySelector('[data-home-input][aria-label]') &&
             document.querySelector('[data-home-submit][aria-label]')
         );
+      const brandLockup = document.querySelector("[data-brand-lockup]");
+      const brandStyle = brandLockup ? window.getComputedStyle(brandLockup) : null;
+      const brandRect = brandLockup?.getBoundingClientRect();
+      const brandLockupIsVisible = Boolean(
+        brandStyle &&
+          brandRect &&
+          brandStyle.display !== "none" &&
+          brandStyle.visibility !== "hidden" &&
+          brandRect.width > 0 &&
+          brandRect.height > 0
+      );
+      const brandCopyIsCorrect =
+        brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "JamesAQI" &&
+        brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI powered living resume";
       const interactiveTargets = document.querySelectorAll("button, a, input, textarea, [data-page-link]");
       const widthOverflow = document.documentElement.scrollWidth - window.innerWidth;
 
@@ -175,6 +189,8 @@ async function verifyPage(browser, viewport, pageTarget) {
         navControlsAreSemantic,
         homeQuickLinksAreAccessible,
         homeComposerIsAccessible,
+        brandLockupIsVisible,
+        brandCopyIsCorrect,
         widthOverflow
       };
     }, { viewportName: viewport.name, pageTargetName: pageTarget.name });
@@ -189,6 +205,8 @@ async function verifyPage(browser, viewport, pageTarget) {
     assert(result.navControlsAreSemantic, `${viewport.name}/${pageTarget.name} navigation includes non-semantic controls`);
     assert(result.homeQuickLinksAreAccessible, `${viewport.name}/${pageTarget.name} home quick links are not accessible controls`);
     assert(result.homeComposerIsAccessible, `${viewport.name}/${pageTarget.name} home composer is missing accessible labels`);
+    assert(result.brandLockupIsVisible, `${viewport.name}/${pageTarget.name} brand lockup is missing or hidden`);
+    assert(result.brandCopyIsCorrect, `${viewport.name}/${pageTarget.name} brand copy is incorrect`);
     assert(result.widthOverflow <= 2, `${viewport.name}/${pageTarget.name} has horizontal overflow of ${result.widthOverflow}px`);
   } finally {
     await context.close();
