@@ -947,6 +947,7 @@ function renderHomePage() {
     <footer class="bg-[#121415] w-full py-12 border-t border-[#44483E]/15 flex flex-col items-center gap-4 w-full">
       <div class="flex gap-4 md:gap-8 items-center mb-4">
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="/privacy.html">Privacy</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Documentation</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Security</a>
       </div>
@@ -1535,6 +1536,7 @@ function renderContactPage() {
         <div class="text-[#B1D09A] font-bold font-headline tracking-tighter text-lg">THE LIVING INTELLIGENCE</div>
         <div class="flex flex-wrap justify-center gap-8">
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${CONTACT_MAILTO}">Email</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="/privacy.html">Privacy</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${X_URL}" target="_blank" rel="noopener noreferrer">X</a>
