@@ -944,6 +944,7 @@ function renderHomePage() {
     <footer class="bg-[#121415] w-full py-12 border-t border-[#44483E]/15 flex flex-col items-center gap-4 w-full">
       <nav class="flex flex-wrap justify-center gap-4 md:gap-8 items-center mb-4" aria-label="Portfolio links">
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="/privacy.html">Privacy</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Writing</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Projects</a>
         <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -1616,6 +1617,7 @@ function renderContactPage() {
         ${renderBrandLockup()}
         <div class="flex flex-wrap justify-center gap-8">
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${CONTACT_MAILTO}">Email</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="/privacy.html">Privacy</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${X_URL}" target="_blank" rel="noopener noreferrer">X</a>
