@@ -518,7 +518,11 @@ function getIntent(question, preferredIntent = null) {
     return "roleFit";
   }
 
-  if (/\b(capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(normalized)) {
+  if (
+    /\b(james lane ai consulting|ai consultant|consultant|owner|capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(
+      normalized
+    )
+  ) {
     return "experience";
   }
 
@@ -538,7 +542,7 @@ function getIntent(question, preferredIntent = null) {
     return "tools";
   }
 
-  if (/\b(education|school|diploma|schooling|academic)\b/.test(normalized)) {
+  if (/\b(education|school|diploma|schooling|academic|certification|certifications|anthropic|databricks)\b/.test(normalized)) {
     return "education";
   }
 
@@ -1075,15 +1079,17 @@ function pickSections(scoredSections, intent, question = "") {
         (entry) => entry.section.group === "resume-pdf" && /professional summary/.test(normalizeText(entry.section.title))
       );
       const strengths = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /core strengths/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /core strengths|core skills/.test(normalizeText(entry.section.title))
       );
       const tools = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /\btools\b/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /\btools\b|core skills/.test(normalizeText(entry.section.title))
       );
       const experience = limitedSections.find(
         (entry) =>
           entry.section.group === "resume-pdf" &&
-          /capital blue cross|claims examiner|help desk analyst/.test(normalizeText(entry.section.title))
+          /james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
+            normalizeText(entry.section.title)
+          )
       );
       const roleDirection = limitedSections.find((entry) =>
         /career direction|role family implications/.test(normalizeText(entry.section.title))
@@ -1558,6 +1564,11 @@ function buildAnswerLines(scoredSections, question, intent) {
 
       if (entry.section.id === "writing-catalog" || entry.section.id === "writing-boundary") {
         items = entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));
+      }
+
+      if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion) && entry.section.id === "p2-tools-and-platforms") {
+        const dataTools = entry.section.items.find((item) => /Power BI|SQL|Tableau|analytics|reporting/i.test(item));
+        items = [dataTools, ...items].filter((item, index, allItems) => item && allItems.indexOf(item) === index);
       }
 
       if (

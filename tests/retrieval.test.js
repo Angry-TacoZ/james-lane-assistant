@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { refusalMessage } from "../src/data/resumeCorpus.js";
+import { approvedSources, refusalMessage, sourceCorpus } from "../src/data/resumeCorpus.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
@@ -8,7 +8,9 @@ describe("James AI retrieval", () => {
     const headlineMatch = response.matches.find((match) => match.ref === "p1-headline");
 
     expect(headlineMatch?.title).toBe("Professional Headline");
-    expect(headlineMatch?.items).toEqual(["AI Builder | Workflow Intelligence | Product Operations"]);
+    expect(headlineMatch?.items).toEqual([
+      "AI Systems & Automation Builder | Internal Tools | Python, React, Firebase, Microsoft 365"
+    ]);
   });
 
   it("answers direct factual contact questions from the approved resume", () => {
@@ -432,13 +434,22 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p2-tools-and-platforms|evidence-and-projects)-?/) ;
   });
 
-  it("uses the corrected current CBC title in retrieval answers", () => {
-    const response = askAssistant("What is James Lane's current role at Capital Blue Cross?");
+  it("uses the updated consulting role as James's current role", () => {
+    const response = askAssistant("What is James Lane's current role?");
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toContain("Claims Workflow Intelligence Analyst");
-    expect(response.answer).toContain("Embedded Claims Examiner");
-    expect(response.answer).not.toContain("Claims Operations Analyst");
+    expect(response.answer).toContain("AI Consultant and Owner");
+    expect(response.answer).toContain("James Lane AI Consulting");
+    expect(response.answer).toContain("[p2-exp-james-lane-ai-consulting]");
+  });
+
+  it("describes Capital Blue Cross as prior experience with the updated dates", () => {
+    const response = askAssistant("What role did James Lane have at Capital Blue Cross, and when?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("Claims Examiner I");
+    expect(response.answer).toContain("Nov 2025-May 2026");
+    expect(response.answer).not.toMatch(/Capital Blue Cross[^\n]*Present/i);
   });
 
   it("uses recent user context for follow-up tool questions", () => {
@@ -453,7 +464,18 @@ describe("James AI retrieval", () => {
 
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/Power BI|SQL/i);
-    expect(response.answer).toContain("[p2-tools]");
+    expect(response.answer).toContain("[p2-tools-and-platforms]");
+  });
+
+  it("uses only the updated PDF as the approved resume source", () => {
+    const resumeSource = approvedSources.find((source) => source.id === "resume-pdf");
+    const oldSourceName = "James_Lane_Resume_dy_Full_t_v2";
+
+    expect(resumeSource).toMatchObject({
+      label: "Profres072026.pdf",
+      path: "C:\\Users\\angry\\Downloads\\Profres072026.pdf"
+    });
+    expect(sourceCorpus.some((section) => section.sourceLabel?.includes(oldSourceName))).toBe(false);
   });
 
   it("supports broader fit questions when fit mode is active", () => {

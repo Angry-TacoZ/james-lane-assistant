@@ -300,6 +300,63 @@ async function verifyAudioGuide(browser) {
   }
 }
 
+async function verifyResumeViewer(browser) {
+  for (const viewport of viewports) {
+    const context = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: viewport.isMobile
+    });
+
+    try {
+      const page = await context.newPage();
+      const errors = [];
+
+      page.on("pageerror", (error) => errors.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "error") {
+          errors.push(message.text());
+        }
+      });
+
+      await page.goto(`${BASE_URL}/?qa=responsive-resume-${viewport.name}`, { waitUntil: "networkidle" });
+      await page.click('[data-mode-id="resume"]');
+      await page.waitForSelector("[data-resume-viewer]");
+      await page.waitForFunction(
+        () => [...document.querySelectorAll("[data-resume-page]")].every((image) => image.complete && image.naturalWidth > 0)
+      );
+
+      const result = await page.evaluate(() => {
+        const viewer = document.querySelector("[data-resume-viewer]");
+        const download = document.querySelector("[data-resume-download]");
+        const pages = [...document.querySelectorAll("[data-resume-page]")];
+
+        return {
+          viewerVisible: Boolean(viewer && viewer.getBoundingClientRect().height > 0),
+          pageCount: pages.length,
+          pagesLoaded: pages.every((image) => image.complete && image.naturalWidth > 0),
+          pageLinksAreSemantic: [...document.querySelectorAll("[data-resume-page-link]")].every((link) => link.matches("a[href]")),
+          downloadHref: download?.getAttribute("href"),
+          downloadName: download?.getAttribute("download"),
+          operationalIdentityVisible: document.body.innerText.includes("Operational Identity"),
+          widthOverflow: document.documentElement.scrollWidth - window.innerWidth
+        };
+      });
+
+      assert(errors.length === 0, `${viewport.name}/resume browser errors: ${errors.join(" | ")}`);
+      assert(result.viewerVisible, `${viewport.name}/resume viewer is not visible`);
+      assert(result.pageCount === 2, `${viewport.name}/resume expected 2 pages, found ${result.pageCount}`);
+      assert(result.pagesLoaded, `${viewport.name}/resume page images did not load`);
+      assert(result.pageLinksAreSemantic, `${viewport.name}/resume full-size page links are not semantic anchors`);
+      assert(result.downloadHref === "/resume/James-Lane-Resume.pdf", `${viewport.name}/resume download targets the wrong file`);
+      assert(result.downloadName === "James-Lane-Resume.pdf", `${viewport.name}/resume download filename is incorrect`);
+      assert(!result.operationalIdentityVisible, `${viewport.name}/resume still shows the operational identity panel`);
+      assert(result.widthOverflow <= 2, `${viewport.name}/resume has horizontal overflow of ${result.widthOverflow}px`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function main() {
   await assertPreviewPortAvailable();
   const preview = startPreview();
@@ -324,6 +381,7 @@ async function main() {
       }
 
       await verifyAudioGuide(browser);
+      await verifyResumeViewer(browser);
     } finally {
       await browser.close();
     }

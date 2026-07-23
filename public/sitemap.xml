@@ -13,6 +13,10 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://jamesai.space/resume/James-Lane-Resume.pdf</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://jamesai.space/ai/index.html</loc>
     <priority>0.8</priority>
   </url>
