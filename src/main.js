@@ -932,11 +932,11 @@ function renderHomePage() {
             <div class="space-y-6">
               ${renderHomeEvidenceCards(evidenceCards)}
               <div class="pt-8 border-t border-outline-variant/10">
-                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/40 uppercase tracking-widest mb-4">Quick Links</div>
+                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/70 uppercase tracking-widest mb-4">Quick Links</div>
                 <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-on-surface-variant">terminal</span></div>
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="writing"><span class="material-symbols-outlined text-on-surface-variant">description</span></div>
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="contact"><span class="material-symbols-outlined text-on-surface-variant">contact_mail</span></div>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#projects" data-page-link="projects" data-home-quick-link aria-label="View projects"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">terminal</span></a>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#writing" data-page-link="writing" data-home-quick-link aria-label="Read writing"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">description</span></a>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#contact" data-page-link="contact" data-home-quick-link aria-label="Open contact page"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">contact_mail</span></a>
                 </div>
               </div>
             </div>
@@ -945,14 +945,16 @@ function renderHomePage() {
       </div>
     </main>
     <footer class="bg-[#121415] w-full py-12 border-t border-[#44483E]/15 flex flex-col items-center gap-4 w-full">
-      <div class="flex gap-4 md:gap-8 items-center mb-4">
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Documentation</a>
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Security</a>
-      </div>
-      <section class="w-[min(92vw,48rem)] rounded-xl border border-outline-variant/10 bg-surface-container-low/60 px-5 py-5 text-center">
-        <h2 class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-[#B1D09A] mb-2">AI-readable portfolio files</h2>
-        <p class="text-sm text-on-surface-variant mb-4">Static files are available for search engines, AI agents, and non-JavaScript readers.</p>
+      <nav class="flex flex-wrap justify-center gap-4 md:gap-8 items-center mb-4" aria-label="Portfolio links">
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Writing</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Projects</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <details class="w-[min(92vw,48rem)] rounded-xl border border-outline-variant/10 bg-surface-container-low/60 px-5 py-5 text-center">
+        <summary class="cursor-pointer font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-[#B1D09A]">Machine-readable portfolio resources</summary>
+        <p class="mt-5 text-sm text-on-surface-variant mb-4">Static files are available for search engines, AI agents, and non-JavaScript readers.</p>
         <div class="flex flex-wrap justify-center gap-3">
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms.txt">LLM Guide</a>
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms-full.txt">Full Context</a>
@@ -961,7 +963,7 @@ function renderHomePage() {
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/portfolio.md">Portfolio</a>
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/source-map.md">Source Map</a>
         </div>
-      </section>
+      </details>
       <div class="flex flex-col items-center gap-2">
         <div class="font-['Space_Grotesk'] text-[10px] uppercase text-[#84A16F] tracking-widest">© 2024 SYNTHETIC CURATOR // NEURAL ARCHITECTURE</div>
         <div class="font-['Inter'] text-sm text-on-surface">James Earl Lane</div>
@@ -1171,9 +1173,9 @@ function renderHomeChatPanel(displayedHistory, placeholder, modeSeedLoading = fa
       </div>
       <div class="p-4 sm:p-6 bg-surface-container-lowest">
         <div class="relative group">
-          <input class="w-full bg-surface-container-low border-none rounded-lg py-4 px-4 sm:px-6 text-on-surface font-['Space_Grotesk'] text-xs uppercase tracking-widest focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/30" placeholder="${escapeHtml(placeholder)}" type="text" value="${escapeAttribute(pageState.homeDraft)}" data-home-input/>
-          <button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform" data-home-submit>
-            <span class="material-symbols-outlined">send</span>
+          <input class="w-full bg-surface-container-low border-none rounded-lg py-4 px-4 sm:px-6 text-on-surface font-['Space_Grotesk'] text-xs uppercase tracking-widest focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/30" aria-label="Ask the assistant a question" placeholder="${escapeHtml(placeholder)}" type="text" value="${escapeAttribute(pageState.homeDraft)}" data-home-input/>
+          <button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform" type="button" aria-label="Send question" data-home-submit>
+            <span class="material-symbols-outlined" aria-hidden="true">send</span>
           </button>
         </div>
       </div>
@@ -1881,8 +1883,8 @@ function renderArtDesignPage() {
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("design")}
@@ -1995,8 +1997,8 @@ function renderHealthPage() {
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-target-mode="health" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant about health" data-page-link="home" data-target-mode="health" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("health")}
@@ -2153,8 +2155,8 @@ function renderProjectsPage() {
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("projects")}
@@ -2651,10 +2653,10 @@ function renderMobileBottomNav(activePage) {
         .map((item) => {
           const active = item.page === activePage;
           return `
-            <div class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" data-page-link="${item.page}">
-              <span class="material-symbols-outlined" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
+            <a class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" href="#${item.page}" data-page-link="${item.page}" ${active ? 'aria-current="page"' : ""}>
+              <span class="material-symbols-outlined" aria-hidden="true" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
               <span class="text-[9px] font-label uppercase">${item.shortLabel}</span>
-            </div>
+            </a>
           `;
         })
         .join("")}
