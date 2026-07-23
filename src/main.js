@@ -40,6 +40,11 @@ const X_URL = "https://x.com/JamesLaneAI";
 const MEDIUM_URL = "https://medium.com/@Angry_TacoZ";
 const CONSULTING_URL = "https://jameslaneai.com/";
 const PROFILE_PHOTO_URL = "/images/profile/jamesprofile3.jpg";
+const RESUME_PDF_URL = "/resume/James-Lane-Resume.pdf";
+const RESUME_PAGE_URLS = [
+  "/resume/James-Lane-Resume-page-1.png",
+  "/resume/James-Lane-Resume-page-2.png"
+];
 const AUDIO_GUIDE_URL = "/audio/james-ai-audio-guide.mp3";
 const AUDIO_GUIDE_STORAGE_KEY = "james-ai-audio-guide-dismissed";
 // Temporary voiceover hold: use "prompt" here to restore the original first-visit popup.
@@ -894,47 +899,7 @@ function renderHomePage() {
       </section>
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
         <div class="lg:col-span-8 flex flex-col gap-8 md:gap-12">
-          <div class="bg-surface-container-low rounded-xl p-6 sm:p-8 md:p-12 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
-            <div class="flex justify-between items-start mb-12">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                <span class="font-['Space_Grotesk'] text-primary text-[10px] uppercase tracking-[0.2em]">Operational Identity</span>
-              </div>
-              <span class="font-['Space_Grotesk'] text-on-surface-variant/40 text-[10px] uppercase tracking-widest">ID-4092-X</span>
-            </div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight">${escapeHtml(briefingPrimary.title)}</h2>
-            <div class="grid md:grid-cols-2 gap-8 md:gap-12">
-              <div class="space-y-6">
-                <p class="text-lg text-on-surface-variant leading-relaxed">${escapeHtml(briefingPrimary.body)}</p>
-                <div class="flex flex-wrap gap-2">
-                  ${supportTags
-                    .map(
-                      (tag) => `
-                        <span class="flex items-center gap-2 border-l-2 border-primary pl-3 py-1 font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface-variant">${escapeHtml(tag)}</span>
-                      `
-                    )
-                    .join("")}
-                </div>
-              </div>
-              <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-lg border border-outline-variant/10">
-                <div class="relative rounded-xl overflow-hidden mb-5 aspect-[4/5] bg-surface-container-high">
-                  <img class="w-full h-full object-cover" src="${PROFILE_PHOTO_URL}" alt="Portrait of James Lane at his desk"/>
-                  <div class="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent"></div>
-                  <div class="absolute left-4 right-4 bottom-4">
-                    <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-primary/90 mb-2">James Lane</div>
-                    <div class="text-xl font-bold text-on-surface leading-tight">Systems-oriented builder with a source-bound AI front door.</div>
-                  </div>
-                </div>
-                <div class="text-[10px] font-['Space_Grotesk'] text-primary/60 uppercase mb-4 tracking-widest">Current Vector</div>
-                <div class="text-xl font-bold text-on-surface mb-2">${escapeHtml(vectorCard.title)}</div>
-                <p class="text-sm text-on-surface-variant/70 mb-4">${escapeHtml(vectorCard.body)}</p>
-                <div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
-                  <div class="bg-primary h-full" style="width: ${modeProgress(mode.id)}%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          ${renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags)}
         </div>
         <aside class="lg:col-span-4 space-y-8 md:space-y-12">
           <div class="sticky top-28">
@@ -987,6 +952,83 @@ function renderHomePage() {
       </div>
     </footer>
     ${renderMobileBottomNav("home")}
+  `;
+}
+
+function renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags) {
+  if (mode.id === "resume") {
+    return renderResumeDocumentPanel();
+  }
+
+  return `
+    <section class="bg-surface-container-low rounded-xl p-6 sm:p-8 md:p-12 relative overflow-hidden group">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
+      <div class="flex justify-between items-start mb-12">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          <span class="font-['Space_Grotesk'] text-primary text-[10px] uppercase tracking-[0.2em]">Operational Identity</span>
+        </div>
+        <span class="font-['Space_Grotesk'] text-on-surface-variant/40 text-[10px] uppercase tracking-widest">ID-4092-X</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight">${escapeHtml(briefingPrimary.title)}</h2>
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div class="space-y-6">
+          <p class="text-lg text-on-surface-variant leading-relaxed">${escapeHtml(briefingPrimary.body)}</p>
+          <div class="flex flex-wrap gap-2">
+            ${supportTags
+              .map(
+                (tag) => `
+                  <span class="flex items-center gap-2 border-l-2 border-primary pl-3 py-1 font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface-variant">${escapeHtml(tag)}</span>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-lg border border-outline-variant/10">
+          <div class="relative rounded-xl overflow-hidden mb-5 aspect-[4/5] bg-surface-container-high">
+            <img class="w-full h-full object-cover" src="${PROFILE_PHOTO_URL}" alt="Portrait of James Lane at his desk"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent"></div>
+            <div class="absolute left-4 right-4 bottom-4">
+              <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-primary/90 mb-2">James Lane</div>
+              <div class="text-xl font-bold text-on-surface leading-tight">Systems-oriented builder with a source-bound AI front door.</div>
+            </div>
+          </div>
+          <div class="text-[10px] font-['Space_Grotesk'] text-primary/60 uppercase mb-4 tracking-widest">Current Vector</div>
+          <div class="text-xl font-bold text-on-surface mb-2">${escapeHtml(vectorCard.title)}</div>
+          <p class="text-sm text-on-surface-variant/70 mb-4">${escapeHtml(vectorCard.body)}</p>
+          <div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+            <div class="bg-primary h-full" style="width: ${modeProgress(mode.id)}%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderResumeDocumentPanel() {
+  return `
+    <section class="overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-low" data-resume-viewer>
+      <header class="flex flex-col gap-5 border-b border-outline-variant/10 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div>
+          <div class="mb-2 font-label text-[10px] uppercase tracking-[0.22em] text-primary">Current resume</div>
+          <h2 class="text-2xl font-bold tracking-normal text-on-surface sm:text-3xl">James Lane</h2>
+          <p class="mt-2 text-sm text-on-surface-variant/70">AI Systems &amp; Automation Builder</p>
+        </div>
+        <a class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 font-label text-[10px] font-bold uppercase tracking-[0.16em] text-on-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low" href="${RESUME_PDF_URL}" download="James-Lane-Resume.pdf" data-resume-download>
+          <span class="material-symbols-outlined text-base" aria-hidden="true">download</span>
+          Download PDF
+        </a>
+      </header>
+      <div class="space-y-4 bg-[#d8d9d4] p-2 sm:p-4">
+        ${RESUME_PAGE_URLS.map(
+          (pageUrl, index) => `
+            <a class="block overflow-hidden bg-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] focus:outline-none focus:ring-2 focus:ring-primary" href="${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open resume page ${index + 1} at full size" data-resume-page-link>
+              <img class="block h-auto w-full" src="${pageUrl}" alt="Page ${index + 1} of James Lane's current resume" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} data-resume-page/>
+            </a>
+          `
+        ).join("")}
+      </div>
+    </section>
   `;
 }
 

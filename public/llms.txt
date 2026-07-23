@@ -5,6 +5,7 @@
 Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
 Primary contact: tiburo13@gmail.com
+Current resume PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
 GitHub: https://github.com/Angry-TacoZ
 X: https://x.com/JamesLaneAI
@@ -27,6 +28,7 @@ The interactive assistant uses a lightweight retrieval-augmented generation appr
 - [Design / Art and Visual Work](https://jamesai.space/#design)
 - [Health / Accessibility and Work Design](https://jamesai.space/#health)
 - [Contact](https://jamesai.space/#contact)
+- [Current resume PDF](https://jamesai.space/resume/James-Lane-Resume.pdf)
 
 ## Primary AI-Readable Files
 

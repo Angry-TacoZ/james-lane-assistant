@@ -2,6 +2,7 @@
 
 Canonical site: https://jamesai.space/
 Contact: tiburo13@gmail.com
+Current resume PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
 GitHub: https://github.com/Angry-TacoZ
 X: https://x.com/JamesLaneAI
@@ -13,9 +14,11 @@ James AI is a source-grounded living resume for James Earl Lane: a nontraditiona
 
 ## Candidate Summary
 
-James Lane is best evaluated through interaction, artifacts, and reasoning patterns rather than title history alone. He has a background spanning healthcare claims operations, enterprise IT support, troubleshooting, self-directed AI experimentation, process analysis, and practical tool-building.
+James Lane is a self-taught AI systems and automation builder with eight years of enterprise IT and healthcare operations experience. He currently works as AI Consultant and Owner at James Lane AI Consulting, building and deploying full-stack workflow tools with Python, React/Vite, Firebase, Cloudflare Workers, and paid-model APIs kept behind server-side boundaries.
 
-He is moving toward work that uses more of his strengths in systems thinking, workflow design, AI enablement, business analysis, operations improvement, internal tooling, documentation, and structured problem solving.
+His prior roles include Claims Examiner I at Capital Blue Cross from November 2025 through May 2026 and enterprise systems support for ICU Medical via Randstad from July 2018 through August 2025. At Capital Blue Cross, he designed a PHI-safe claims AI pilot that advanced through governance review and received approval to begin pilot planning; its mid-case model projected approximately 40,000 annual labor hours saved.
+
+Selected applications include James AI Living Resume, CogFit Jobs, and PDF Equipment Checker. Documented certifications include Anthropic's AI Fluency: Framework & Foundations, Databricks Generative AI Fundamentals accreditation, and Business Analysis Foundations.
 
 ## Best-Fit Work
 
@@ -56,3 +59,4 @@ James tends to:
 - Art and Design: https://jamesai.space/#design
 - Health and Accessibility: https://jamesai.space/#health
 - Contact: https://jamesai.space/#contact
+- Current resume PDF: https://jamesai.space/resume/James-Lane-Resume.pdf

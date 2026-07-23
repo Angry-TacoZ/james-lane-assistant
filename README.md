@@ -4,7 +4,8 @@ A Firebase-hosted living-resume assistant that answers only from the approved lo
 
 Current resume source:
 
-- `C:\Users\angry\Downloads\Resumes Job Search and Consulting\James_Lane_Resume_dy_Full_t_v2.pdf`
+- `C:\Users\angry\Downloads\Profres072026.pdf`
+- Public download: `/resume/James-Lane-Resume.pdf`
 
 Additional approved sources are bundled as Markdown/data files in this repository, including:
 
@@ -20,7 +21,7 @@ Additional approved sources are bundled as Markdown/data files in this repositor
 - No web browsing or external search.
 - Answers come only from approved resume excerpts, Markdown profile files, and curated local data modules stored in the source corpus.
 - If an answer is not explicitly supported, the assistant refuses with the required exact message.
-- Each answer includes stable internal references such as `p1-summary`, `cognitive-profile-*`, or `p2-tools`.
+- Each answer includes stable internal references such as `p1-summary`, `cognitive-profile-*`, or `p2-tools-and-platforms`.
 
 ## Commands
 

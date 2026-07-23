@@ -147,11 +147,13 @@ const artDesignCatalogCorpus = {
   ]
 };
 
+const RESUME_SOURCE_LABEL = "Profres072026.pdf";
+
 export const approvedSources = [
   {
     id: "resume-pdf",
-    label: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    path: "C:\\Users\\angry\\Downloads\\Resumes Job Search and Consulting\\James_Lane_Resume_dy_Full_t_v2.pdf"
+    label: RESUME_SOURCE_LABEL,
+    path: "C:\\Users\\angry\\Downloads\\Profres072026.pdf"
   },
   ...markdownSources.map(({ id, label, path }) => ({
     id,
@@ -179,7 +181,7 @@ const resumeSourceCorpus = [
   {
     id: "p1-contact",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
     title: "Contact",
@@ -189,116 +191,132 @@ const resumeSourceCorpus = [
       "717-701-7089",
       "tiburo13@gmail.com",
       "LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9",
-      "X: https://x.com/JamesLaneAI",
-      "Living Resume: https://james-lane-web-resume.web.app/"
+      "GitHub: https://github.com/Angry-TacoZ",
+      "Living Resume: https://jamesai.space"
     ]
   },
   {
     id: "p1-headline",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
     title: "Professional Headline",
-    aliases: ["headline", "roles", "title", "position", "ai builder", "workflow intelligence", "product operations"],
-    items: ["AI Builder | Workflow Intelligence | Product Operations"]
+    aliases: ["headline", "roles", "title", "position", "ai systems", "automation builder", "internal tools", "python", "react", "firebase"],
+    items: ["AI Systems & Automation Builder | Internal Tools | Python, React, Firebase, Microsoft 365"]
   },
   {
     id: "p1-summary",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
     title: "Professional Summary",
     aliases: ["summary", "overview", "background", "profile", "about"],
     items: [
-      "Self-taught technical builder and AI operator with 7+ years inside enterprise IT and healthcare operations.",
-      "At Capital Blue Cross, entered through a claims role, learned the workflow from the inside, and helped move a PHI-safe claims AI assistant from operational pain-point discovery to committee-approved pilot launch.",
-      "The retitled roles in the resume are intentionally optimized to foreground the analytical and AI-enablement thread already present in the work."
+      "Self-taught AI systems and automation builder with 8 years of enterprise IT and healthcare operations experience.",
+      "Proven track record of building and deploying full-stack workflow automation using Python, React/Vite, Firebase, and Cloudflare Workers.",
+      "Recently designed a PHI-safe enterprise AI pilot that advanced through enterprise governance review and received approval to begin pilot planning.",
+      "The proposed mid-case efficiency model projected approximately 40,000 annual labor hours saved."
     ]
   },
   {
     id: "p2-tools-and-platforms",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
-    title: "Tools & Platforms",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 1",
+    page: 1,
+    title: "Core Skills",
     aliases: ["skills", "core strengths", "strengths", "capabilities", "competencies", "technical stack", "tools", "platforms", "enterprise context"],
     items: [
-      "AI and orchestration: ChatGPT, Claude, Claude Code, Gemini, Gemini APIs, Perplexity, Grok, Meta AI, Codex.",
-      "Build: Firebase Hosting, React, Vite, Phaser, Zapier, Airtable, Google Workspace.",
-      "Data and operations: Power BI, SQL, Excel, ServiceNow, Microsoft 365, Active Directory, Azure AD, FACETS."
+      "AI Systems & Workflow Tooling: Codex, ChatGPT, Claude, Gemini API, Prompt/RAG design, retrieval-backed assistants, agentic workflows, and model integration orchestration.",
+      "Software Build & Deployment: React, Vite, JavaScript, TypeScript, Firebase Hosting, Firebase Functions, Firebase Auth, Cloudflare Workers, Wrangler, Git, and GitHub.",
+      "Automation & Data Pipelines: Python, CLI tools, JSON, APIs, webhooks, PDF parsing, SQLite, SQL, Power BI, DAX, Zapier, and Airtable.",
+      "Enterprise Systems & Operations: ServiceNow, Microsoft 365, Active Directory, Azure AD, Oracle E-Business Suite support, and FACETS.",
+      "Reliability & Security Habits: Trust-boundary review, server-side validation, secret scanning, deployment gates, source-vs-deployed parity checks, and audit-ready documentation."
+    ]
+  },
+  {
+    id: "p1-project-living-resume-ai",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 1",
+    page: 1,
+    title: "James AI Living Resume",
+    aliases: ["james ai living resume", "living resume", "interactive resume", "jamesai.space"],
+    items: [
+      "Live link: https://jamesai.space",
+      "Engineered and deployed a full-stack web application using a React/Vite frontend, Firebase Hosting, and cloud functions to allow recruiters to safely query verified resume data via source-grounded retrieval patterns.",
+      "Integrated ElevenLabs voice synthesis for voice guidance while enforcing security habits including secret-scan deployment gates and automated bundle integrity checks."
+    ]
+  },
+  {
+    id: "p1-project-cogfit-jobs",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 1",
+    page: 1,
+    title: "CogFit Jobs",
+    aliases: ["cogfit jobs", "cogfit", "job fit", "cognitive fit", "work style constraints"],
+    items: [
+      "Live link: https://cogfit-jobs.web.app",
+      "Built a secured job-fit web application with React, TypeScript, and Firebase to programmatically evaluate job descriptions against custom cognitive-fit parameters and operational work-style constraints.",
+      "Implemented server-side Gemini LLM API connections, Firestore-backed rate-limiting controls, and Firebase App Check to prevent unauthorized resource abuse and protect API usage and user data."
+    ]
+  },
+  {
+    id: "p2-project-pdf-equipment-checker",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "PDF Equipment Checker",
+    aliases: ["pdf equipment checker", "pdf checker", "equipment schedules", "blueprints", "pdf parsing"],
+    items: [
+      "Live link: https://pdf-checker-fcd6c.web.app",
+      "Developed and packaged a deterministic Python data parsing application designed to automate cross-referencing complex engineering equipment schedules against blueprint plan drawings.",
+      "Replaced manual comparison pipelines with structured multi-page CLI/JSON parsing diagnostics, error-handling heuristics, and a local Windows execution wrapper to avoid unsupported LLM extraction."
+    ]
+  },
+  {
+    id: "p2-exp-james-lane-ai-consulting",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "AI Consultant and Owner - James Lane AI Consulting | Apr 2026-Present | Carlisle, PA",
+    aliases: ["current role", "current job", "ai consultant", "owner", "james lane ai consulting", "consulting"],
+    items: [
+      "Customized and deployed open-source projects, full-stack workflow MVPs, and automated portfolio assistants using LLM APIs, cloud infrastructure, and JavaScript/Python frameworks.",
+      "Used AI coding tools for repository inspection, scoped implementation, debugging, testing, build verification, and deployment secret scanning."
     ]
   },
   {
     id: "p1-exp-capital-blue-cross",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Claims Workflow Intelligence Analyst (Embedded Claims Examiner) - Capital Blue Cross | Nov 2025-Present | Remote",
-    aliases: ["capital blue cross", "cbc", "claims workflow intelligence analyst", "embedded claims examiner", "claims examiner", "claims examiner i", "claims", "current role", "facets"],
+    referenceLabel: "Page 2",
+    page: 2,
+    sourceLabel: RESUME_SOURCE_LABEL,
+    title: "Claims Examiner I - Capital Blue Cross | Nov 2025-May 2026 | Remote",
+    aliases: ["capital blue cross", "cbc", "claims examiner", "claims examiner i", "claims", "facets", "phi-safe claims ai pilot"],
     items: [
-      "Operated above title level: used embedded claims work to surface workflow pain points, manual friction, and application blind spots that informed a PHI-safe claims AI pilot.",
-      "Pitched, structured, and advanced that initiative from idea to committee-approved pilot launch within the first months at CBC.",
-      "Maintained 99% audit quality while ramping into FACETS and production claim workflows, proving the ability to handle accuracy-sensitive operations while pushing improvement work in parallel.",
-      "Spotted process friction early and submitted improvement recommendations that were accepted before training was complete.",
-      "Built quick-reference job aids and decision notes that reduced ambiguity in high-variation claim scenarios and made repeatable handling easier for others."
+      "Designed and pitched a PHI-safe claims AI assistant pilot that advanced through enterprise AI governance review and received approval to begin pilot planning.",
+      "Engineered source-grounding, compliance boundaries, and a 50/50 A/B evaluation matrix projecting 40,000 hours of annual labor savings.",
+      "Maintained 99% audit quality while processing accuracy-sensitive claim workflows within FACETS and created markdown job aids to standardize high-variation claim scenarios for training queues."
     ]
   },
   {
     id: "p1-exp-randstad-icu-medical",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Enterprise Automation and Systems Analyst (Help Desk Analyst L1.5) - ICU Medical | Jul 2018-Aug 2025 | Remote / Mechanicsburg, PA",
-    aliases: ["randstad", "icu medical", "enterprise automation and systems analyst", "help desk analyst", "enterprise it", "it analyst", "oracle e-business suite", "active directory", "azure ad"],
-    items: [
-      "Translated user pain points and business needs into reproducible fixes, escalation packets, and audit-ready documentation across enterprise support environments.",
-      "Administered Active Directory and Azure AD access for 3,000+ users; verified permissions, licensing, and least-privilege alignment.",
-      "Supported Oracle E-Business Suite user access administration and Java launch troubleshooting; documented repeatable fixes for reuse.",
-      "Taught himself Python and built macros, templates, and ServiceNow workflow aids that cut repetitive handling time while preserving consistency and quality."
-    ]
-  },
-  {
-    id: "p1-exp-go-wireless",
-    group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Customer Technology Solutions Analyst (Sales and Device Support Associate) - Go Wireless / Verizon Authorized Retailer | Jul 2016-Jun 2018",
-    aliases: ["go wireless", "verizon", "customer technology solutions analyst", "sales and device support associate"],
-    items: [
-      "Gathered customer requirements, diagnosed device issues, and explained solutions clearly while documenting outcomes and escalations.",
-      "Balanced technical troubleshooting with inventory, warranty, and operational accuracy responsibilities."
-    ]
-  },
-  {
-    id: "p1-exp-office-depot",
-    group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Technical Diagnostics Analyst (PC Technician) - Office Depot | Jan 2016-Jul 2016",
-    aliases: ["office depot", "technical diagnostics analyst", "pc technician"],
-    items: [
-      "Performed diagnostics, malware removal, reinstalls, and post-repair validation with clear repair documentation."
-    ]
-  },
-  {
-    id: "p2-project-living-resume-ai",
-    group: "projects-catalog",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
-    title: "Living Resume AI",
-    aliases: ["living resume ai", "living resume", "interactive resume", "james ai"],
+    title: "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | Jul 2018-Aug 2025 | Mechanicsburg, PA",
+    aliases: ["randstad", "icu medical", "help desk analyst", "enterprise systems support", "enterprise it", "oracle ebs", "active directory", "azure ad"],
     items: [
-      "Live link: https://james-lane-web-resume.web.app/",
-      "Designed and deployed an interactive resume experience that lets employers explore experience, projects, and work style through conversation.",
-      "Used as a hiring artifact to demonstrate product thinking, AI implementation, and a better alternative to low-bandwidth static resumes."
+      "Programmed custom scripts, macros, and automated workflow aids to eliminate repetitive identity verification tasks and streamline multi-step provisioning.",
+      "Administered Active Directory, Azure AD, Microsoft 365, and Oracle EBS access management workflows for 3,000+ global enterprise users using ServiceNow.",
+      "Translated recurring incident patterns into technical documentation and escalation templates, reducing ticket rediscovery cycles and tier-2 routing leakage."
     ]
   },
   artDesignCatalogCorpus,
@@ -352,9 +370,8 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-caa-2026-pbm-regulatory-assistant",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
+    sourceLabel: "Curated project catalog",
+    referenceLabel: "Portfolio project archive",
     title: "CAA 2026 PBM Regulatory Assistant",
     aliases: ["caa 2026 pbm regulatory assistant", "pbm regulatory assistant", "caa 2026", "caademoweb"],
     items: [
@@ -366,9 +383,8 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-blkvue-ai-security-intake-bot",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
+    sourceLabel: "Curated project catalog",
+    referenceLabel: "Portfolio project archive",
     title: "BLKVue AI Security Intake Bot",
     aliases: ["blkvue ai security intake bot", "blkvue", "security intake bot"],
     items: [
@@ -380,9 +396,8 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-jameslaneai-com",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
+    sourceLabel: "Curated project catalog",
+    referenceLabel: "Portfolio project archive",
     title: "JamesLaneAI.com",
     aliases: ["jameslaneai.com", "james lane ai dot com", "consulting site"],
     items: [
@@ -420,9 +435,8 @@ const resumeSourceCorpus = [
   {
     id: "p2-project-iron-shores-playable-demo",
     group: "projects-catalog",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
+    sourceLabel: "Curated project catalog",
+    referenceLabel: "Portfolio project archive",
     title: "Masters of Metal",
     aliases: ["masters of metal", "iron shores playable demo", "iron shores", "playable demo", "iron-shores.web.app"],
     items: [
@@ -486,28 +500,19 @@ const resumeSourceCorpus = [
     ]
   },
   {
-    id: "p2-tools",
-    group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
-    referenceLabel: "Page 2",
-    page: 2,
-    title: "Tools",
-    aliases: ["tools", "tool stack", "build and deployment", "data and operations", "ai tools"],
-    items: [
-      "AI and orchestration: ChatGPT, Claude, Claude Code, Gemini, Gemini APIs, Perplexity, Grok, Meta AI, Codex.",
-      "Build: Firebase Hosting, React, Vite, Phaser, Zapier, Airtable, Google Workspace.",
-      "Data and operations: Power BI, SQL, Excel, ServiceNow, Microsoft 365, Active Directory, Azure AD, FACETS."
-    ]
-  },
-  {
     id: "p2-education",
     group: "resume-pdf",
-    sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
-    title: "Education",
-    aliases: ["education", "school", "diploma", "schooling", "academic"],
-    items: ["Hephzibah High School - High School Diploma"]
+    title: "Education and Certification",
+    aliases: ["education", "school", "diploma", "schooling", "academic", "certification", "certifications", "anthropic", "databricks"],
+    items: [
+      "High School Diploma | Hephzibah High School",
+      "AI Fluency: Framework & Foundations (Anthropic)",
+      "Academy Accreditation: Generative AI Fundamentals (Databricks)",
+      "Business Analysis Foundations"
+    ]
   }
 ];
 

@@ -9,6 +9,7 @@ dist/
 .firebase/
 
 output/
+tmp/
 .playwright-cli/
 public/portfolio/iron-tides/*.mp4
 

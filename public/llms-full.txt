@@ -3,6 +3,7 @@
 Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
 Contact: tiburo13@gmail.com
+Current resume PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
 GitHub: https://github.com/Angry-TacoZ
 X: https://x.com/JamesLaneAI
@@ -14,9 +15,20 @@ James AI is a living resume, portfolio, and source-grounded assistant for James 
 
 ## Professional Summary
 
-James Lane is a nontraditional, systems-oriented professional with experience across healthcare operations, enterprise IT support, process analysis, AI-assisted tool building, public writing, design work, and web/game prototypes.
+James Lane is a self-taught AI systems and automation builder with eight years of enterprise IT and healthcare operations experience. He builds and deploys full-stack workflow tools with Python, React/Vite, Firebase, Cloudflare Workers, and AI model APIs.
+
+He currently works as AI Consultant and Owner at James Lane AI Consulting. His prior roles include Claims Examiner I at Capital Blue Cross from November 2025 through May 2026 and enterprise systems support for ICU Medical via Randstad from July 2018 through August 2025.
 
 He is best represented through reasoning patterns, work samples, deployed demos, and structured discussion rather than title history alone. A conventional resume can undersell him because much of his value appears in how he diagnoses systems, learns tools, builds artifacts, and turns vague problems into concrete interfaces.
+
+At Capital Blue Cross, James designed a PHI-safe claims AI assistant pilot that advanced through enterprise governance review and received approval to begin pilot planning. Its mid-case efficiency model projected approximately 40,000 annual labor hours saved.
+
+## Current Resume
+
+- Download the current two-page PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
+- Selected applications: James AI Living Resume, CogFit Jobs, and PDF Equipment Checker.
+- Core stack: Python, React, Vite, JavaScript, TypeScript, Firebase, Cloudflare Workers, Microsoft 365, SQL, Power BI, and model APIs.
+- Certifications: AI Fluency: Framework & Foundations (Anthropic), Academy Accreditation: Generative AI Fundamentals (Databricks), and Business Analysis Foundations.
 
 ## Strongest Evidence Pattern
 
