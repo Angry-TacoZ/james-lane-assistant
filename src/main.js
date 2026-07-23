@@ -20,14 +20,16 @@ const isLocalPreviewHost =
   window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 const canRemoteSynthesize = Boolean(synthesizeUrl) && !isLocalPreviewHost;
 const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
+const BRAND_NAME = "JamesAQI";
+const BRAND_TAGLINE = "An AI powered living resume";
 
 const PAGE_TITLES = {
-  home: "SyntheticCurator // James AI",
-  writing: "THE LIVING INTELLIGENCE | Writing",
-  contact: "THE LIVING INTELLIGENCE | Contact",
-  projects: "THE LIVING INTELLIGENCE | Projects",
-  design: "THE LIVING INTELLIGENCE | Art & Design",
-  health: "THE LIVING INTELLIGENCE | Health & Accessibility"
+  home: `${BRAND_NAME} | ${BRAND_TAGLINE}`,
+  writing: `${BRAND_NAME} | Writing`,
+  contact: `${BRAND_NAME} | Contact`,
+  projects: `${BRAND_NAME} | Projects`,
+  design: `${BRAND_NAME} | Art & Design`,
+  health: `${BRAND_NAME} | Health & Accessibility`
 };
 
 const CONTACT_EMAIL = "tiburo13@gmail.com";
@@ -786,6 +788,17 @@ function scrollHomeChatToBottom() {
   });
 }
 
+function renderBrandLockup(alignment = "left") {
+  const alignmentClasses = alignment === "center" ? "items-center text-center" : "items-start text-left";
+
+  return `
+    <div class="flex min-w-0 flex-col justify-center ${alignmentClasses}" data-brand-lockup>
+      <span class="font-headline text-base md:text-xl font-bold leading-none tracking-normal text-[#B1D09A]" data-brand-name>${BRAND_NAME}</span>
+      <span class="mt-1 whitespace-nowrap font-label text-[7px] sm:text-[8px] leading-none tracking-[0.08em] text-on-surface-variant/70" data-brand-tagline>${BRAND_TAGLINE}</span>
+    </div>
+  `;
+}
+
 function renderHomePage() {
   const mode = modeMap.get(pageState.modeId);
   const session = pageState.sessions[pageState.modeId];
@@ -798,14 +811,14 @@ function renderHomePage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full">
-      <div class="text-lg md:text-xl font-black text-[#B1D09A] tracking-tighter font-['Inter']">SyntheticCurator</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex gap-4 md:gap-8 items-center font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("home", "top")}
       </nav>
       <div class="flex items-center gap-2 md:gap-4">
         <button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-3 sm:px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-[9px] md:text-[10px] font-['Space_Grotesk'] font-bold uppercase tracking-[0.18em] md:tracking-widest hover:opacity-90 transition-all duration-300" data-open-url="${escapeAttribute(CONTACT_MAILTO)}">Hire Intelligence</button>
         <div class="hidden sm:flex w-10 h-10 rounded-full bg-surface-container-high border border-primary/20 items-center justify-center">
-          <span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest text-primary">SC</span>
+          <span class="font-['Space_Grotesk'] text-[9px] font-bold uppercase tracking-widest text-primary">JAI</span>
         </div>
       </div>
     </header>
@@ -844,7 +857,7 @@ function renderHomePage() {
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px]"></div>
         <div class="relative z-10 max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8 xl:gap-12 items-start">
           <div class="xl:col-span-6 pt-2 md:pt-4">
-            <span class="font-['Space_Grotesk'] text-primary text-xs uppercase tracking-[0.4em] mb-5 block">Living Intelligence Interface</span>
+            <span class="font-['Space_Grotesk'] text-primary text-xs uppercase tracking-[0.4em] mb-5 block">Source-grounded portfolio assistant</span>
             <h1 class="text-4xl sm:text-5xl md:text-7xl font-black text-on-surface tracking-tighter leading-[0.95] mb-5 md:mb-6">
             James AI: <br/>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-secondary">Beyond the Resume</span>
@@ -932,11 +945,11 @@ function renderHomePage() {
             <div class="space-y-6">
               ${renderHomeEvidenceCards(evidenceCards)}
               <div class="pt-8 border-t border-outline-variant/10">
-                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/40 uppercase tracking-widest mb-4">Quick Links</div>
+                <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/70 uppercase tracking-widest mb-4">Quick Links</div>
                 <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-on-surface-variant">terminal</span></div>
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="writing"><span class="material-symbols-outlined text-on-surface-variant">description</span></div>
-                  <div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer" data-page-link="contact"><span class="material-symbols-outlined text-on-surface-variant">contact_mail</span></div>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#projects" data-page-link="projects" data-home-quick-link aria-label="View projects"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">terminal</span></a>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#writing" data-page-link="writing" data-home-quick-link aria-label="Read writing"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">description</span></a>
+                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#contact" data-page-link="contact" data-home-quick-link aria-label="Open contact page"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">contact_mail</span></a>
                 </div>
               </div>
             </div>
@@ -945,14 +958,16 @@ function renderHomePage() {
       </div>
     </main>
     <footer class="bg-[#121415] w-full py-12 border-t border-[#44483E]/15 flex flex-col items-center gap-4 w-full">
-      <div class="flex gap-4 md:gap-8 items-center mb-4">
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Documentation</a>
-        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-[#E2E2E5]/30 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Security</a>
-      </div>
-      <section class="w-[min(92vw,48rem)] rounded-xl border border-outline-variant/10 bg-surface-container-low/60 px-5 py-5 text-center">
-        <h2 class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-[#B1D09A] mb-2">AI-readable portfolio files</h2>
-        <p class="text-sm text-on-surface-variant mb-4">Static files are available for search engines, AI agents, and non-JavaScript readers.</p>
+      <nav class="flex flex-wrap justify-center gap-4 md:gap-8 items-center mb-4" aria-label="Portfolio links">
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#contact" data-page-link="contact">Contact</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#writing" data-page-link="writing">Writing</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="#projects" data-page-link="projects">Projects</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="font-['Space_Grotesk'] text-[10px] uppercase text-on-surface-variant/70 hover:text-[#B1D09A] transition-opacity duration-500" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <details class="w-[min(92vw,48rem)] rounded-xl border border-outline-variant/10 bg-surface-container-low/60 px-5 py-5 text-center">
+        <summary class="cursor-pointer font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-[#B1D09A]">Machine-readable portfolio resources</summary>
+        <p class="mt-5 text-sm text-on-surface-variant mb-4">Static files are available for search engines, AI agents, and non-JavaScript readers.</p>
         <div class="flex flex-wrap justify-center gap-3">
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms.txt">LLM Guide</a>
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/llms-full.txt">Full Context</a>
@@ -961,9 +976,9 @@ function renderHomePage() {
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/portfolio.md">Portfolio</a>
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors" href="/ai/source-map.md">Source Map</a>
         </div>
-      </section>
+      </details>
       <div class="flex flex-col items-center gap-2">
-        <div class="font-['Space_Grotesk'] text-[10px] uppercase text-[#84A16F] tracking-widest">© 2024 SYNTHETIC CURATOR // NEURAL ARCHITECTURE</div>
+        ${renderBrandLockup("center")}
         <div class="font-['Inter'] text-sm text-on-surface">James Earl Lane</div>
         <div class="flex flex-wrap items-center justify-center gap-4">
           <a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.2em] text-[#E2E2E5]/50 hover:text-[#B1D09A] transition-colors duration-300" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
@@ -1171,9 +1186,9 @@ function renderHomeChatPanel(displayedHistory, placeholder, modeSeedLoading = fa
       </div>
       <div class="p-4 sm:p-6 bg-surface-container-lowest">
         <div class="relative group">
-          <input class="w-full bg-surface-container-low border-none rounded-lg py-4 px-4 sm:px-6 text-on-surface font-['Space_Grotesk'] text-xs uppercase tracking-widest focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/30" placeholder="${escapeHtml(placeholder)}" type="text" value="${escapeAttribute(pageState.homeDraft)}" data-home-input/>
-          <button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform" data-home-submit>
-            <span class="material-symbols-outlined">send</span>
+          <input class="w-full bg-surface-container-low border-none rounded-lg py-4 px-4 sm:px-6 text-on-surface font-['Space_Grotesk'] text-xs uppercase tracking-widest focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/30" aria-label="Ask the assistant a question" placeholder="${escapeHtml(placeholder)}" type="text" value="${escapeAttribute(pageState.homeDraft)}" data-home-input/>
+          <button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform" type="button" aria-label="Send question" data-home-submit>
+            <span class="material-symbols-outlined" aria-hidden="true">send</span>
           </button>
         </div>
       </div>
@@ -1202,18 +1217,26 @@ function renderHomeEvidenceCards(cards) {
       const url = extractMatchUrl(match);
       const label = deriveEvidenceLabel(match, index);
       const description = match.items.map(normalizeEvidenceLine).filter(Boolean).slice(0, 1).join(" ");
+      const wrapperTag = url ? "a" : "article";
+      const wrapperAttributes = url
+        ? `href="${escapeAttribute(url)}" target="_blank" rel="noopener noreferrer" aria-label="Open source for ${escapeAttribute(match.title)}"`
+        : "";
+      const interactionClasses = url
+        ? "cursor-pointer group-hover:border-primary group-hover:bg-surface-container-high"
+        : "cursor-default";
+      const statusIcon = url ? "open_in_new" : "verified";
 
       return `
-        <div class="group cursor-pointer" ${url ? `data-open-url="${escapeAttribute(url)}"` : ""}>
-          <div class="bg-surface-container-low p-6 rounded-lg transition-all border-l-2 border-transparent group-hover:border-primary group-hover:bg-surface-container-high">
+        <${wrapperTag} class="group block ${interactionClasses}" ${wrapperAttributes} data-home-evidence-card data-evidence-link="${url ? "true" : "false"}">
+          <div class="bg-surface-container-low p-6 rounded-lg transition-all border-l-2 border-transparent ${interactionClasses}">
             <div class="flex justify-between items-start mb-3">
               <span class="font-['Space_Grotesk'] text-[10px] text-primary">${escapeHtml(label)}</span>
-              <span class="material-symbols-outlined text-sm text-on-surface-variant">open_in_new</span>
+              <span class="material-symbols-outlined text-sm text-on-surface-variant" aria-hidden="true">${statusIcon}</span>
             </div>
             <h4 class="font-bold text-on-surface mb-2">${escapeHtml(match.title)}</h4>
             <p class="text-sm text-on-surface-variant/60 leading-snug">${escapeHtml(description)}</p>
           </div>
-        </div>
+        </${wrapperTag}>
       `;
     })
     .join("");
@@ -1229,10 +1252,7 @@ function renderWritingPage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl shadow-2xl shadow-black/40 flex justify-between items-center px-4 md:px-8 h-16 w-full">
-      <div class="flex items-center gap-4">
-        <span class="text-lg font-bold tracking-tighter text-[#B1D09A] font-headline md:hidden">JAMES AI</span>
-        <span class="hidden md:inline text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">THE LIVING INTELLIGENCE</span>
-      </div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("writing", "top")}
       </nav>
@@ -1244,11 +1264,11 @@ function renderWritingPage() {
       <div class="px-6 mb-8">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-8 h-8 rounded-full bg-surface-container-high border border-primary/20 flex items-center justify-center">
-            <span class="font-label text-[9px] font-bold uppercase tracking-widest text-primary">SC</span>
+            <span class="font-label text-[8px] font-bold uppercase tracking-widest text-primary">JAI</span>
           </div>
           <div>
-            <p class="text-[#B1D09A] font-bold text-[10px] font-label tracking-widest uppercase">SYNTHETIC CURATOR</p>
-            <p class="text-gray-500 text-[9px] font-label uppercase">Active Protocol: v2.0.4</p>
+            <p class="text-[#B1D09A] font-bold text-[10px] font-label tracking-widest">${BRAND_NAME}</p>
+            <p class="text-gray-500 text-[9px] font-label">${BRAND_TAGLINE}</p>
           </div>
         </div>
       </div>
@@ -1471,7 +1491,7 @@ function renderContactPage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
-      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("contact", "top")}
       </nav>
@@ -1532,7 +1552,7 @@ function renderContactPage() {
     </main>
     <footer class="bg-surface-container-lowest py-12 px-4 md:px-8 border-t border-outline-variant/10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div class="text-[#B1D09A] font-bold font-headline tracking-tighter text-lg">THE LIVING INTELLIGENCE</div>
+        ${renderBrandLockup()}
         <div class="flex flex-wrap justify-center gap-8">
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${CONTACT_MAILTO}">Email</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -1576,7 +1596,7 @@ function renderEvidencePage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
-      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-headline">${`<span class="md:hidden">JAMES AI</span><span class="hidden md:inline">THE LIVING INTELLIGENCE</span>`}</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-headline font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("evidence", "top")}
       </nav>
@@ -1588,8 +1608,8 @@ function renderEvidencePage() {
     </header>
     <aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#282A2C]/50 bg-[#0C0E10] flex flex-col h-full pt-20 pb-8 hidden lg:flex">
       <div class="px-6 mb-8">
-        <div class="text-[#B1D09A] font-bold font-label text-xs uppercase tracking-widest mb-1">SYNTHETIC CURATOR</div>
-        <div class="text-gray-500 font-label text-[10px] tracking-widest">Active Protocol: v2.0.4</div>
+        <div class="text-[#B1D09A] font-bold font-label text-xs tracking-widest mb-1">${BRAND_NAME}</div>
+        <div class="text-gray-500 font-label text-[10px]">${BRAND_TAGLINE}</div>
       </div>
       <nav class="flex-grow">
         ${renderPrimaryNavLinks("evidence", "side")}
@@ -1705,7 +1725,7 @@ function renderEvidencePage() {
     </main>
     <footer class="bg-surface-container-lowest py-12 px-4 md:px-8 border-t border-outline-variant/10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div class="text-[#B1D09A] font-bold font-headline tracking-tighter text-lg">THE LIVING INTELLIGENCE</div>
+        ${renderBrandLockup()}
         <div class="flex gap-8">
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="mailto:tiburo13@gmail.com">Contact</a>
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#" data-page-link="home">Nexus</a>
@@ -1803,7 +1823,7 @@ function renderArtDesignPage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
-      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("design", "top")}
       </nav>
@@ -1875,14 +1895,14 @@ function renderArtDesignPage() {
           </div>
           <div class="text-right">
             <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Designed &amp; Compiled by James AI Core</p>
-            <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2024 THE LIVING INTELLIGENCE. ALL RIGHTS RESERVED.</p>
+            <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2026 ${BRAND_NAME}. ALL RIGHTS RESERVED.</p>
           </div>
         </footer>
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("design")}
@@ -1922,7 +1942,7 @@ function renderArtDesignCard(entry) {
 function renderHealthPage() {
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
-      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("health", "top")}
       </nav>
@@ -1995,8 +2015,8 @@ function renderHealthPage() {
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-target-mode="health" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant about health" data-page-link="home" data-target-mode="health" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("health")}
@@ -2061,7 +2081,7 @@ function renderProjectsPage() {
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
-      <div class="text-lg md:text-xl font-bold tracking-tighter text-[#B1D09A] font-['Inter']">JAMES AI</div>
+      ${renderBrandLockup()}
       <nav class="hidden md:flex items-center gap-4 md:gap-8 font-['Inter'] font-bold tracking-tight overflow-x-auto no-scrollbar" data-responsive-nav="desktop">
         ${renderPrimaryNavLinks("projects", "top")}
       </nav>
@@ -2146,15 +2166,15 @@ function renderProjectsPage() {
             <div class="text-right">
               <p class="font-label text-[10px] text-gray-600 uppercase tracking-[0.2em]">Designed &amp; Compiled by James AI Core</p>
               <a class="inline-flex mt-3 font-label text-[10px] text-primary hover:text-on-surface uppercase tracking-[0.2em] transition-colors" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-              <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2024 THE LIVING INTELLIGENCE. ALL RIGHTS RESERVED.</p>
+              <p class="font-label text-[10px] text-gray-700 uppercase tracking-[0.2em] mt-1">© 2026 ${BRAND_NAME}. ALL RIGHTS RESERVED.</p>
             </div>
           </div>
         </footer>
       </div>
     </main>
     <div class="hidden md:flex fixed bottom-8 right-8 z-50">
-      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" data-page-link="home" data-focus-composer="true">
-        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+      <button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl shadow-primary/30 flex items-center justify-center group hover:scale-110 transition-all" type="button" aria-label="Ask the assistant" data-page-link="home" data-focus-composer="true">
+        <span class="material-symbols-outlined text-on-primary text-3xl group-hover:rotate-12 transition-transform" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">bolt</span>
       </button>
     </div>
     ${renderMobileBottomNav("projects")}
@@ -2571,7 +2591,7 @@ function deriveEvidenceLabel(match, index) {
   const group = source?.group ?? "resume-pdf";
   const prefix =
     {
-      "resume-pdf": "CASE STUDY",
+      "resume-pdf": "RESUME SOURCE",
       "projects-catalog": "LIVE PROJECT",
       "writing-corpus": "WRITING",
       "writing-supporting-analysis": "ANALYSIS",
@@ -2651,10 +2671,10 @@ function renderMobileBottomNav(activePage) {
         .map((item) => {
           const active = item.page === activePage;
           return `
-            <div class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" data-page-link="${item.page}">
-              <span class="material-symbols-outlined" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
+            <a class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" href="#${item.page}" data-page-link="${item.page}" ${active ? 'aria-current="page"' : ""}>
+              <span class="material-symbols-outlined" aria-hidden="true" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
               <span class="text-[9px] font-label uppercase">${item.shortLabel}</span>
-            </div>
+            </a>
           `;
         })
         .join("")}

@@ -1579,7 +1579,7 @@ function buildAnswerLines(scoredSections, question, intent) {
 
       items = items.filter((item) => !EXCLUDE_EXAMPLE_LINES.test(item));
 
-      if (wantsRoleTitle && entry.section.group === "resume-pdf") {
+      if (wantsRoleTitle && entry.section.group === "resume-pdf" && entry.section.id !== "p1-headline") {
         items = [entry.section.title, ...items].filter((item, index, allItems) => allItems.indexOf(item) === index);
       }
 

@@ -1,4 +1,4 @@
-# James AI / SyntheticCurator - Full LLM Context
+# JamesAQI - An AI powered living resume - Full LLM Context
 
 Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
