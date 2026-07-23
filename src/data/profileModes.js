@@ -256,26 +256,26 @@ export const profileModes = [
     label: "Resume",
     panelTitle: "Resume Lens",
     description:
-      "Use this lens for factual questions about James Lane's current role, work history, tools, education, and contact details.",
-    placeholder: "Ask about James's current role, work history, tools, education, or contact details...",
+      "View James Lane's current resume or ask factual questions about his work history, applications, tools, education, certifications, and contact details.",
+    placeholder: "Ask about James's consulting work, experience, applications, tools, certifications, or contact details...",
     welcomeMessage:
-      "I can answer factual resume questions about James Lane's current role, experience, tools, education, and contact details.",
+      "I can answer factual questions from James Lane's current resume, including consulting work, experience, applications, tools, certifications, and contact details.",
     defaultIntent: "experience",
     answerStyle:
       "Answer directly and factually, with minimal framing.",
     starterQuestions: [
-      "What is James Lane's current role?",
-      "What tools and platforms does James Lane list?",
-      "What education is listed?",
+      "What is James Lane's current consulting role?",
+      "What systems and automation tools does James Lane list?",
+      "What education and certifications are listed?",
       "How can someone contact James Lane?"
     ],
     briefingCards: [
       {
         eyebrow: "Current Role",
-        title: "Claims Workflow Intelligence Analyst at Capital Blue Cross",
+        title: "AI Consultant and Owner at James Lane AI Consulting",
         body:
-          "The resume lists James's current role as Claims Workflow Intelligence Analyst (Embedded Claims Examiner) at Capital Blue Cross, remote, beginning in 2025.",
-        ref: "resume-pdf / Claims Workflow Intelligence Analyst (Embedded Claims Examiner) - Capital Blue Cross | Nov 2025-Present | Remote"
+          "The resume lists James's current role as AI Consultant and Owner at James Lane AI Consulting, beginning in April 2026.",
+        ref: "resume-pdf / AI Consultant and Owner - James Lane AI Consulting | Apr 2026-Present | Carlisle, PA"
       },
       {
         eyebrow: "Background",
@@ -286,10 +286,10 @@ export const profileModes = [
       },
       {
         eyebrow: "Tools",
-        title: "BI, data, and workflow tooling",
+        title: "AI systems, software, automation, and enterprise tooling",
         body:
-          "The resume specifically lists Power BI, SQL, Excel, ServiceNow, Zapier, Airtable, Microsoft 365, Active Directory, Azure AD, FACETS, plus AI and build tools such as ChatGPT, Claude, Gemini, Codex, React, Vite, and Firebase Hosting.",
-        ref: "resume-pdf / Tools & Platforms"
+          "The resume lists Codex, ChatGPT, Claude, Gemini API, React, Vite, JavaScript, TypeScript, Firebase, Cloudflare Workers, Python, APIs, SQL, Power BI, ServiceNow, Microsoft 365, Active Directory, Azure AD, Oracle EBS, and FACETS.",
+        ref: "resume-pdf / Core Skills"
       }
     ]
   }
