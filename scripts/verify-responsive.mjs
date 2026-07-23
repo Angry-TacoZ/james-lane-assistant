@@ -169,6 +169,15 @@ async function verifyPage(browser, viewport, pageTarget) {
       const brandCopyIsCorrect =
         brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "JamesAQI" &&
         brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI powered living resume";
+      const homeEvidenceCards = [...document.querySelectorAll("[data-home-evidence-card]")];
+      const homeEvidenceAffordancesAreHonest = homeEvidenceCards.every((card) => {
+        const hasUrl = card.getAttribute("data-evidence-link") === "true";
+        const icon = card.querySelector(".material-symbols-outlined")?.textContent?.trim();
+
+        return hasUrl
+          ? card.matches("a[href]") && icon === "open_in_new"
+          : card.matches("article") && icon !== "open_in_new";
+      });
       const interactiveTargets = document.querySelectorAll("button, a, input, textarea, [data-page-link]");
       const widthOverflow = document.documentElement.scrollWidth - window.innerWidth;
 
@@ -191,6 +200,7 @@ async function verifyPage(browser, viewport, pageTarget) {
         homeComposerIsAccessible,
         brandLockupIsVisible,
         brandCopyIsCorrect,
+        homeEvidenceAffordancesAreHonest,
         widthOverflow
       };
     }, { viewportName: viewport.name, pageTargetName: pageTarget.name });
@@ -207,6 +217,7 @@ async function verifyPage(browser, viewport, pageTarget) {
     assert(result.homeComposerIsAccessible, `${viewport.name}/${pageTarget.name} home composer is missing accessible labels`);
     assert(result.brandLockupIsVisible, `${viewport.name}/${pageTarget.name} brand lockup is missing or hidden`);
     assert(result.brandCopyIsCorrect, `${viewport.name}/${pageTarget.name} brand copy is incorrect`);
+    assert(result.homeEvidenceAffordancesAreHonest, `${viewport.name}/${pageTarget.name} evidence cards imply unavailable links`);
     assert(result.widthOverflow <= 2, `${viewport.name}/${pageTarget.name} has horizontal overflow of ${result.widthOverflow}px`);
   } finally {
     await context.close();

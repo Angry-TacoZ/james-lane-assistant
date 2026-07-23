@@ -3,6 +3,14 @@ import { refusalMessage } from "../src/data/resumeCorpus.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
+  it("uses a meaningful title for the professional headline source", () => {
+    const response = askAssistant("What is the professional headline for James Lane?");
+    const headlineMatch = response.matches.find((match) => match.ref === "p1-headline");
+
+    expect(headlineMatch?.title).toBe("Professional Headline");
+    expect(headlineMatch?.items).toEqual(["AI Builder | Workflow Intelligence | Product Operations"]);
+  });
+
   it("answers direct factual contact questions from the approved resume", () => {
     const response = askAssistant("What is James Lane's email address?");
 

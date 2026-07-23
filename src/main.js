@@ -1217,18 +1217,26 @@ function renderHomeEvidenceCards(cards) {
       const url = extractMatchUrl(match);
       const label = deriveEvidenceLabel(match, index);
       const description = match.items.map(normalizeEvidenceLine).filter(Boolean).slice(0, 1).join(" ");
+      const wrapperTag = url ? "a" : "article";
+      const wrapperAttributes = url
+        ? `href="${escapeAttribute(url)}" target="_blank" rel="noopener noreferrer" aria-label="Open source for ${escapeAttribute(match.title)}"`
+        : "";
+      const interactionClasses = url
+        ? "cursor-pointer group-hover:border-primary group-hover:bg-surface-container-high"
+        : "cursor-default";
+      const statusIcon = url ? "open_in_new" : "verified";
 
       return `
-        <div class="group cursor-pointer" ${url ? `data-open-url="${escapeAttribute(url)}"` : ""}>
-          <div class="bg-surface-container-low p-6 rounded-lg transition-all border-l-2 border-transparent group-hover:border-primary group-hover:bg-surface-container-high">
+        <${wrapperTag} class="group block ${interactionClasses}" ${wrapperAttributes} data-home-evidence-card data-evidence-link="${url ? "true" : "false"}">
+          <div class="bg-surface-container-low p-6 rounded-lg transition-all border-l-2 border-transparent ${interactionClasses}">
             <div class="flex justify-between items-start mb-3">
               <span class="font-['Space_Grotesk'] text-[10px] text-primary">${escapeHtml(label)}</span>
-              <span class="material-symbols-outlined text-sm text-on-surface-variant">open_in_new</span>
+              <span class="material-symbols-outlined text-sm text-on-surface-variant" aria-hidden="true">${statusIcon}</span>
             </div>
             <h4 class="font-bold text-on-surface mb-2">${escapeHtml(match.title)}</h4>
             <p class="text-sm text-on-surface-variant/60 leading-snug">${escapeHtml(description)}</p>
           </div>
-        </div>
+        </${wrapperTag}>
       `;
     })
     .join("");
@@ -2583,7 +2591,7 @@ function deriveEvidenceLabel(match, index) {
   const group = source?.group ?? "resume-pdf";
   const prefix =
     {
-      "resume-pdf": "CASE STUDY",
+      "resume-pdf": "RESUME SOURCE",
       "projects-catalog": "LIVE PROJECT",
       "writing-corpus": "WRITING",
       "writing-supporting-analysis": "ANALYSIS",
