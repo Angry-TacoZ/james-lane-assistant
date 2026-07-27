@@ -199,7 +199,7 @@ const resumeSourceCorpus = [
     sourceLabel: "James_Lane_Resume_dy_Full_t_v2.pdf",
     referenceLabel: "Page 1",
     page: 1,
-    title: "Headline",
+    title: "Professional Headline",
     aliases: ["headline", "roles", "title", "position", "ai builder", "workflow intelligence", "product operations"],
     items: ["AI Builder | Workflow Intelligence | Product Operations"]
   },

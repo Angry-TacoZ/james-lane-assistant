@@ -130,7 +130,7 @@ async function verifyPage(browser, viewport, pageTarget) {
       waitUntil: "networkidle"
     });
 
-    const result = await page.evaluate((viewportName) => {
+    const result = await page.evaluate(({ viewportName, pageTargetName }) => {
       const app = document.querySelector("#app");
       const expectedNav = document.querySelector(`[data-responsive-nav="${viewportName}"]`);
       const navStyle = expectedNav ? window.getComputedStyle(expectedNav) : null;
@@ -142,6 +142,42 @@ async function verifyPage(browser, viewport, pageTarget) {
             return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
           }).length
         : 0;
+      const navControlsAreSemantic = expectedNav
+        ? [...expectedNav.querySelectorAll("[data-page-link]")].every((element) => element.matches("a, button"))
+        : false;
+      const homeQuickLinks = [...document.querySelectorAll("[data-home-quick-link]")];
+      const homeQuickLinksAreAccessible =
+        homeQuickLinks.length === 0 ||
+        homeQuickLinks.every((element) => element.matches("a, button") && element.getAttribute("aria-label"));
+      const homeComposerIsAccessible =
+        pageTargetName !== "home" ||
+        Boolean(
+          document.querySelector('[data-home-input][aria-label]') &&
+            document.querySelector('[data-home-submit][aria-label]')
+        );
+      const brandLockup = document.querySelector("[data-brand-lockup]");
+      const brandStyle = brandLockup ? window.getComputedStyle(brandLockup) : null;
+      const brandRect = brandLockup?.getBoundingClientRect();
+      const brandLockupIsVisible = Boolean(
+        brandStyle &&
+          brandRect &&
+          brandStyle.display !== "none" &&
+          brandStyle.visibility !== "hidden" &&
+          brandRect.width > 0 &&
+          brandRect.height > 0
+      );
+      const brandCopyIsCorrect =
+        brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "JamesAQI" &&
+        brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI powered living resume";
+      const homeEvidenceCards = [...document.querySelectorAll("[data-home-evidence-card]")];
+      const homeEvidenceAffordancesAreHonest = homeEvidenceCards.every((card) => {
+        const hasUrl = card.getAttribute("data-evidence-link") === "true";
+        const icon = card.querySelector(".material-symbols-outlined")?.textContent?.trim();
+
+        return hasUrl
+          ? card.matches("a[href]") && icon === "open_in_new"
+          : card.matches("article") && icon !== "open_in_new";
+      });
       const interactiveTargets = document.querySelectorAll("button, a, input, textarea, [data-page-link]");
       const widthOverflow = document.documentElement.scrollWidth - window.innerWidth;
 
@@ -159,9 +195,15 @@ async function verifyPage(browser, viewport, pageTarget) {
             navRect.height > 0
         ),
         visibleNavLinks,
+        navControlsAreSemantic,
+        homeQuickLinksAreAccessible,
+        homeComposerIsAccessible,
+        brandLockupIsVisible,
+        brandCopyIsCorrect,
+        homeEvidenceAffordancesAreHonest,
         widthOverflow
       };
-    }, viewport.name);
+    }, { viewportName: viewport.name, pageTargetName: pageTarget.name });
 
     assert(errors.length === 0, `${viewport.name}/${pageTarget.name} browser errors: ${errors.join(" | ")}`);
     assert(result.appExists, `${viewport.name}/${pageTarget.name} did not render #app`);
@@ -170,6 +212,12 @@ async function verifyPage(browser, viewport, pageTarget) {
     assert(result.expectedNavExists, `${viewport.name}/${pageTarget.name} missing expected navigation`);
     assert(result.expectedNavVisible, `${viewport.name}/${pageTarget.name} expected navigation is not visible`);
     assert(result.visibleNavLinks > 0, `${viewport.name}/${pageTarget.name} expected navigation has no visible controls`);
+    assert(result.navControlsAreSemantic, `${viewport.name}/${pageTarget.name} navigation includes non-semantic controls`);
+    assert(result.homeQuickLinksAreAccessible, `${viewport.name}/${pageTarget.name} home quick links are not accessible controls`);
+    assert(result.homeComposerIsAccessible, `${viewport.name}/${pageTarget.name} home composer is missing accessible labels`);
+    assert(result.brandLockupIsVisible, `${viewport.name}/${pageTarget.name} brand lockup is missing or hidden`);
+    assert(result.brandCopyIsCorrect, `${viewport.name}/${pageTarget.name} brand copy is incorrect`);
+    assert(result.homeEvidenceAffordancesAreHonest, `${viewport.name}/${pageTarget.name} evidence cards imply unavailable links`);
     assert(result.widthOverflow <= 2, `${viewport.name}/${pageTarget.name} has horizontal overflow of ${result.widthOverflow}px`);
   } finally {
     await context.close();
