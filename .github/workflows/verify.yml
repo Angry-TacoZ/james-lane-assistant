@@ -30,6 +30,9 @@ jobs:
       - name: Install Firebase Functions dependencies
         run: npm --prefix functions ci
 
+      - name: Audit Firebase Functions production dependencies
+        run: npm --prefix functions audit --omit=dev
+
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
