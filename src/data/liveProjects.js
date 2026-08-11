@@ -1,5 +1,53 @@
 export const liveProjects = [
   {
+    id: "delivery-composer",
+    title: "Delivery Composer",
+    description:
+      "Synthetic-data delivery-team composition demo with explicit constraints, attributable scoring, candidate comparison, and human approval.",
+    url: "https://composer.jamesai.space/",
+    ref: "Public demo and GitHub repo / delivery-composer"
+  },
+  {
+    id: "blue-ambient-shopping-agent",
+    title: "Blue - Ambient Shopping Agent",
+    description:
+      "Retail AI concept with inspectable browser-local memory, deterministic recommendations, and three visible tradeoff directions.",
+    url: "https://angry-tacoz.github.io/best-buy-blue-concept/",
+    ref: "Public GitHub Pages concept / best-buy-blue-concept"
+  },
+  {
+    id: "pdf-equipment-checker",
+    title: "PDF Equipment Checker",
+    description:
+      "Deterministic PDF validation tool that compares equipment schedule rows with plan-drawing tags and explains ambiguous matches.",
+    url: "https://pdf-checker-fcd6c.web.app/",
+    ref: "Public hosted demo and GitHub repo / pdf-equipment-checker"
+  },
+  {
+    id: "personal-job-discovery",
+    title: "Personal Job Discovery",
+    description:
+      "Local-first job monitor that validates public ATS data, keeps state in SQLite, and explains deterministic match scores.",
+    url: "https://github.com/Angry-TacoZ/personal-job-discovery",
+    ref: "Public GitHub repo / local-only tool"
+  },
+  {
+    id: "fieldline-aec",
+    title: "Fieldline AEC Concept",
+    description:
+      "Local-only product exercise for recording simulated change approvals and handing an approved proposal into a simulated 3D workflow.",
+    url: "https://github.com/Angry-TacoZ/ai-native-aec-product-design",
+    ref: "Public GitHub repo / simulated AEC concept"
+  },
+  {
+    id: "race-telemetry",
+    title: "Race Telemetry Simulator",
+    description:
+      "Local deterministic telemetry dashboard that demonstrates engineer-facing warning states without vehicle or external-system integration.",
+    url: "https://github.com/Angry-TacoZ/race-telemetry",
+    ref: "Public GitHub repo / local-only simulator"
+  },
+  {
     id: "living-resume-ai",
     title: "Living Resume AI",
     description:
@@ -61,7 +109,7 @@ export const liveProjects = [
     description:
       "Babylon.js isometric city-builder prototype with Anno-style production, resident needs, civic progression, and an editor-ready asset workflow.",
     url: "https://github.com/Angry-TacoZ/vast-lands",
-    ref: "Private GitHub repo / vast-lands"
+    ref: "Public GitHub repo / vast-lands"
   },
   {
     id: "xtige",
@@ -85,6 +133,6 @@ export const liveProjects = [
     description:
       "Benchmark-style tool dependency graph that maps prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges for agent workflows.",
     url: "https://github.com/Angry-TacoZ/dep-graph",
-    ref: "Private GitHub repo / dep-graph"
+    ref: "Public GitHub repo / dep-graph"
   }
 ];

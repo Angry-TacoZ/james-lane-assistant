@@ -147,13 +147,13 @@ const artDesignCatalogCorpus = {
   ]
 };
 
-const RESUME_SOURCE_LABEL = "Profres072026.pdf";
+const RESUME_SOURCE_LABEL = "James_Lane_AI_Product_UX_Functional.docx";
 
 export const approvedSources = [
   {
     id: "resume-pdf",
     label: RESUME_SOURCE_LABEL,
-    path: "C:\\Users\\angry\\Downloads\\Profres072026.pdf"
+    path: "C:\\Users\\angry\\Downloads\\James_Lane_AI_Product_UX_Functional.docx"
   },
   ...markdownSources.map(({ id, label, path }) => ({
     id,
@@ -202,8 +202,8 @@ const resumeSourceCorpus = [
     referenceLabel: "Page 1",
     page: 1,
     title: "Professional Headline",
-    aliases: ["headline", "roles", "title", "position", "ai systems", "automation builder", "internal tools", "python", "react", "firebase"],
-    items: ["AI Systems & Automation Builder | Internal Tools | Python, React, Firebase, Microsoft 365"]
+    aliases: ["headline", "roles", "title", "position", "ai product", "ux engineer", "design engineer", "interactive prototyping"],
+    items: ["AI Product & UX Engineer | Design Engineer | Interactive Prototyping"]
   },
   {
     id: "p1-summary",
@@ -211,112 +211,140 @@ const resumeSourceCorpus = [
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "Professional Summary",
+    title: "Product Design Profile",
     aliases: ["summary", "overview", "background", "profile", "about"],
     items: [
-      "Self-taught AI systems and automation builder with 8 years of enterprise IT and healthcare operations experience.",
-      "Proven track record of building and deploying full-stack workflow automation using Python, React/Vite, Firebase, and Cloudflare Workers.",
-      "Recently designed a PHI-safe enterprise AI pilot that advanced through enterprise governance review and received approval to begin pilot planning.",
-      "The proposed mid-case efficiency model projected approximately 40,000 annual labor hours saved."
+      "Career-changing AI product builder focused on user-facing systems for decisions, AI output, and complex workflows.",
+      "Combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.",
+      "Turns ambiguous operational problems into clear interaction models, evidence-rich interfaces, human review paths, and working prototypes."
     ]
   },
   {
-    id: "p2-tools-and-platforms",
+    id: "p1-functional-capabilities",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "Core Skills",
-    aliases: ["skills", "core strengths", "strengths", "capabilities", "competencies", "technical stack", "tools", "platforms", "enterprise context"],
+    title: "Functional Capabilities",
+    aliases: ["capabilities", "product design", "interaction design", "ai experience design", "rapid prototyping", "validation", "workflow translation"],
     items: [
-      "AI Systems & Workflow Tooling: Codex, ChatGPT, Claude, Gemini API, Prompt/RAG design, retrieval-backed assistants, agentic workflows, and model integration orchestration.",
-      "Software Build & Deployment: React, Vite, JavaScript, TypeScript, Firebase Hosting, Firebase Functions, Firebase Auth, Cloudflare Workers, Wrangler, Git, and GitHub.",
-      "Automation & Data Pipelines: Python, CLI tools, JSON, APIs, webhooks, PDF parsing, SQLite, SQL, Power BI, DAX, Zapier, and Airtable.",
-      "Enterprise Systems & Operations: ServiceNow, Microsoft 365, Active Directory, Azure AD, Oracle E-Business Suite support, and FACETS.",
-      "Reliability & Security Habits: Trust-boundary review, server-side validation, secret scanning, deployment gates, source-vs-deployed parity checks, and audit-ready documentation."
+      "AI Product & Interaction Design: user flows, interaction models, decision-support UX, progressive disclosure, human-in-the-loop design, explainability, inspectable memory, and workflow states.",
+      "Frontend Product Engineering: React, TypeScript, JavaScript, Vite, Framer Motion, responsive interfaces, component-based UI, local state, Firebase Hosting, and accessible interaction patterns.",
+      "AI Experience Design: LLM-assisted workflows, retrieval-backed interfaces, deterministic and generative hybrid systems, source grounding, bounded automation, review and override loops, visible evidence, and constraints.",
+      "Rapid Prototyping & Validation: linting, type checks, tests, builds, browser inspection, Playwright, and deployment checks.",
+      "Systems & Workflow Translation: maps business rules, dependencies, edge cases, and user decisions into understandable product experiences."
     ]
   },
   {
-    id: "p1-project-living-resume-ai",
+    id: "p1-tools-and-platforms",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "James AI Living Resume",
-    aliases: ["james ai living resume", "living resume", "interactive resume", "jamesai.space"],
+    title: "Tools & Technologies",
+    aliases: ["skills", "core strengths", "strengths", "competencies", "technical stack", "tools", "platforms", "enterprise context"],
     items: [
-      "Live link: https://jamesai.space",
-      "Engineered and deployed a full-stack web application using a React/Vite frontend, Firebase Hosting, and cloud functions to allow recruiters to safely query verified resume data via source-grounded retrieval patterns.",
-      "Integrated ElevenLabs voice synthesis for voice guidance while enforcing security habits including secret-scan deployment gates and automated bundle integrity checks."
+      "Design / Frontend: React, TypeScript, JavaScript, Vite, Framer Motion, responsive UI, component systems, HTML/CSS.",
+      "AI / Product Systems: ChatGPT, Claude, Codex, Gemini, prompt/RAG design, retrieval, agent workflows, memory UX, evaluation, and human review.",
+      "Backend / Platform: Firebase Hosting, Functions, Auth, App Check, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, and REST/JSON APIs.",
+      "Delivery / Quality: Git, GitHub, pull requests, GitHub Actions, CI/CD, Vitest, Playwright, ESLint, pytest, secret scanning, and deployment verification."
     ]
   },
   {
-    id: "p1-project-cogfit-jobs",
+    id: "p1-project-blue-shopping-agent",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "CogFit Jobs",
-    aliases: ["cogfit jobs", "cogfit", "job fit", "cognitive fit", "work style constraints"],
+    title: "Blue - Ambient AI Shopping Agent Concept",
+    aliases: ["blue", "best buy blue", "ambient shopping agent", "shopping agent", "retail ai", "inspectable memory", "product recommendations"],
     items: [
-      "Live link: https://cogfit-jobs.web.app",
-      "Built a secured job-fit web application with React, TypeScript, and Firebase to programmatically evaluate job descriptions against custom cognitive-fit parameters and operational work-style constraints.",
-      "Implemented server-side Gemini LLM API connections, Firestore-backed rate-limiting controls, and Firebase App Check to prevent unauthorized resource abuse and protect API usage and user data."
+      "Public GitHub repo and live concept: https://github.com/Angry-TacoZ/best-buy-blue-concept and https://angry-tacoz.github.io/best-buy-blue-concept/.",
+      "Designed an ambient retail AI interaction model that accompanies product browsing instead of forcing a shopper into a separate chat panel.",
+      "Built inspectable, editable, reversible browser-local memory and a comparison control that shows how remembered needs change recommendations.",
+      "Designed three understandable tradeoff directions rather than claiming one opaque best answer.",
+      "The public concept uses fictional data, deterministic local scoring, no external APIs, no authentication, no checkout, and no tracking."
+    ]
+  },
+  {
+    id: "p1-project-delivery-composer",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 1",
+    page: 1,
+    title: "Delivery Composer - AI-Assisted Consulting Staffing Workflow",
+    aliases: ["delivery composer", "consulting staffing", "delivery team", "candidate comparison", "human approval", "staffing workflow"],
+    items: [
+      "Public GitHub repo and live demo: https://github.com/Angry-TacoZ/delivery-composer and https://composer.jamesai.space/.",
+      "Designed a multi-stage workflow that turns an unstructured client brief into requirements, candidate evidence, recommendation review, override, revision, and re-evaluation.",
+      "Created candidate comparison UX that exposes score deltas, evidence, eligibility gates, considerations, and tradeoffs while keeping the final decision with a human delivery leader.",
+      "The public demo uses synthetic data and deterministic portfolio mode; the planned PostgreSQL, pgvector, and Gemini path is an architectural extension point, not a verified public capability."
+    ]
+  },
+  {
+    id: "p2-additional-product-evidence",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "Additional Product & AI Build Evidence",
+    aliases: ["cogfit jobs", "james ai", "living resume", "pdf equipment checker", "responsible vibe coding", "playbook"],
+    items: [
+      "CogFit Jobs: explainable AI work-fit interface with visible fit dimensions, confidence, evidence, and improvement guidance.",
+      "James AI Living Resume: recruiter-facing portfolio assistant built with React/Vite, Firebase Hosting/Functions, verified resume data, and voice guidance.",
+      "PDF Equipment Checker: deterministic document-validation tool and hosted upload flow for comparing equipment schedules against plan drawings.",
+      "Responsible Vibe Coding Playbook: published AI-assisted development workflow centered on inspect-before-edit, explicit trust boundaries, scoped implementation, verification, and traceable deployment."
+    ]
+  },
+  {
+    id: "p2-exp-ai-product-builder",
+    group: "resume-pdf",
+    referenceLabel: "Page 2",
+    page: 2,
+    sourceLabel: RESUME_SOURCE_LABEL,
+    title: "AI Product Builder - JamesLaneAI.com | 2025-Present",
+    aliases: ["current role", "current job", "ai product builder", "jameslaneai", "james lane ai", "consulting"],
+    items: [
+      "Designs and builds AI-enabled products, workflow tools, frontend concepts, and portfolio prototypes from problem framing through working implementation.",
+      "Translates business problems into user-facing workflows, explicit decision points, bounded automation, and reviewable product behavior."
     ]
   },
   {
     id: "p2-project-pdf-equipment-checker",
-    group: "resume-pdf",
-    sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 2",
-    page: 2,
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub repo and hosted demo",
+    referenceLabel: "Angry-TacoZ/pdf-equipment-checker",
     title: "PDF Equipment Checker",
-    aliases: ["pdf equipment checker", "pdf checker", "equipment schedules", "blueprints", "pdf parsing"],
+    aliases: ["pdf equipment checker", "pdf checker", "equipment schedules", "blueprints", "plan drawings", "pdf parsing"],
     items: [
-      "Live link: https://pdf-checker-fcd6c.web.app",
-      "Developed and packaged a deterministic Python data parsing application designed to automate cross-referencing complex engineering equipment schedules against blueprint plan drawings.",
-      "Replaced manual comparison pipelines with structured multi-page CLI/JSON parsing diagnostics, error-handling heuristics, and a local Windows execution wrapper to avoid unsupported LLM extraction."
+      "Public GitHub repo and live demo: https://github.com/Angry-TacoZ/pdf-equipment-checker and https://pdf-checker-fcd6c.web.app/.",
+      "Deterministic document-validation tool for comparing equipment schedule rows against plan-drawing tags.",
+      "The documented public demo limits uploads to PDFs and 20 MB, applies a lightweight per-client rate limit, deletes uploaded files after each check, and reports generic parser errors to visitors."
     ]
   },
   {
-    id: "p2-exp-james-lane-ai-consulting",
+    id: "p2-exp-capital-blue-cross",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
-    title: "AI Consultant and Owner - James Lane AI Consulting | Apr 2026-Present | Carlisle, PA",
-    aliases: ["current role", "current job", "ai consultant", "owner", "james lane ai consulting", "consulting"],
-    items: [
-      "Customized and deployed open-source projects, full-stack workflow MVPs, and automated portfolio assistants using LLM APIs, cloud infrastructure, and JavaScript/Python frameworks.",
-      "Used AI coding tools for repository inspection, scoped implementation, debugging, testing, build verification, and deployment secret scanning."
-    ]
-  },
-  {
-    id: "p1-exp-capital-blue-cross",
-    group: "resume-pdf",
-    referenceLabel: "Page 2",
-    page: 2,
-    sourceLabel: RESUME_SOURCE_LABEL,
-    title: "Claims Examiner I - Capital Blue Cross | Nov 2025-May 2026 | Remote",
+    title: "Claims Examiner I - Capital Blue Cross | 2025-2026",
     aliases: ["capital blue cross", "cbc", "claims examiner", "claims examiner i", "claims", "facets", "phi-safe claims ai pilot"],
     items: [
-      "Designed and pitched a PHI-safe claims AI assistant pilot that advanced through enterprise AI governance review and received approval to begin pilot planning.",
-      "Engineered source-grounding, compliance boundaries, and a 50/50 A/B evaluation matrix projecting 40,000 hours of annual labor savings.",
-      "Maintained 99% audit quality while processing accuracy-sensitive claim workflows within FACETS and created markdown job aids to standardize high-variation claim scenarios for training queues."
+      "Designed a PHI-safe AI assistant pilot for complex claims workflows, including source grounding, linked-step navigation, human review, governance boundaries, and structured A/B evaluation."
     ]
   },
   {
-    id: "p1-exp-randstad-icu-medical",
+    id: "p2-exp-randstad-icu-medical",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
-    title: "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | Jul 2018-Aug 2025 | Mechanicsburg, PA",
+    title: "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
     aliases: ["randstad", "icu medical", "help desk analyst", "enterprise systems support", "enterprise it", "oracle ebs", "active directory", "azure ad"],
     items: [
-      "Programmed custom scripts, macros, and automated workflow aids to eliminate repetitive identity verification tasks and streamline multi-step provisioning.",
-      "Administered Active Directory, Azure AD, Microsoft 365, and Oracle EBS access management workflows for 3,000+ global enterprise users using ServiceNow.",
-      "Translated recurring incident patterns into technical documentation and escalation templates, reducing ticket rediscovery cycles and tier-2 routing leakage."
+      "Supported more than 3,000 enterprise users across Microsoft 365, Active Directory, Azure AD, Oracle EBS, VPN/VDI, and ServiceNow.",
+      "Converted recurring support friction into scripts, macros, technical documentation, escalation templates, and workflow improvements."
     ]
   },
   artDesignCatalogCorpus,
@@ -339,6 +367,12 @@ const resumeSourceCorpus = [
     ],
     items: [
       "Living Resume AI: https://james-lane-web-resume.web.app/",
+      "Blue - Ambient AI Shopping Agent Concept: https://angry-tacoz.github.io/best-buy-blue-concept/ and https://github.com/Angry-TacoZ/best-buy-blue-concept",
+      "Delivery Composer: https://composer.jamesai.space/ and https://github.com/Angry-TacoZ/delivery-composer",
+      "PDF Equipment Checker: https://pdf-checker-fcd6c.web.app/ and https://github.com/Angry-TacoZ/pdf-equipment-checker",
+      "Personal Job Discovery: public local-first tool at https://github.com/Angry-TacoZ/personal-job-discovery",
+      "Fieldline AEC concept: public local-only product exercise at https://github.com/Angry-TacoZ/ai-native-aec-product-design",
+      "Race Telemetry Simulator: public local-only dashboard at https://github.com/Angry-TacoZ/race-telemetry",
       "Legitimate Question Response Index: https://lqri.web.app/ and public GitHub repo at https://github.com/Angry-TacoZ/lqri-site",
       "CAA 2026 PBM Regulatory Assistant: older source-grounded healthcare policy demo that is now offline; formerly hosted at https://caademoweb.web.app/.",
       "BLKVue AI Security Intake Bot: https://blkvueai.web.app/",
@@ -346,10 +380,49 @@ const resumeSourceCorpus = [
       "CogFit Jobs: https://cogfit-jobs.web.app/",
       "Cruis'n PA: https://cruisnpa.fun/",
       "Masters of Metal playable demo: https://iron-shores.web.app/",
-      "Vast Lands: private GitHub repo at https://github.com/Angry-TacoZ/vast-lands",
+      "Vast Lands: public GitHub repo at https://github.com/Angry-TacoZ/vast-lands",
       "X'TIGE: https://xtige-app.web.app/",
       "Iron Horizon WW2 Battleship Prototype: public GitHub repo at https://github.com/Angry-TacoZ/ww2-battleship-prototype",
-      "Composio Dependency Graph: private GitHub repo at https://github.com/Angry-TacoZ/dep-graph"
+      "Composio Dependency Graph: public GitHub repo at https://github.com/Angry-TacoZ/dep-graph"
+    ]
+  },
+  {
+    id: "github-project-personal-job-discovery",
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub README",
+    referenceLabel: "Angry-TacoZ/personal-job-discovery",
+    title: "Personal Job Discovery",
+    aliases: ["personal job discovery", "job discovery", "ats monitor", "greenhouse", "lever", "ashby", "local job monitor"],
+    items: [
+      "Public GitHub repo: https://github.com/Angry-TacoZ/personal-job-discovery.",
+      "Local-first, single-user Python application that monitors public Greenhouse, Lever, and Ashby listings, normalizes them into SQLite, and applies explainable deterministic scoring.",
+      "It binds to 127.0.0.1 by default, validates untrusted public ATS responses before persistence, and does not bypass authentication, scrape private pages, apply to jobs, send paid notifications, or use an LLM."
+    ]
+  },
+  {
+    id: "github-project-fieldline-aec",
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub README",
+    referenceLabel: "Angry-TacoZ/ai-native-aec-product-design",
+    title: "Fieldline - Decision Continuity Artifact",
+    aliases: ["fieldline", "aec", "architecture engineering construction", "decision continuity", "3d handoff", "product manager exercise"],
+    items: [
+      "Public GitHub repo: https://github.com/Angry-TacoZ/ai-native-aec-product-design.",
+      "Speculative, local-only product exercise for an AI-native AEC platform that records simulated approvals and moves a proposed change into a simulated 3D handoff.",
+      "All content and integrations are simulated; the project has no external APIs or data stores."
+    ]
+  },
+  {
+    id: "github-project-race-telemetry",
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub README",
+    referenceLabel: "Angry-TacoZ/race-telemetry",
+    title: "Race Telemetry Simulator",
+    aliases: ["race telemetry", "telemetry simulator", "vehicle telemetry", "engineer dashboard", "satellite link"],
+    items: [
+      "Public GitHub repo: https://github.com/Angry-TacoZ/race-telemetry.",
+      "Presentation-ready, engineer-facing race telemetry dashboard driven entirely by deterministic mock data and a fixed simulated scenario.",
+      "It is not connected to a vehicle, backend, database, remote transport, or external API and is not suitable for operational decisions."
     ]
   },
   {
@@ -452,7 +525,7 @@ const resumeSourceCorpus = [
     title: "Vast Lands",
     aliases: ["vast lands", "babylon city builder", "isometric city builder", "anno style", "civ style"],
     items: [
-      "Private GitHub repo: https://github.com/Angry-TacoZ/vast-lands",
+      "Public GitHub repo: https://github.com/Angry-TacoZ/vast-lands",
       "Babylon.js isometric prototype for a modern city-state builder with Anno-style production and resident needs plus Civ-style civic progression.",
       "Current gameplay includes placement of residential, logistics, production, commerce, and civic districts; resource balancing; satisfaction-linked income; civic unlocks; and export/import of map, economy, and civic state."
     ]
@@ -493,7 +566,7 @@ const resumeSourceCorpus = [
     title: "Composio Dependency Graph",
     aliases: ["benchmarking tool", "benchmark tool", "composio dependency graph", "dependency graph", "tool routing", "agent workflow graph"],
     items: [
-      "Private GitHub repo: https://github.com/Angry-TacoZ/dep-graph",
+      "Public GitHub repo: https://github.com/Angry-TacoZ/dep-graph",
       "Builds a dependency graph for Composio Google Super and GitHub toolkits, focused on prerequisite inputs, precursor tools, user-input fallbacks, and risk-confirmation edges.",
       "Primary reviewer artifact is graph/dependency_graph.html with workflow view, full graph mode, debug edge auditing, filters, and a right-side inspector.",
       "The implementation uses deterministic TypeScript generation, Mermaid/HTML output, confidence-ranked edges, and risk-aware routing labels."

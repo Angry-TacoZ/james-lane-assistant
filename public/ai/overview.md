@@ -10,15 +10,15 @@ Medium: https://medium.com/@Angry_TacoZ
 
 ## One-Sentence Summary
 
-James AI is a source-grounded living resume for James Earl Lane: a nontraditional, systems-oriented builder whose strongest evidence is practical reasoning, AI-assisted tool building, process improvement, source-grounded assistants, public writing, visual design work, and deployed demos.
+James AI is the AI product and UX portfolio for James Earl Lane. It presents working prototypes, an evidence-backed resume assistant, public writing, and visual design work alongside the constraints and verification behind each artifact.
 
 ## Candidate Summary
 
-James Lane is a self-taught AI systems and automation builder with eight years of enterprise IT and healthcare operations experience. He currently works as AI Consultant and Owner at James Lane AI Consulting, building and deploying full-stack workflow tools with Python, React/Vite, Firebase, Cloudflare Workers, and paid-model APIs kept behind server-side boundaries.
+James Lane designs user-facing systems for decisions, AI output, and complex workflows. He combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.
 
-His prior roles include Claims Examiner I at Capital Blue Cross from November 2025 through May 2026 and enterprise systems support for ICU Medical via Randstad from July 2018 through August 2025. At Capital Blue Cross, he designed a PHI-safe claims AI pilot that advanced through governance review and received approval to begin pilot planning; its mid-case model projected approximately 40,000 annual labor hours saved.
+His background spans healthcare claims operations and enterprise IT support. The public portfolio shows how he makes requirements, evidence, tradeoffs, and human review visible in working software. His current resume identifies his ongoing work as AI Product Builder at JamesLaneAI.com.
 
-Selected applications include James AI Living Resume, CogFit Jobs, and PDF Equipment Checker. Documented certifications include Anthropic's AI Fluency: Framework & Foundations, Databricks Generative AI Fundamentals accreditation, and Business Analysis Foundations.
+Selected applications include Delivery Composer, Blue, James AI Living Resume, CogFit Jobs, PDF Equipment Checker, Personal Job Discovery, and the Fieldline AEC concept. Documented certifications include Anthropic's AI Fluency: Framework & Foundations, Databricks Generative AI Fundamentals accreditation, and Business Analysis Foundations.
 
 ## Best-Fit Work
 
@@ -26,7 +26,7 @@ Strong-fit work tends to include:
 
 - process analysis and workflow improvement
 - business analysis and requirements clarification
-- AI assistant design and source-grounded QA tools
+- AI assistant design with visible evidence and review paths
 - internal tooling, documentation, and decision support
 - troubleshooting and escalation work where logic matters
 - roles where artifacts and reasoning matter more than polished corporate performance
@@ -39,7 +39,7 @@ James tends to:
 - verify before trusting
 - think in systems and incentives
 - prefer explicit expectations over implied social rules
-- use AI as a practical force multiplier
+- use AI to prototype, test, and explain workflow decisions
 - turn vague ideas into working demos, structured documents, or interactive interfaces
 
 ## Site Stack

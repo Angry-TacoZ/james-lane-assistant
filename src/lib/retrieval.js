@@ -228,7 +228,7 @@ const GROUP_BY_INTENT = {
   tradeoffs: ["friction-points-and-tradeoffs", "cognitive-profile", "health-and-neurodivergence"],
   communication: ["communication-rules", "cognitive-profile"],
   evidence: ["evidence-and-projects", "projects-catalog"],
-  projects: ["projects-catalog", "portfolio-media-index"],
+  projects: ["projects-catalog", "portfolio-media-index", "resume-pdf"],
   writing: ["writing-catalog", "writing-corpus", "writing-supporting-analysis"],
   roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf", "evidence-and-projects", "cognitive-profile", "health-and-neurodivergence", "work-location-preference"],
   workLocation: ["work-location-preference", "core-identity", "health-and-neurodivergence", "health-accommodations"],
@@ -246,6 +246,36 @@ const MODE_GROUP_BOOSTS = {
 };
 
 const PROJECT_ENTITIES = [
+  {
+    id: "blue-ambient-shopping-agent",
+    questionPattern: /\b(blue|best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b/,
+    sectionPattern: /\b(blue|best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b/
+  },
+  {
+    id: "delivery-composer",
+    questionPattern: /\b(delivery composer|consulting staffing|delivery team|candidate comparison)\b/,
+    sectionPattern: /\b(delivery composer|consulting staffing|delivery team|candidate comparison)\b/
+  },
+  {
+    id: "pdf-equipment-checker",
+    questionPattern: /\b(pdf equipment checker|pdf checker|equipment schedules|plan drawings|blueprints)\b/,
+    sectionPattern: /\b(pdf equipment checker|pdf checker|equipment schedules|plan drawings|blueprints)\b/
+  },
+  {
+    id: "personal-job-discovery",
+    questionPattern: /\b(personal job discovery|job discovery|ats monitor|greenhouse|lever|ashby)\b/,
+    sectionPattern: /\b(personal job discovery|job discovery|ats monitor|greenhouse|lever|ashby)\b/
+  },
+  {
+    id: "fieldline-aec",
+    questionPattern: /\b(fieldline|aec|decision continuity|3d handoff)\b/,
+    sectionPattern: /\b(fieldline|aec|decision continuity|3d handoff)\b/
+  },
+  {
+    id: "race-telemetry",
+    questionPattern: /\b(race telemetry|telemetry simulator|vehicle telemetry|engineer dashboard|satellite link)\b/,
+    sectionPattern: /\b(race telemetry|telemetry simulator|vehicle telemetry|engineer dashboard|satellite link)\b/
+  },
   {
     id: "living-resume-ai",
     questionPattern: /\b(living resume ai|living resume|interactive resume|james ai)\b/,
@@ -490,8 +520,15 @@ function getIntent(question, preferredIntent = null) {
     return "workLocation";
   }
 
+  if (matchedWritingEntity) {
+    return "writing";
+  }
+
+  if (matchedProjectEntity) {
+    return "projects";
+  }
+
   if (
-    matchedWritingEntity ||
     /\b(medium|article|articles|essay|essays|writing|wrote|written|published writing|published essay|published article|blog|opinion pieces|writing samples)\b/.test(
       normalized
     )
@@ -519,7 +556,7 @@ function getIntent(question, preferredIntent = null) {
   }
 
   if (
-    /\b(james lane ai consulting|ai consultant|consultant|owner|capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(
+    /\b(jameslaneai|james lane ai consulting|ai product builder|ai consultant|consultant|owner|capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(
       normalized
     )
   ) {
@@ -1076,10 +1113,10 @@ function pickSections(scoredSections, intent, question = "") {
     if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion)) {
       const selected = [];
       const summary = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /professional summary/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /product design profile|professional summary/.test(normalizeText(entry.section.title))
       );
       const strengths = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /core strengths|core skills/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /functional capabilities|core strengths|core skills/.test(normalizeText(entry.section.title))
       );
       const tools = limitedSections.find(
         (entry) => entry.section.group === "resume-pdf" && /\btools\b|core skills/.test(normalizeText(entry.section.title))
@@ -1087,7 +1124,7 @@ function pickSections(scoredSections, intent, question = "") {
       const experience = limitedSections.find(
         (entry) =>
           entry.section.group === "resume-pdf" &&
-          /james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
+          /jameslaneai|ai product builder|james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
             normalizeText(entry.section.title)
           )
       );

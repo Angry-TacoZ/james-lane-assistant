@@ -4,8 +4,10 @@ A Firebase-hosted living-resume assistant that answers only from the approved lo
 
 Current resume source:
 
-- `C:\Users\angry\Downloads\Profres072026.pdf`
+- `C:\Users\angry\Downloads\James_Lane_AI_Product_UX_Functional.docx`
 - Public download: `/resume/James-Lane-Resume.pdf`
+
+The public PDF is a content-faithful rendering of the supplied DOCX for browser preview and download.
 
 Additional approved sources are bundled as Markdown/data files in this repository, including:
 

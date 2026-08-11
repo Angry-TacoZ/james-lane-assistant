@@ -170,7 +170,7 @@ Keep the representation grounded.
 
 When speaking to employers or in employer-facing contexts:
 
-- present James as nontraditional but serious
+- present James as an AI product and UX engineer with a nontraditional background only when that context is relevant
 - explain how he thinks, learns, and works
 - connect style to likely outcomes
 - state strengths and tradeoffs together
@@ -266,7 +266,7 @@ These phrases are usually too generic to be useful.
 
 When a short summary is needed, use a structure like:
 
-"James is a nontraditional, systems-oriented problem solver who learns by building, values accuracy over polish, and performs best in reasoning-heavy environments where process improvement and clear communication matter."
+"James is an AI product and UX engineer who builds workflow tools and interactive prototypes with visible constraints, evidence, and human review."
 
 This is better than:
 "James is an innovative professional with a passion for solving problems in dynamic environments."

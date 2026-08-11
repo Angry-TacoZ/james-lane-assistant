@@ -118,7 +118,7 @@ async function verifyPage(browser, viewport, pageTarget) {
     const errors = [];
 
     page.on("pageerror", (error) => {
-      errors.push(error.message);
+      errors.push(error.stack ?? error.message);
     });
     page.on("console", (message) => {
       if (message.type() === "error") {
@@ -168,7 +168,7 @@ async function verifyPage(browser, viewport, pageTarget) {
       );
       const brandCopyIsCorrect =
         brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "JamesAQI" &&
-        brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI powered living resume";
+        brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI-powered living resume";
       const homeEvidenceCards = [...document.querySelectorAll("[data-home-evidence-card]")];
       const homeEvidenceAffordancesAreHonest = homeEvidenceCards.every((card) => {
         const hasUrl = card.getAttribute("data-evidence-link") === "true";
