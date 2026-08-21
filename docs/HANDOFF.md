@@ -10,22 +10,24 @@ PR #7 is an open draft based on `main` at `fda8be5`. Its branch includes the pos
 
 - Use public repository documentation and commits as the evidence source for post-resume project changes.
 - Describe Blue's checkout as a labeled local simulation, never as commerce or payment capability.
+- Treat `Capital Blue Cross` as an experience-only phrase. Its shared `Blue` token must not route to or retrieve the Blue shopping project.
 
 # Changed files
 
 - Updated Blue's project card, static fallbacks, AI-readable portfolio, and LLM context with the curated-shortlist-to-checkout-simulation flow.
 - Added a dedicated approved-source corpus entry for the current public Blue README and a retrieval regression question.
 - Regenerated the Firebase Functions approved-source allowlist.
+- Narrowed the Blue entity matcher and excluded Blue project sections from Capital Blue Cross questions; added a regression test for intent and source selection.
 
 # Verification
 
-- Canonical project verification passed on 2026-08-20: 55 application tests, 4 Functions tests, production build, corpus smoke checks, and mobile/desktop responsive browser checks.
+- Canonical project verification passed on 2026-08-20: 56 application tests, 4 Functions tests, production build, corpus smoke checks, and mobile/desktop responsive browser checks.
 - Public-artifact secret/API exposure scan passed.
 - GitHub Actions Verify passed for the PR branch at `06e3e01` on 2026-08-21.
 
 # Next task
 
-- Review and merge PR #7 when the portfolio update is approved. Deploy only after merge.
+- Obtain re-review for the Capital Blue Cross matcher fix, then merge PR #7 when approved. Deploy only after merge.
 
 # Risks or blockers
 

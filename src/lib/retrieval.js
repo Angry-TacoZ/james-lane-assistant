@@ -248,8 +248,9 @@ const MODE_GROUP_BOOSTS = {
 const PROJECT_ENTITIES = [
   {
     id: "blue-ambient-shopping-agent",
-    questionPattern: /\b(blue|best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b/,
-    sectionPattern: /\b(blue|best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b/
+    excludedQuestionPattern: /\bcapital blue cross\b/,
+    questionPattern: /\b(best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b|\bblue\b(?!\s+cross\b)/,
+    sectionPattern: /\b(best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b|\bblue\b(?!\s+cross\b)/
   },
   {
     id: "delivery-composer",
@@ -627,7 +628,15 @@ function isExampleRequest(normalizedQuestion) {
 }
 
 function getMatchedProjectEntity(normalizedQuestion) {
-  return PROJECT_ENTITIES.find((entity) => entity.questionPattern.test(normalizedQuestion)) ?? null;
+  return (
+    PROJECT_ENTITIES.find(
+      (entity) => !entity.excludedQuestionPattern?.test(normalizedQuestion) && entity.questionPattern.test(normalizedQuestion)
+    ) ?? null
+  );
+}
+
+function getExcludedProjectEntities(normalizedQuestion) {
+  return PROJECT_ENTITIES.filter((entity) => entity.excludedQuestionPattern?.test(normalizedQuestion));
 }
 
 function getMatchedWritingEntity(normalizedQuestion) {
@@ -718,7 +727,17 @@ function scoreSection(section, question, intent, modeId = null) {
   const normalizedQuestion = normalizeText(question);
   const normalizedTitle = normalizeText(section.title);
   const matchedProjectEntity = getMatchedProjectEntity(normalizedQuestion);
+  const excludedProjectEntities = getExcludedProjectEntities(normalizedQuestion);
   const matchedWritingEntity = getMatchedWritingEntity(normalizedQuestion);
+
+  if (excludedProjectEntities.some((entity) => sectionMatchesProjectEntity(section, entity))) {
+    return {
+      section,
+      score: Number.NEGATIVE_INFINITY,
+      exactMatches: 0
+    };
+  }
+
   let score = 0;
   let exactMatches = 0;
 

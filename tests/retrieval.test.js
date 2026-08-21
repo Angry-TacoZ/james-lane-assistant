@@ -491,6 +491,16 @@ describe("James AI retrieval", () => {
     expect(response.answer).not.toMatch(/Capital Blue Cross[^\n]*Present/i);
   });
 
+  it("routes Capital Blue Cross questions to experience instead of the Blue project", () => {
+    const response = askAssistant("What did James do at Capital Blue Cross?");
+
+    expect(response.refused).toBe(false);
+    expect(response.intent).toBe("experience");
+    expect(response.answer).toContain("PHI-safe AI assistant pilot");
+    expect(response.answer).toContain("[p2-exp-capital-blue-cross]");
+    expect(response.answer).not.toContain("[p1-project-blue-shopping-agent]");
+  });
+
   it("uses recent user context for follow-up platform questions", () => {
     const history = [
       {
