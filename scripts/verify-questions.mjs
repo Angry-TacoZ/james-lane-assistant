@@ -1,4 +1,5 @@
 import { askAssistant } from "../src/lib/retrieval.js";
+import { retrievalEvaluationCases } from "./retrieval-evaluation-cases.mjs";
 
 const questions = [
   "Who is James Lane as a candidate?",
@@ -32,6 +33,48 @@ const questions = [
   "Show me James's project links.",
   "How does James Lane compare to another candidate?"
 ];
+
+const failures = [];
+
+for (const evaluationCase of retrievalEvaluationCases) {
+  const response = askAssistant(evaluationCase.question, [], evaluationCase.options);
+  const refs = response.matches.map((match) => match.ref);
+  const failureReasons = [];
+
+  if (response.refused) {
+    failureReasons.push("response was refused");
+  }
+
+  if (response.intent !== evaluationCase.expectedIntent) {
+    failureReasons.push(`intent was ${response.intent}, expected ${evaluationCase.expectedIntent}`);
+  }
+
+  if (refs[0] !== evaluationCase.expectedFirstRef) {
+    failureReasons.push(`first source was ${refs[0] ?? "none"}, expected ${evaluationCase.expectedFirstRef}`);
+  }
+
+  for (const ref of evaluationCase.requiredRefs) {
+    if (!refs.includes(ref)) {
+      failureReasons.push(`missing required source ${ref}`);
+    }
+  }
+
+  for (const ref of evaluationCase.forbiddenRefs) {
+    if (refs.includes(ref)) {
+      failureReasons.push(`included forbidden source ${ref}`);
+    }
+  }
+
+  if (failureReasons.length > 0) {
+    failures.push(`${evaluationCase.name}: ${failureReasons.join("; ")}`);
+  }
+}
+
+if (failures.length > 0) {
+  throw new Error(`Retrieval evaluation failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+}
+
+console.log(`Retrieval evaluation passed: ${retrievalEvaluationCases.length} cases.`);
 
 for (const question of questions) {
   const response = askAssistant(question);

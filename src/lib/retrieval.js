@@ -489,6 +489,41 @@ function getSectionKeywords(section) {
   return expandTokens(tokenize([section.title, ...section.aliases, ...section.items].join(" ")));
 }
 
+const sectionSearchMetadata = new WeakMap();
+
+function getSectionSearchMetadata(section) {
+  const cached = sectionSearchMetadata.get(section);
+
+  if (cached) {
+    return cached;
+  }
+
+  const keywords = getSectionKeywords(section);
+  const metadata = {
+    keywords,
+    keywordSet: new Set(keywords),
+    normalizedText: normalizeText([section.title, ...section.aliases, ...section.items].join(" ")),
+    normalizedContentText: normalizeText([section.title, ...section.items].join(" ")),
+    normalizedTitle: normalizeText(section.title)
+  };
+
+  sectionSearchMetadata.set(section, metadata);
+  return metadata;
+}
+
+function buildQueryContext(question) {
+  const normalizedQuestion = normalizeText(question);
+
+  return {
+    queryTokens: expandTokens(tokenize(question)),
+    phrases: getQueryPhrases(question),
+    normalizedQuestion,
+    matchedProjectEntity: getMatchedProjectEntity(normalizedQuestion),
+    excludedProjectEntities: getExcludedProjectEntities(normalizedQuestion),
+    matchedWritingEntity: getMatchedWritingEntity(normalizedQuestion)
+  };
+}
+
 function getIntent(question, preferredIntent = null) {
   const normalized = normalizeText(question);
   const matchedProjectEntity = getMatchedProjectEntity(normalized);
@@ -644,13 +679,11 @@ function getMatchedWritingEntity(normalizedQuestion) {
 }
 
 function sectionMatchesProjectEntity(section, entity) {
-  const sectionText = normalizeText([section.title, ...section.aliases, ...section.items].join(" "));
-  return entity.sectionPattern.test(sectionText);
+  return entity.sectionPattern.test(getSectionSearchMetadata(section).normalizedText);
 }
 
 function sectionMatchesWritingEntity(section, entity) {
-  const sectionText = normalizeText([section.title, ...section.aliases, ...section.items].join(" "));
-  return entity.sectionPattern.test(sectionText);
+  return entity.sectionPattern.test(getSectionSearchMetadata(section).normalizedText);
 }
 
 function looksLikeRoleTitleQuestion(normalizedQuestion) {
@@ -719,16 +752,16 @@ function getQueryPhrases(question) {
   return phrases;
 }
 
-function scoreSection(section, question, intent, modeId = null) {
-  const queryTokens = expandTokens(tokenize(question));
-  const sectionKeywords = getSectionKeywords(section);
-  const keywordSet = new Set(sectionKeywords);
-  const phrases = getQueryPhrases(question);
-  const normalizedQuestion = normalizeText(question);
-  const normalizedTitle = normalizeText(section.title);
-  const matchedProjectEntity = getMatchedProjectEntity(normalizedQuestion);
-  const excludedProjectEntities = getExcludedProjectEntities(normalizedQuestion);
-  const matchedWritingEntity = getMatchedWritingEntity(normalizedQuestion);
+function scoreSection(section, queryContext, intent, modeId = null) {
+  const {
+    queryTokens,
+    phrases,
+    normalizedQuestion,
+    matchedProjectEntity,
+    excludedProjectEntities,
+    matchedWritingEntity
+  } = queryContext;
+  const { keywords: sectionKeywords, keywordSet, normalizedContentText: sectionText, normalizedTitle } = getSectionSearchMetadata(section);
 
   if (excludedProjectEntities.some((entity) => sectionMatchesProjectEntity(section, entity))) {
     return {
@@ -764,8 +797,6 @@ function scoreSection(section, question, intent, modeId = null) {
       score += 1;
     }
   }
-
-  const sectionText = normalizeText([section.title, ...section.items].join(" "));
 
   for (const phrase of phrases) {
     if (sectionText.includes(phrase)) {
@@ -977,7 +1008,7 @@ if (intent === "projects" && /live|link|demo|site|website|review|try|repo|github
     score += 5;
   }
 
-  if (section.id === "p1-contact" && /\b(email|phone|linkedin|contact)\b/i.test(question)) {
+  if (section.id === "p1-contact" && /\b(email|phone|linkedin|contact)\b/.test(normalizedQuestion)) {
     score += 5;
   }
 
@@ -1349,7 +1380,7 @@ function pickSections(scoredSections, intent, question = "") {
       const projectSections = limitedSections.filter((entry) => entry.section.group === "projects-catalog");
       const portfolioMedia = limitedSections.filter((entry) => entry.section.group === "portfolio-media-index");
 
-      if (ART_DESIGN_QUERY_PATTERN.test(normalizedQuestion)) {
+      if (ART_DESIGN_QUERY_PATTERN.test(normalizedQuestion) && !matchedProjectEntity) {
         const selected = [];
         const artCatalog = projectSections.find((entry) => entry.section.id === "art-design-catalog");
         const cruisnPa = projectSections.find((entry) => entry.section.id === "p2-project-cruisn-pa");
@@ -1367,9 +1398,17 @@ function pickSections(scoredSections, intent, question = "") {
 
       if (matchedProjectEntity) {
         const selected = [];
-        const targetedSections = limitedSections.filter((entry) =>
-          entry.section.id !== "live-project-links-index" && sectionMatchesProjectEntity(entry.section, matchedProjectEntity)
-        );
+        const targetedSections = limitedSections
+          .filter(
+            (entry) =>
+              entry.section.id !== "live-project-links-index" && sectionMatchesProjectEntity(entry.section, matchedProjectEntity)
+          )
+          .sort((left, right) => {
+            const leftTitleMatches = Number(matchedProjectEntity.questionPattern.test(getSectionSearchMetadata(left.section).normalizedTitle));
+            const rightTitleMatches = Number(matchedProjectEntity.questionPattern.test(getSectionSearchMetadata(right.section).normalizedTitle));
+
+            return rightTitleMatches - leftTitleMatches || right.score - left.score;
+          });
 
         for (const entry of targetedSections) {
           if (!selected.includes(entry)) {
@@ -1700,8 +1739,9 @@ function isOutOfScope(scoredSections, question) {
 export function findMatches(question, history = [], options = {}) {
   const effectiveQuestion = buildEffectiveQuestion(question, history);
   const intent = getIntent(effectiveQuestion, options.preferredIntent ?? null);
+  const queryContext = buildQueryContext(effectiveQuestion);
   const matches = sourceCorpus
-    .map((section) => scoreSection(section, effectiveQuestion, intent, options.modeId ?? null))
+    .map((section) => scoreSection(section, queryContext, intent, options.modeId ?? null))
     .filter((entry) => entry.score > 0)
     .sort((left, right) => right.score - left.score);
 

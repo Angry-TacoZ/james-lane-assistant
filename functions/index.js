@@ -22,9 +22,16 @@ const rateLimitBuckets = new Map();
 const approvedMatchesByRef = new Map(Object.entries(approvedSourceAllowlist.refs || {}));
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
-const BAD_PROJECT_DENIAL_PATTERN = /\b(does not contain (any )?information about|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
+const BAD_PROJECT_DENIAL_PATTERN = /\b((do|does) not contain (any )?information about|contain no (\w+ )*information|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
 const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|approved sources do not define the role requirements|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
 const PROJECT_NAME_PATTERNS = [
+  /\b(best buy blue|ambient ai shopping agent)\b/i,
+  /\bblue\b(?!\s+cross\b)/i,
+  /\bdelivery composer\b/i,
+  /\b(pdf equipment checker|pdf checker)\b/i,
+  /\bpersonal job discovery\b/i,
+  /\bfieldline\b/i,
+  /\brace telemetry\b/i,
   /\bliving resume ai\b/i,
   /\bliving resume\b/i,
   /\bcbc proposal faq assistant\b/i,
@@ -35,8 +42,13 @@ const PROJECT_NAME_PATTERNS = [
   /\bjameslaneai\.com\b/i,
   /\bcogfit jobs\b/i,
   /\bcogfit-jobs\.web\.app\b/i,
+  /\bcruis['’]?n pa\b/i,
   /\bmasters of metal\b/i,
   /\biron shores\b/i,
+  /\bvast lands\b/i,
+  /\b(x['’]?tige|x tige)\b/i,
+  /\b(iron horizon|ww2 battleship prototype)\b/i,
+  /\bcomposio dependency graph\b/i,
   /\biron tides\b/i
 ];
 const WRITING_NAME_PATTERNS = [
@@ -270,6 +282,10 @@ function hasNamedProjectEvidence(question, matches) {
   return PROJECT_NAME_PATTERNS.some((pattern) => pattern.test(question) && pattern.test(sourceText));
 }
 
+function shouldRepairProjectDenial({ mode, answer, question, matches }) {
+  return mode?.id === "projects" && BAD_PROJECT_DENIAL_PATTERN.test(answer) && hasNamedProjectEvidence(question, matches);
+}
+
 function hasNamedWritingEvidence(question, matches) {
   const sourceText = matches
     .map((match) => `${match.title}\n${match.items.join("\n")}`)
@@ -416,7 +432,7 @@ ${getModePrompt(mode)}`;
         }
       }
 
-      if (mode?.id === "projects" && BAD_PROJECT_DENIAL_PATTERN.test(answer) && hasNamedProjectEvidence(question, matches)) {
+      if (shouldRepairProjectDenial({ mode, answer, question, matches })) {
         const repairResponse = await requestAnthropic({
           apiKey: anthropicKey.value(),
           system: `${SYSTEM_PROMPT}\n\nPROJECT REPAIR RULES:\n- Your previous answer incorrectly denied information about a project even though the provided excerpts explicitly name it.\n- Answer directly from the named project excerpts.\n- If the excerpts are portfolio-media entries, explain that those hosted clips are the approved project evidence currently available.\n- Include live links or hosted media URLs when they are present in the excerpts.\n- Do not tell the user the approved sources lack information about the project if the project is named in the provided excerpts.`,
@@ -486,5 +502,7 @@ ${getModePrompt(mode)}`;
 
 exports._test = {
   fallbackFormat,
-  isValidMatch
+  hasNamedProjectEvidence,
+  isValidMatch,
+  shouldRepairProjectDenial
 };
