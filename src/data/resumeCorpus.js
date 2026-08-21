@@ -257,13 +257,13 @@ const resumeSourceCorpus = [
     referenceLabel: "Page 1",
     page: 1,
     title: "Blue - Ambient AI Shopping Agent Concept",
-    aliases: ["blue", "best buy blue", "ambient shopping agent", "shopping agent", "retail ai", "inspectable memory", "product recommendations"],
+    aliases: ["blue", "best buy blue", "ambient shopping agent", "shopping agent", "retail ai", "inspectable memory", "product recommendations", "curated laptop", "checkout simulation"],
     items: [
       "Public GitHub repo and live concept: https://github.com/Angry-TacoZ/best-buy-blue-concept and https://angry-tacoz.github.io/best-buy-blue-concept/.",
       "Designed an ambient retail AI interaction model that accompanies product browsing instead of forcing a shopper into a separate chat panel.",
       "Built inspectable, editable, reversible browser-local memory and a comparison control that shows how remembered needs change recommendations.",
       "Designed three understandable tradeoff directions rather than claiming one opaque best answer.",
-      "The public concept uses fictional data, deterministic local scoring, no external APIs, no authentication, no checkout, and no tracking."
+      "The public concept uses fictional data, deterministic local scoring, no external APIs, no authentication, no real checkout, and no tracking."
     ]
   },
   {
@@ -384,6 +384,20 @@ const resumeSourceCorpus = [
       "X'TIGE: https://xtige-app.web.app/",
       "Iron Horizon WW2 Battleship Prototype: public GitHub repo at https://github.com/Angry-TacoZ/ww2-battleship-prototype",
       "Composio Dependency Graph: public GitHub repo at https://github.com/Angry-TacoZ/dep-graph"
+    ]
+  },
+  {
+    id: "github-project-blue-curated-journey",
+    group: "projects-catalog",
+    sourceLabel: "Public GitHub README",
+    referenceLabel: "Angry-TacoZ/best-buy-blue-concept",
+    title: "Blue Curated Laptop Journey",
+    aliases: ["blue curated journey", "curated laptop", "curated collection", "blue checkout", "blue checkout simulation", "rebuild from current memory", "memory snapshot"],
+    items: [
+      "Public GitHub repo and live concept: https://github.com/Angry-TacoZ/best-buy-blue-concept and https://angry-tacoz.github.io/best-buy-blue-concept/.",
+      "Blue now includes a local vertical slice from product browsing to a generated curated shortlist, selected laptop, labeled checkout simulation, and a no-purchase completion state.",
+      "Each curated collection copies the current browser-local memory into an immutable snapshot, so later preference edits do not silently rewrite an already-generated selection. Rebuild from current memory creates a new collection.",
+      "The journey uses fictional data and deterministic local logic. It does not connect to Best Buy, analytics, model APIs, authentication, inventory, payment, reservation, or purchasing systems."
     ]
   },
   {

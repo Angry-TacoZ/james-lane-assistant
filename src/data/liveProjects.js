@@ -11,7 +11,7 @@ export const liveProjects = [
     id: "blue-ambient-shopping-agent",
     title: "Blue - Ambient Shopping Agent",
     description:
-      "Retail AI concept with inspectable browser-local memory, deterministic recommendations, and three visible tradeoff directions.",
+      "Retail AI concept with inspectable browser-local memory, deterministic recommendations, and a labeled local journey from curated shortlist to checkout simulation.",
     url: "https://angry-tacoz.github.io/best-buy-blue-concept/",
     ref: "Public GitHub Pages concept / best-buy-blue-concept"
   },

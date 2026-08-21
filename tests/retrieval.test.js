@@ -385,6 +385,14 @@ describe("James AI retrieval", () => {
     expect(blue.refused).toBe(false);
     expect(blue.answer).toMatch(/browser-local memory|deterministic|fictional/i);
     expect(blue.answer).toContain("[p1-project-blue-shopping-agent]");
+    const blueJourney = askAssistant("How does Blue keep a curated laptop collection stable when memory changes?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    expect(blueJourney.refused).toBe(false);
+    expect(blueJourney.answer).toMatch(/immutable snapshot|memory snapshot|rebuild from current memory/i);
+    expect(blueJourney.answer).toMatch(/no-purchase|no external APIs|no real checkout/i);
+    expect(blueJourney.answer).toContain("[github-project-blue-curated-journey]");
     expect(jobDiscovery.refused).toBe(false);
     expect(jobDiscovery.answer).toMatch(/local-first|SQLite|public ATS|deterministic/i);
     expect(jobDiscovery.answer).toContain("[github-project-personal-job-discovery]");

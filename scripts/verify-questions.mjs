@@ -8,6 +8,7 @@ const questions = [
   "What evidence shows how James Lane works?",
   "What live projects can I review?",
   "How does Blue handle recommendation memory?",
+  "How does Blue keep a curated laptop collection stable when memory changes?",
   "What does Personal Job Discovery do?",
   "Is Fieldline connected to a real AEC platform?",
   "What has James Lane written on Medium?",

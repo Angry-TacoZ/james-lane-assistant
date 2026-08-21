@@ -12,7 +12,7 @@
 
 - URL: https://angry-tacoz.github.io/best-buy-blue-concept/
 - GitHub: https://github.com/Angry-TacoZ/best-buy-blue-concept
-- Description: Independent retail AI concept with inspectable browser-local memory, deterministic recommendations, and three visible tradeoff directions. It uses fictional product data and has no external APIs, authentication, checkout, or tracking.
+- Description: Independent retail AI concept with inspectable browser-local memory, deterministic recommendations, and three visible tradeoff directions. Its local journey creates a curated shortlist from an immutable memory snapshot, carries a selected laptop through a labeled checkout simulation, and ends in an explicit no-purchase state. It uses fictional product data and has no external APIs, authentication, real checkout, tracking, inventory, or payment behavior.
 
 ### PDF Equipment Checker
 

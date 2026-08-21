@@ -56,7 +56,7 @@ James's evidence base most strongly supports the following claims:
 The current resume and public GitHub work add direct evidence of product and interaction design:
 
 - Delivery Composer: a synthetic-data delivery-team composition demo with explicit eligibility constraints, attributable scoring, candidate comparison, revision deltas, and human approval. The public deployment is deterministic portfolio mode; planned database and model adapters are not public capability.
-- Blue: an independent ambient retail AI concept with inspectable browser-local memory, deterministic recommendation logic, fictional data, and visible tradeoff directions instead of a claimed universal best answer.
+- Blue: an independent ambient retail AI concept with inspectable browser-local memory, deterministic recommendation logic, fictional data, and visible tradeoff directions instead of a claimed universal best answer. Its current local vertical slice carries a generated shortlist into a labeled checkout simulation without connecting to commerce, payment, inventory, or analytics systems; each selection retains an immutable memory snapshot so later edits cannot silently rewrite it.
 - PDF Equipment Checker: a deterministic document-validation tool for comparing equipment schedule rows with plan-drawing tags, with explicit parser diagnostics and ambiguity reporting.
 - Personal Job Discovery: a local-first tool for validated public ATS feeds and explainable deterministic match scoring. It binds to the local machine and is not a public job board or LLM application.
 - Fieldline and Race Telemetry: local-only simulations that make proposed-change approvals or engineering warning states visible without claiming real external integrations.
