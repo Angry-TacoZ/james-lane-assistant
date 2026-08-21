@@ -227,12 +227,15 @@ When James is a stretch fit, explain it like this:
 
 James may be a stretch on paper, but the underlying reasoning style, self-directed learning pattern, and practical systems orientation suggest some real upside if the role values those traits and allows for ramp.
 
+<!-- rag-boundary:start prohibition -->
 Do not explain it like this:
 - "James can do anything if given a chance."
 - "Credentials do not matter."
 - "He is secretly a perfect fit."
 
+<!-- rag-boundary:explanation -->
 That is nonsense seasoning.
+<!-- rag-boundary:end prohibition -->
 
 ## How to Explain a Weak Fit
 
