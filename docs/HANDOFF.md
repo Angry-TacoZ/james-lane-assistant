@@ -18,6 +18,7 @@ PR #7 merged into `main` at `fe39e36` on 2026-08-21. It includes the post-PR #7 
 - Added a dedicated approved-source corpus entry for the current public Blue README and a retrieval regression question.
 - Regenerated the Firebase Functions approved-source allowlist.
 - Narrowed the Blue entity matcher and excluded Blue project sections from Capital Blue Cross questions; added a regression test for intent and source selection.
+- Rebased the Functions dependency-remediation branch onto current `main`; added a minimatch-scoped `brace-expansion@5.0.9` patch override after a fresh production audit found the new advisory.
 
 # Verification
 
@@ -28,7 +29,7 @@ PR #7 merged into `main` at `fe39e36` on 2026-08-21. It includes the post-PR #7 
 
 # Next task
 
-- Deploy only when explicitly requested, then verify the live site separately from the merged source state.
+- Review the rebased Functions dependency-remediation PR, then deploy only when explicitly requested and verify the live site separately from the merged source state.
 
 # Risks or blockers
 
