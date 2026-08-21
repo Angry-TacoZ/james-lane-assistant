@@ -12,6 +12,10 @@ Use `C:\Users\angry\.codex\memories\james-lane-memory-pack.md` as the preserved 
 
 Do not store temporary project trivia, speculative claims, secrets, or one-off conversational details as memory.
 
+## Project Coordination
+
+Use GitHub as the shared source of truth for project coordination. Track meaningful work in focused pull requests, and keep the PR description current with scope, validation, risks, and deployment status. Treat commits, pull-request review state, and GitHub Actions checks as the authoritative record of what changed and what is ready to merge. After a PR merges, fast-forward local `main` to match `origin/main` before beginning follow-up work.
+
 ## Verification Workflow
 
 For UI changes, run the responsive verification before considering the task done:
