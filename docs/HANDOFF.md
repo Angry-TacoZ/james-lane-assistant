@@ -4,7 +4,7 @@ Keep James AI's public portfolio and source-bound assistant aligned with the sup
 
 # Current status
 
-PR #7 is an open draft based on `main` at `fda8be5`. Its branch includes the post-PR #7 Blue curated-journey release at `06e3e01`.
+PR #7 merged into `main` at `fe39e36` on 2026-08-21. It includes the post-PR #7 Blue curated-journey release and the Capital Blue Cross retrieval disambiguation.
 
 # Decisions
 
@@ -23,13 +23,15 @@ PR #7 is an open draft based on `main` at `fda8be5`. Its branch includes the pos
 
 - Canonical project verification passed on 2026-08-20: 56 application tests, 4 Functions tests, production build, corpus smoke checks, and mobile/desktop responsive browser checks.
 - Public-artifact secret/API exposure scan passed.
-- GitHub Actions Verify passed for the PR branch at `06e3e01` on 2026-08-21.
+- GitHub Actions Verify passed for the reviewed PR head `0d5e6e8` on 2026-08-21.
+- After merge, local `main` was fast-forwarded and matches `origin/main` at `fe39e36`.
 
 # Next task
 
-- Obtain re-review for the Capital Blue Cross matcher fix, then merge PR #7 when approved. Deploy only after merge.
+- Deploy only when explicitly requested, then verify the live site separately from the merged source state.
 
 # Risks or blockers
 
 - Blue's checkout is a labeled local simulation. Do not describe it as a payment, reservation, inventory, or commerce integration.
 - No newly created public repositories were found after the last PR #7 update. Blue is the only confirmed substantive public project change.
+- No merge blocker remains for PR #7. Deployment has not been requested or performed.
