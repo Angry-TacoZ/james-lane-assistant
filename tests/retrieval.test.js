@@ -503,6 +503,18 @@ describe("James AI retrieval", () => {
     expect(response.answer).not.toContain("[p1-project-blue-shopping-agent]");
   });
 
+  it("uses the Blue project sources for Blue design questions", () => {
+    const response = askAssistant("Tell me about the Blue design.", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(response.refused).toBe(false);
+    expect(response.intent).toBe("projects");
+    expect(response.matches.map((match) => match.ref)).toContain("p1-project-blue-shopping-agent");
+    expect(response.matches.map((match) => match.ref)).not.toContain("core-identity-career-direction");
+  });
+
   it("uses recent user context for follow-up platform questions", () => {
     const history = [
       {

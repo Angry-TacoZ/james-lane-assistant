@@ -10,22 +10,26 @@ export async function synthesize(question, retrievedMatches, options = {}) {
 
     if (!response.ok) {
       console.error("Function error:", response.status);
-      return fallbackFormat(retrievedMatches);
+      return formatFallbackAnswer(retrievedMatches);
     }
 
     const data = await response.json();
-    return data.answer ?? fallbackFormat(retrievedMatches);
+    return data.answer ?? formatFallbackAnswer(retrievedMatches);
   } catch (err) {
     console.error("Synthesizer fetch failed:", err);
-    return fallbackFormat(retrievedMatches);
+    return formatFallbackAnswer(retrievedMatches);
   }
 }
 
-function fallbackFormat(retrievedMatches) {
+export function formatFallbackAnswer(retrievedMatches) {
   return retrievedMatches
     .map((match) => {
-      const bullets = match.items.map((item) => `- ${item}`).join("\n");
-      return `${match.title}\n${bullets}`;
+      const facts = match.items
+        .map((item) => item.trim())
+        .filter((item) => item && !item.endsWith(":"))
+        .slice(0, 3);
+
+      return facts.length ? `${match.title}: ${facts.join(" ")}` : match.title;
     })
     .join("\n\n");
 }

@@ -54,8 +54,12 @@ const WRITING_NAME_PATTERNS = [
 function fallbackFormat(retrievedMatches) {
   return retrievedMatches
     .map((match) => {
-      const bullets = match.items.map((item) => `- ${item}`).join("\n");
-      return `${match.title}\n${bullets}\n[${match.ref || match.title}]`;
+      const facts = match.items
+        .map((item) => item.trim())
+        .filter((item) => item && !item.endsWith(":"))
+        .slice(0, 3);
+
+      return facts.length ? `${match.title}: ${facts.join(" ")}` : match.title;
     })
     .join("\n");
 }
@@ -481,5 +485,6 @@ ${getModePrompt(mode)}`;
 );
 
 exports._test = {
+  fallbackFormat,
   isValidMatch
 };
