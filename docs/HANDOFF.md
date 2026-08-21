@@ -4,7 +4,7 @@ Keep James AI's public portfolio and source-bound assistant aligned with the sup
 
 # Current status
 
-PR #7 is an open draft based on `main` at `fda8be5`. Its branch now includes the post-PR #7 Blue curated-journey release.
+PR #7 is an open draft based on `main` at `fda8be5`. Its branch includes the post-PR #7 Blue curated-journey release at `06e3e01`.
 
 # Decisions
 
@@ -21,10 +21,11 @@ PR #7 is an open draft based on `main` at `fda8be5`. Its branch now includes the
 
 - Canonical project verification passed on 2026-08-20: 55 application tests, 4 Functions tests, production build, corpus smoke checks, and mobile/desktop responsive browser checks.
 - Public-artifact secret/API exposure scan passed.
+- GitHub Actions Verify passed for the PR branch at `06e3e01` on 2026-08-21.
 
 # Next task
 
-- Commit and push the updated PR #7 branch, then confirm GitHub Verify completes.
+- Review and merge PR #7 when the portfolio update is approved. Deploy only after merge.
 
 # Risks or blockers
 
