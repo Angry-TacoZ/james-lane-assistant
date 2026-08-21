@@ -352,7 +352,7 @@ const resumeSourceCorpus = [
     id: "live-project-links-index",
     group: "projects-catalog",
     sourceLabel: "Live project artifact index",
-    referenceLabel: "Artifacts / GitHub live-link sweep",
+    referenceLabel: "AI Engineering / GitHub live-link sweep",
     title: "Project Artifact Links",
     aliases: [
       "live projects",

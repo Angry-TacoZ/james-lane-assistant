@@ -2,7 +2,7 @@
 
 ## Primary Human Site
 
-- Nexus assistant: https://jamesai.space/
+- AI Assistant: https://jamesai.space/
 - Writing: https://jamesai.space/#writing
 - Projects: https://jamesai.space/#projects
 - Art and Design: https://jamesai.space/#design
