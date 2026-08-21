@@ -1,4 +1,5 @@
 import { execFile, spawn } from "node:child_process";
+import { createServer } from "node:net";
 import { existsSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -23,13 +24,48 @@ if (!chromePath) {
 
 await mkdir(dirname(reportPath), { recursive: true });
 
+async function assertPortAvailable() {
+  const server = createServer();
+
+  await new Promise((resolveListen, rejectListen) => {
+    server.once("error", rejectListen);
+    server.listen(port, "127.0.0.1", resolveListen);
+  });
+
+  await new Promise((resolveClose) => server.close(resolveClose));
+}
+
+await assertPortAvailable();
+
 const preview = spawn(
-  process.platform === "win32" ? "cmd.exe" : "npm",
-  process.platform === "win32"
-    ? ["/c", "npm.cmd", "run", "preview", "--", "--host", "127.0.0.1", "--port", String(port), "--strictPort"]
-    : ["run", "preview", "--", "--host", "127.0.0.1", "--port", String(port), "--strictPort"],
+  process.execPath,
+  [
+    resolve(projectRoot, "node_modules", "vite", "bin", "vite.js"),
+    "preview",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    String(port),
+    "--strictPort"
+  ],
   { cwd: projectRoot, stdio: "ignore" }
 );
+
+async function stopPreviewServer() {
+  if (!preview.pid || preview.exitCode !== null) {
+    return;
+  }
+
+  const exited = new Promise((resolveExit) => preview.once("exit", resolveExit));
+
+  if (process.platform === "win32") {
+    await execFileAsync("taskkill", ["/pid", String(preview.pid), "/T", "/F"]);
+  } else {
+    preview.kill("SIGTERM");
+  }
+
+  await exited;
+}
 
 try {
   const deadline = Date.now() + 30_000;
@@ -77,5 +113,5 @@ try {
 
   console.log(JSON.stringify(metrics, null, 2));
 } finally {
-  preview.kill();
+  await stopPreviewServer();
 }
