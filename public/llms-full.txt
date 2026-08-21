@@ -1,8 +1,9 @@
-# JamesAQI - An AI powered living resume - Full LLM Context
+# JamesAQI - An AI-powered living resume - Full LLM Context
 
 Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
 Contact: tiburo13@gmail.com
+Current resume PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
 LinkedIn: https://www.linkedin.com/in/james-lane-1051291a9
 GitHub: https://github.com/Angry-TacoZ
 X: https://x.com/JamesLaneAI
@@ -10,23 +11,34 @@ Medium: https://medium.com/@Angry_TacoZ
 
 ## Purpose
 
-James AI is a living resume, portfolio, and source-grounded assistant for James Earl Lane. The human site is intentionally visual and interactive. This file gives LLMs and AI agents a stable text version of the same core information.
+James AI is an AI product and UX portfolio with a living resume assistant for James Earl Lane. The human site is intentionally visual and interactive. This file gives LLMs and AI agents a stable text version of the same core information.
 
 ## Professional Summary
 
-James Lane is a nontraditional, systems-oriented professional with experience across healthcare operations, enterprise IT support, process analysis, AI-assisted tool building, public writing, design work, and web/game prototypes.
+James Lane designs user-facing systems for decisions, AI output, and complex workflows. He combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.
 
-He is best represented through reasoning patterns, work samples, deployed demos, and structured discussion rather than title history alone. A conventional resume can undersell him because much of his value appears in how he diagnoses systems, learns tools, builds artifacts, and turns vague problems into concrete interfaces.
+His current resume identifies ongoing work as AI Product Builder at JamesLaneAI.com. His prior roles include Claims Examiner I at Capital Blue Cross from 2025 through 2026 and enterprise systems support for ICU Medical via Randstad from 2018 through 2025.
+
+His background spans healthcare claims operations and enterprise IT support. The public work shows how he turns ambiguous requirements into interaction models with explicit constraints, evidence, tradeoffs, and human review.
+
+At Capital Blue Cross, James designed a PHI-safe claims AI assistant pilot for complex claims workflows, including source grounding, linked-step navigation, human review, governance boundaries, and structured A/B evaluation.
+
+## Current Resume
+
+- Download the current two-page PDF: https://jamesai.space/resume/James-Lane-Resume.pdf
+- Selected applications: Delivery Composer, Blue, James AI Living Resume, CogFit Jobs, PDF Equipment Checker, Personal Job Discovery, Fieldline, and Race Telemetry Simulator.
+- Core stack: React, TypeScript, JavaScript, Vite, Framer Motion, Firebase, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, REST/JSON APIs, ChatGPT, Claude, Codex, Gemini, and quality tooling.
+- Certifications: AI Fluency: Framework & Foundations (Anthropic), Generative AI Fundamentals (Databricks), and Business Analysis Foundations.
 
 ## Strongest Evidence Pattern
 
 The recurring pattern is that James:
 
 - learns through active construction
-- ramps into unfamiliar tools quickly when there is a concrete target
-- uses AI as a practical force multiplier
-- builds source-grounded assistants and portfolio artifacts
-- reasons about systems, incentives, workflow friction, and process structure
+- turns ambiguous needs into clear interaction flows and constraints
+- uses AI to prototype, test, and explain workflow decisions
+- makes evidence, tradeoffs, and human review visible in the product
+- verifies behavior with tests, builds, browser checks, and deployment checks
 - prefers evidence, verification, and clear boundaries over vague claims
 - produces usable demos and explainers rather than stopping at abstract ideas
 
@@ -37,10 +49,10 @@ Strong-fit areas include:
 - business analysis
 - process improvement
 - workflow design
-- AI enablement
+- AI experience design
 - internal tooling
-- operations improvement
-- source-grounded assistant design
+- decision-support workflows
+- assistant design with visible evidence and review paths
 - technical support escalation
 - requirements discovery
 - structured documentation
@@ -67,6 +79,12 @@ This is fair to call lightweight retrieval-augmented generation. It is not an en
 
 ## Live Projects
 
+- Delivery Composer: https://composer.jamesai.space/ and https://github.com/Angry-TacoZ/delivery-composer. Synthetic-data delivery-team composition demo with explicit constraints, attributable scoring, candidate comparison, revision deltas, and human approval. The public deployment uses deterministic portfolio mode; planned database and model adapters are not public capability.
+- Blue - Ambient Shopping Agent: https://angry-tacoz.github.io/best-buy-blue-concept/ and https://github.com/Angry-TacoZ/best-buy-blue-concept. Independent retail AI concept with inspectable browser-local memory, deterministic recommendations, fictional data, and a local curated-shortlist-to-checkout simulation journey. Each generated collection keeps an immutable memory snapshot; rebuilding creates a new collection. It has no external APIs, authentication, real checkout, tracking, inventory, or payment behavior.
+- PDF Equipment Checker: https://pdf-checker-fcd6c.web.app/ and https://github.com/Angry-TacoZ/pdf-equipment-checker. Deterministic tool that compares equipment schedule rows with plan-drawing tags and reports missing, mismatched, and ambiguous results.
+- Personal Job Discovery: https://github.com/Angry-TacoZ/personal-job-discovery. Local-first single-user Python application that monitors public ATS feeds, stores validated listings in SQLite, and explains deterministic match scores. It is not a public job board, private-page crawler, or LLM application.
+- Fieldline - Decision Continuity Artifact: https://github.com/Angry-TacoZ/ai-native-aec-product-design. Speculative local-only AEC product exercise; its approvals, handoff, content, and integrations are simulated.
+- Race Telemetry Simulator: https://github.com/Angry-TacoZ/race-telemetry. Local deterministic telemetry dashboard with simulated warning states, not connected to a vehicle, backend, database, or external API.
 - Living Resume AI: https://james-lane-web-resume.web.app/
 - Legitimate Question Response Index: https://lqri.web.app/ and https://github.com/Angry-TacoZ/lqri-site
 - CAA 2026 PBM Regulatory Assistant: older demo now offline; formerly hosted at https://caademoweb.web.app/

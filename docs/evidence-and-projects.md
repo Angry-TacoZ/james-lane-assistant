@@ -32,7 +32,7 @@ The strongest recurring evidence about James is not title prestige.
 The strongest recurring evidence is that he repeatedly:
 - teaches himself tools quickly
 - builds in order to learn
-- uses AI as a practical force multiplier
+- uses AI to prototype, test, and explain workflow decisions
 - converts vague ideas into concrete artifacts
 - reasons about systems rather than only using them
 - produces usable outputs rather than stopping at abstraction
@@ -50,6 +50,18 @@ James's evidence base most strongly supports the following claims:
 - he is better assessed through interaction and artifacts than through title history alone
 
 ## Major Project and Evidence Areas
+
+### Current product and UX case studies
+
+The current resume and public GitHub work add direct evidence of product and interaction design:
+
+- Delivery Composer: a synthetic-data delivery-team composition demo with explicit eligibility constraints, attributable scoring, candidate comparison, revision deltas, and human approval. The public deployment is deterministic portfolio mode; planned database and model adapters are not public capability.
+- Blue: an independent ambient retail AI concept with inspectable browser-local memory, deterministic recommendation logic, fictional data, and visible tradeoff directions instead of a claimed universal best answer. Its current local vertical slice carries a generated shortlist into a labeled checkout simulation without connecting to commerce, payment, inventory, or analytics systems; each selection retains an immutable memory snapshot so later edits cannot silently rewrite it.
+- PDF Equipment Checker: a deterministic document-validation tool for comparing equipment schedule rows with plan-drawing tags, with explicit parser diagnostics and ambiguity reporting.
+- Personal Job Discovery: a local-first tool for validated public ATS feeds and explainable deterministic match scoring. It binds to the local machine and is not a public job board or LLM application.
+- Fieldline and Race Telemetry: local-only simulations that make proposed-change approvals or engineering warning states visible without claiming real external integrations.
+
+This evidence supports product thinking, interaction design, explicit constraints, transparent decision support, and verification. It should not be used to claim production ownership of systems whose public repositories describe simulated, synthetic, local-only, or planned behavior.
 
 ### 1. Claims AI proposal and governance-track internal innovation work
 
@@ -348,7 +360,7 @@ When using this file:
 
 ## Safe Summary
 
-James's evidence base is strongest in repeated self-directed building, AI-assisted workflow design, source-grounded question-answering tools, structured analysis, troubleshooting depth, and turning rough ideas into usable artifacts. His portfolio is better read as proof of practical reasoning, learning velocity, and systems-oriented execution than as a conventional pedigree signal.
+James's evidence base is strongest in repeated self-directed building, workflow and interaction design, bounded AI experiences, structured analysis, troubleshooting depth, and turning rough ideas into usable artifacts. The portfolio is most useful as evidence of how he makes requirements, evidence, tradeoffs, and human review visible in working prototypes.
 
 ## Interpretation Boundary
 

@@ -20,10 +20,10 @@ export const profileModes = [
     briefingCards: [
       {
         eyebrow: "Identity",
-        title: "Nontraditional and systems-oriented",
+        title: "AI product and UX engineer",
         body:
-          "James Lane is described as a nontraditional, systems-oriented candidate whose value is better understood through reasoning, learning, and improvement patterns than title history alone.",
-        ref: "core-identity / Identity Summary"
+          "James builds user-facing AI and workflow tools, drawing on healthcare operations, enterprise systems support, interaction design, and public prototypes.",
+        ref: "resume-pdf / Product Design Profile"
       },
       {
         eyebrow: "Work Style",
@@ -34,10 +34,10 @@ export const profileModes = [
       },
       {
         eyebrow: "Value Thesis",
-        title: "Useful where reasoning meets execution",
+        title: "Turns complex workflows into clear product decisions",
         body:
-          "The strongest case for James is reasoning-heavy, improvement-oriented work where process quality, practical tool use, and system interpretation matter.",
-        ref: "core-identity / Professional Value Thesis"
+          "The strongest evidence is in product flows that make requirements, tradeoffs, evidence, and human review visible.",
+        ref: "resume-pdf / Functional Capabilities"
       }
     ]
   },
@@ -64,7 +64,7 @@ export const profileModes = [
         eyebrow: "Strong Fit",
         title: "Reasoning-heavy, improvement-oriented work",
         body:
-          "The profile points toward roles that reward systems thinking, troubleshooting, process improvement, workflow design, business analysis, and practical AI/tool leverage.",
+          "The profile points toward roles that reward workflow design, business analysis, product interaction design, troubleshooting, and clear decision support.",
         ref: "role-fit-model / Fit Categories"
       },
       {
@@ -111,17 +111,17 @@ export const profileModes = [
       },
       {
         eyebrow: "Recent Work",
-        title: "AI proposal and grounded assistants",
+        title: "Product concepts and decision-support workflows",
         body:
-          "The strongest recent examples include the claims AI proposal, the proposal FAQ assistant, and the legislation-grounded internal interview bot.",
-        ref: "evidence-and-projects / Major Project and Evidence Areas"
+          "Recent public work includes Delivery Composer, Blue, PDF Equipment Checker, a local job-discovery tool, and simulated AEC and race-telemetry interfaces.",
+        ref: "projects-catalog / Project Artifact Links"
       },
       {
         eyebrow: "What It Proves",
-        title: "Practical reasoning over pedigree",
+        title: "Concrete behavior over broad claims",
         body:
-          "The portfolio is framed as proof of practical reasoning, learning velocity, and systems-oriented execution rather than conventional prestige signaling.",
-        ref: "evidence-and-projects / Safe Summary"
+          "The portfolio shows how James defines constraints, exposes evidence and tradeoffs, and verifies the behavior of working prototypes.",
+        ref: "resume-pdf / Product Design Profile"
       }
     ]
   },
@@ -148,15 +148,15 @@ export const profileModes = [
         eyebrow: "Live Projects",
         title: "Deployed tools, demos, and public sites",
         body:
-          "The updated resume now includes a set of live projects spanning hiring artifacts, internal-style assistants, consulting presentation, and a playable game demo.",
-        ref: "resume-pdf / Projects"
+          "The current work includes a delivery-team composition demo, an ambient shopping-agent concept, deterministic document validation, and local-only workflow tools.",
+        ref: "projects-catalog / Project Artifact Links"
       },
       {
         eyebrow: "What They Show",
-        title: "Stakeholder-facing AI and practical build execution",
+        title: "Bounded AI and inspectable workflow design",
         body:
-          "Taken together, the live projects show product thinking, source-grounded assistants, public-facing packaging, and shipping beyond mockups or concept decks.",
-        ref: "resume-pdf / Professional Summary"
+          "The projects distinguish public demos from production integrations and keep data, scoring, evidence, and human approval visible where they matter.",
+        ref: "resume-pdf / Functional Capabilities"
       },
       {
         eyebrow: "Portfolio Media",
@@ -256,26 +256,26 @@ export const profileModes = [
     label: "Resume",
     panelTitle: "Resume Lens",
     description:
-      "Use this lens for factual questions about James Lane's current role, work history, tools, education, and contact details.",
-    placeholder: "Ask about James's current role, work history, tools, education, or contact details...",
+      "View James Lane's current resume or ask factual questions about his work history, applications, tools, education, certifications, and contact details.",
+    placeholder: "Ask about James's consulting work, experience, applications, tools, certifications, or contact details...",
     welcomeMessage:
-      "I can answer factual resume questions about James Lane's current role, experience, tools, education, and contact details.",
+      "I can answer factual questions from James Lane's current resume, including consulting work, experience, applications, tools, certifications, and contact details.",
     defaultIntent: "experience",
     answerStyle:
       "Answer directly and factually, with minimal framing.",
     starterQuestions: [
-      "What is James Lane's current role?",
-      "What tools and platforms does James Lane list?",
-      "What education is listed?",
+      "What is James Lane's current consulting role?",
+      "What systems and automation tools does James Lane list?",
+      "What education and certifications are listed?",
       "How can someone contact James Lane?"
     ],
     briefingCards: [
       {
         eyebrow: "Current Role",
-        title: "Claims Workflow Intelligence Analyst at Capital Blue Cross",
+        title: "AI product builder at JamesLaneAI.com",
         body:
-          "The resume lists James's current role as Claims Workflow Intelligence Analyst (Embedded Claims Examiner) at Capital Blue Cross, remote, beginning in 2025.",
-        ref: "resume-pdf / Claims Workflow Intelligence Analyst (Embedded Claims Examiner) - Capital Blue Cross | Nov 2025-Present | Remote"
+          "The resume lists James's current role as AI Product Builder at JamesLaneAI.com, beginning in 2025.",
+        ref: "resume-pdf / AI Product Builder - JamesLaneAI.com | 2025-Present"
       },
       {
         eyebrow: "Background",
@@ -286,10 +286,10 @@ export const profileModes = [
       },
       {
         eyebrow: "Tools",
-        title: "BI, data, and workflow tooling",
+        title: "Product, AI, platform, and quality tooling",
         body:
-          "The resume specifically lists Power BI, SQL, Excel, ServiceNow, Zapier, Airtable, Microsoft 365, Active Directory, Azure AD, FACETS, plus AI and build tools such as ChatGPT, Claude, Gemini, Codex, React, Vite, and Firebase Hosting.",
-        ref: "resume-pdf / Tools & Platforms"
+          "The resume lists React, TypeScript, Vite, Framer Motion, Firebase, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, ChatGPT, Claude, Codex, Gemini, GitHub Actions, Vitest, Playwright, and pytest.",
+        ref: "resume-pdf / Tools & Technologies"
       }
     ]
   }

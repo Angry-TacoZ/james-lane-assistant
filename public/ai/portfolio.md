@@ -2,6 +2,39 @@
 
 ## Live Projects
 
+### Delivery Composer
+
+- URL: https://composer.jamesai.space/
+- GitHub: https://github.com/Angry-TacoZ/delivery-composer
+- Description: Synthetic-data delivery-team composition demo with explicit constraints, attributable scoring, candidate comparison, revision deltas, and human approval. The public deployment uses deterministic portfolio mode; live database and model adapters are planned, not claimed as public capability.
+
+### Blue - Ambient Shopping Agent
+
+- URL: https://angry-tacoz.github.io/best-buy-blue-concept/
+- GitHub: https://github.com/Angry-TacoZ/best-buy-blue-concept
+- Description: Independent retail AI concept with inspectable browser-local memory, deterministic recommendations, and three visible tradeoff directions. Its local journey creates a curated shortlist from an immutable memory snapshot, carries a selected laptop through a labeled checkout simulation, and ends in an explicit no-purchase state. It uses fictional product data and has no external APIs, authentication, real checkout, tracking, inventory, or payment behavior.
+
+### PDF Equipment Checker
+
+- URL: https://pdf-checker-fcd6c.web.app/
+- GitHub: https://github.com/Angry-TacoZ/pdf-equipment-checker
+- Description: Deterministic PDF validation tool that compares equipment schedule rows with plan-drawing tags and reports missing, mismatched, and ambiguous results.
+
+### Personal Job Discovery
+
+- URL: https://github.com/Angry-TacoZ/personal-job-discovery
+- Description: Local-first, single-user Python application that monitors public ATS feeds, stores validated listings in SQLite, and explains deterministic match scores. It is not a public job board, crawler for private pages, or an LLM application.
+
+### Fieldline - Decision Continuity Artifact
+
+- URL: https://github.com/Angry-TacoZ/ai-native-aec-product-design
+- Description: Speculative local-only product exercise for an AI-native AEC platform. Its approvals, handoff, content, and integrations are simulated.
+
+### Race Telemetry Simulator
+
+- URL: https://github.com/Angry-TacoZ/race-telemetry
+- Description: Local deterministic telemetry dashboard that demonstrates engineer-facing warning states. It is not connected to a vehicle, backend, database, or external API and is not for operational decisions.
+
 ### Living Resume AI
 
 - URL: https://james-lane-web-resume.web.app/

@@ -228,7 +228,7 @@ const GROUP_BY_INTENT = {
   tradeoffs: ["friction-points-and-tradeoffs", "cognitive-profile", "health-and-neurodivergence"],
   communication: ["communication-rules", "cognitive-profile"],
   evidence: ["evidence-and-projects", "projects-catalog"],
-  projects: ["projects-catalog", "portfolio-media-index"],
+  projects: ["projects-catalog", "portfolio-media-index", "resume-pdf"],
   writing: ["writing-catalog", "writing-corpus", "writing-supporting-analysis"],
   roleFit: ["role-fit-model", "environment-fit-model", "core-identity", "resume-pdf", "evidence-and-projects", "cognitive-profile", "health-and-neurodivergence", "work-location-preference"],
   workLocation: ["work-location-preference", "core-identity", "health-and-neurodivergence", "health-accommodations"],
@@ -246,6 +246,37 @@ const MODE_GROUP_BOOSTS = {
 };
 
 const PROJECT_ENTITIES = [
+  {
+    id: "blue-ambient-shopping-agent",
+    excludedQuestionPattern: /\bcapital blue cross\b/,
+    questionPattern: /\b(best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b|\bblue\b(?!\s+cross\b)/,
+    sectionPattern: /\b(best buy blue|ambient shopping agent|shopping agent|retail ai|inspectable memory)\b|\bblue\b(?!\s+cross\b)/
+  },
+  {
+    id: "delivery-composer",
+    questionPattern: /\b(delivery composer|consulting staffing|delivery team|candidate comparison)\b/,
+    sectionPattern: /\b(delivery composer|consulting staffing|delivery team|candidate comparison)\b/
+  },
+  {
+    id: "pdf-equipment-checker",
+    questionPattern: /\b(pdf equipment checker|pdf checker|equipment schedules|plan drawings|blueprints)\b/,
+    sectionPattern: /\b(pdf equipment checker|pdf checker|equipment schedules|plan drawings|blueprints)\b/
+  },
+  {
+    id: "personal-job-discovery",
+    questionPattern: /\b(personal job discovery|job discovery|ats monitor|greenhouse|lever|ashby)\b/,
+    sectionPattern: /\b(personal job discovery|job discovery|ats monitor|greenhouse|lever|ashby)\b/
+  },
+  {
+    id: "fieldline-aec",
+    questionPattern: /\b(fieldline|aec|decision continuity|3d handoff)\b/,
+    sectionPattern: /\b(fieldline|aec|decision continuity|3d handoff)\b/
+  },
+  {
+    id: "race-telemetry",
+    questionPattern: /\b(race telemetry|telemetry simulator|vehicle telemetry|engineer dashboard|satellite link)\b/,
+    sectionPattern: /\b(race telemetry|telemetry simulator|vehicle telemetry|engineer dashboard|satellite link)\b/
+  },
   {
     id: "living-resume-ai",
     questionPattern: /\b(living resume ai|living resume|interactive resume|james ai)\b/,
@@ -490,8 +521,15 @@ function getIntent(question, preferredIntent = null) {
     return "workLocation";
   }
 
+  if (matchedWritingEntity) {
+    return "writing";
+  }
+
+  if (matchedProjectEntity) {
+    return "projects";
+  }
+
   if (
-    matchedWritingEntity ||
     /\b(medium|article|articles|essay|essays|writing|wrote|written|published writing|published essay|published article|blog|opinion pieces|writing samples)\b/.test(
       normalized
     )
@@ -518,7 +556,11 @@ function getIntent(question, preferredIntent = null) {
     return "roleFit";
   }
 
-  if (/\b(capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(normalized)) {
+  if (
+    /\b(jameslaneai|james lane ai consulting|ai product builder|ai consultant|consultant|owner|capital blue cross|claims examiner|claims operations analyst|claims|randstad|icu medical|enterprise it)\b/.test(
+      normalized
+    )
+  ) {
     return "experience";
   }
 
@@ -538,7 +580,7 @@ function getIntent(question, preferredIntent = null) {
     return "tools";
   }
 
-  if (/\b(education|school|diploma|schooling|academic)\b/.test(normalized)) {
+  if (/\b(education|school|diploma|schooling|academic|certification|certifications|anthropic|databricks)\b/.test(normalized)) {
     return "education";
   }
 
@@ -586,7 +628,15 @@ function isExampleRequest(normalizedQuestion) {
 }
 
 function getMatchedProjectEntity(normalizedQuestion) {
-  return PROJECT_ENTITIES.find((entity) => entity.questionPattern.test(normalizedQuestion)) ?? null;
+  return (
+    PROJECT_ENTITIES.find(
+      (entity) => !entity.excludedQuestionPattern?.test(normalizedQuestion) && entity.questionPattern.test(normalizedQuestion)
+    ) ?? null
+  );
+}
+
+function getExcludedProjectEntities(normalizedQuestion) {
+  return PROJECT_ENTITIES.filter((entity) => entity.excludedQuestionPattern?.test(normalizedQuestion));
 }
 
 function getMatchedWritingEntity(normalizedQuestion) {
@@ -677,7 +727,17 @@ function scoreSection(section, question, intent, modeId = null) {
   const normalizedQuestion = normalizeText(question);
   const normalizedTitle = normalizeText(section.title);
   const matchedProjectEntity = getMatchedProjectEntity(normalizedQuestion);
+  const excludedProjectEntities = getExcludedProjectEntities(normalizedQuestion);
   const matchedWritingEntity = getMatchedWritingEntity(normalizedQuestion);
+
+  if (excludedProjectEntities.some((entity) => sectionMatchesProjectEntity(section, entity))) {
+    return {
+      section,
+      score: Number.NEGATIVE_INFINITY,
+      exactMatches: 0
+    };
+  }
+
   let score = 0;
   let exactMatches = 0;
 
@@ -1072,18 +1132,20 @@ function pickSections(scoredSections, intent, question = "") {
     if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion)) {
       const selected = [];
       const summary = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /professional summary/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /product design profile|professional summary/.test(normalizeText(entry.section.title))
       );
       const strengths = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /core strengths/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /functional capabilities|core strengths|core skills/.test(normalizeText(entry.section.title))
       );
       const tools = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /\btools\b/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /\btools\b|core skills/.test(normalizeText(entry.section.title))
       );
       const experience = limitedSections.find(
         (entry) =>
           entry.section.group === "resume-pdf" &&
-          /capital blue cross|claims examiner|help desk analyst/.test(normalizeText(entry.section.title))
+          /jameslaneai|ai product builder|james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
+            normalizeText(entry.section.title)
+          )
       );
       const roleDirection = limitedSections.find((entry) =>
         /career direction|role family implications/.test(normalizeText(entry.section.title))
@@ -1558,6 +1620,11 @@ function buildAnswerLines(scoredSections, question, intent) {
 
       if (entry.section.id === "writing-catalog" || entry.section.id === "writing-boundary") {
         items = entry.section.items.slice(0, Math.min(entry.section.items.length, fallbackCount));
+      }
+
+      if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion) && entry.section.id === "p2-tools-and-platforms") {
+        const dataTools = entry.section.items.find((item) => /Power BI|SQL|Tableau|analytics|reporting/i.test(item));
+        items = [dataTools, ...items].filter((item, index, allItems) => item && allItems.indexOf(item) === index);
       }
 
       if (

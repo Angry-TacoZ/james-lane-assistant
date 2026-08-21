@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { refusalMessage } from "../src/data/resumeCorpus.js";
+import { approvedSources, refusalMessage, sourceCorpus } from "../src/data/resumeCorpus.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
@@ -8,7 +8,9 @@ describe("James AI retrieval", () => {
     const headlineMatch = response.matches.find((match) => match.ref === "p1-headline");
 
     expect(headlineMatch?.title).toBe("Professional Headline");
-    expect(headlineMatch?.items).toEqual(["AI Builder | Workflow Intelligence | Product Operations"]);
+    expect(headlineMatch?.items).toEqual([
+      "AI Product & UX Engineer | Design Engineer | Interactive Prototyping"
+    ]);
   });
 
   it("answers direct factual contact questions from the approved resume", () => {
@@ -98,6 +100,12 @@ describe("James AI retrieval", () => {
     });
 
     expect(response.refused).toBe(false);
+    expect(response.answer).toContain("https://composer.jamesai.space/");
+    expect(response.answer).toContain("https://angry-tacoz.github.io/best-buy-blue-concept/");
+    expect(response.answer).toContain("https://pdf-checker-fcd6c.web.app/");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/personal-job-discovery");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/ai-native-aec-product-design");
+    expect(response.answer).toContain("https://github.com/Angry-TacoZ/race-telemetry");
     expect(response.answer).toContain("https://james-lane-web-resume.web.app/");
     expect(response.answer).toContain("https://iron-shores.web.app/");
     expect(response.answer).toContain("https://cruisnpa.fun/");
@@ -360,6 +368,39 @@ describe("James AI retrieval", () => {
     expect(benchmarkResponse.answer).toContain("[github-project-composio-dependency-graph]");
   });
 
+  it("keeps current GitHub projects scoped to their documented boundaries", () => {
+    const blue = askAssistant("How does Blue handle recommendation memory?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const jobDiscovery = askAssistant("What does Personal Job Discovery do?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    const fieldline = askAssistant("Is Fieldline connected to a real AEC platform?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+
+    expect(blue.refused).toBe(false);
+    expect(blue.answer).toMatch(/browser-local memory|deterministic|fictional/i);
+    expect(blue.answer).toContain("[p1-project-blue-shopping-agent]");
+    const blueJourney = askAssistant("How does Blue keep a curated laptop collection stable when memory changes?", [], {
+      modeId: "projects",
+      preferredIntent: "projects"
+    });
+    expect(blueJourney.refused).toBe(false);
+    expect(blueJourney.answer).toMatch(/immutable snapshot|memory snapshot|rebuild from current memory/i);
+    expect(blueJourney.answer).toMatch(/no-purchase|no external APIs|no real checkout/i);
+    expect(blueJourney.answer).toContain("[github-project-blue-curated-journey]");
+    expect(jobDiscovery.refused).toBe(false);
+    expect(jobDiscovery.answer).toMatch(/local-first|SQLite|public ATS|deterministic/i);
+    expect(jobDiscovery.answer).toContain("[github-project-personal-job-discovery]");
+    expect(fieldline.refused).toBe(false);
+    expect(fieldline.answer).toMatch(/simulated|local-only|no external APIs/i);
+    expect(fieldline.answer).toContain("[github-project-fieldline-aec]");
+  });
+
   it("keeps the older PBM demo as offline historical evidence", () => {
     const response = askAssistant("What happened to the CAA 2026 PBM Regulatory Assistant?", [], {
       modeId: "projects",
@@ -432,16 +473,35 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p2-tools-and-platforms|evidence-and-projects)-?/) ;
   });
 
-  it("uses the corrected current CBC title in retrieval answers", () => {
-    const response = askAssistant("What is James Lane's current role at Capital Blue Cross?");
+  it("uses the updated AI product builder role as James's current role", () => {
+    const response = askAssistant("What is James Lane's current role?");
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toContain("Claims Workflow Intelligence Analyst");
-    expect(response.answer).toContain("Embedded Claims Examiner");
-    expect(response.answer).not.toContain("Claims Operations Analyst");
+    expect(response.answer).toContain("AI Product Builder");
+    expect(response.answer).toContain("JamesLaneAI.com");
+    expect(response.answer).toContain("[p2-exp-ai-product-builder]");
   });
 
-  it("uses recent user context for follow-up tool questions", () => {
+  it("describes Capital Blue Cross as prior experience with the updated dates", () => {
+    const response = askAssistant("What role did James Lane have at Capital Blue Cross, and when?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("Claims Examiner I");
+    expect(response.answer).toContain("2025-2026");
+    expect(response.answer).not.toMatch(/Capital Blue Cross[^\n]*Present/i);
+  });
+
+  it("routes Capital Blue Cross questions to experience instead of the Blue project", () => {
+    const response = askAssistant("What did James do at Capital Blue Cross?");
+
+    expect(response.refused).toBe(false);
+    expect(response.intent).toBe("experience");
+    expect(response.answer).toContain("PHI-safe AI assistant pilot");
+    expect(response.answer).toContain("[p2-exp-capital-blue-cross]");
+    expect(response.answer).not.toContain("[p1-project-blue-shopping-agent]");
+  });
+
+  it("uses recent user context for follow-up platform questions", () => {
     const history = [
       {
         role: "user",
@@ -449,11 +509,22 @@ describe("James AI retrieval", () => {
       }
     ];
 
-    const response = askAssistant("What about SQL and Power BI?", history);
+    const response = askAssistant("What about PostgreSQL and SQLite?", history);
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toMatch(/Power BI|SQL/i);
-    expect(response.answer).toContain("[p2-tools]");
+    expect(response.answer).toMatch(/PostgreSQL|SQLite/i);
+    expect(response.answer).toContain("[p1-tools-and-platforms]");
+  });
+
+  it("uses only the supplied current resume as the approved resume source", () => {
+    const resumeSource = approvedSources.find((source) => source.id === "resume-pdf");
+    const oldSourceName = "Profres072026.pdf";
+
+    expect(resumeSource).toMatchObject({
+      label: "James_Lane_AI_Product_UX_Functional.docx",
+      path: "C:\\Users\\angry\\Downloads\\James_Lane_AI_Product_UX_Functional.docx"
+    });
+    expect(sourceCorpus.some((section) => section.sourceLabel?.includes(oldSourceName))).toBe(false);
   });
 
   it("supports broader fit questions when fit mode is active", () => {
@@ -467,7 +538,7 @@ describe("James AI retrieval", () => {
     expect(response.answer).toContain("[role-fit-model-");
   });
 
-  it("pulls concrete BA and analytics evidence for broad business analyst fit questions", () => {
+  it("pulls concrete workflow and platform evidence for broad business analyst fit questions", () => {
     const response = askAssistant("How would James do in a business analyst job?", [], {
       modeId: "profile",
       preferredIntent: "identity"
@@ -475,8 +546,8 @@ describe("James AI retrieval", () => {
 
     expect(response.refused).toBe(false);
     expect(response.answer).toMatch(/business analysis|requirements|process mapping|workflow/i);
-    expect(response.answer).toMatch(/Power BI|SQL|Tableau|analytics|reporting/i);
-    expect(response.answer).toMatch(/\[(p2-tools-and-platforms|p2-tools|p1-summary|core-identity|role-fit-model)-/);
+    expect(response.answer).toMatch(/PostgreSQL|workflow improvements|technical documentation|product experiences/i);
+    expect(response.answer).toMatch(/\[(p1-tools-and-platforms|p1-functional-capabilities|p1-summary|core-identity|role-fit-model)-/);
   });
 
   it("handles adjacent hiring-manager phrasing for analyst-style work", () => {

@@ -21,7 +21,7 @@ const isLocalPreviewHost =
 const canRemoteSynthesize = Boolean(synthesizeUrl) && !isLocalPreviewHost;
 const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
 const BRAND_NAME = "JamesAQI";
-const BRAND_TAGLINE = "An AI powered living resume";
+const BRAND_TAGLINE = "An AI-powered living resume";
 
 const PAGE_TITLES = {
   home: `${BRAND_NAME} | ${BRAND_TAGLINE}`,
@@ -40,6 +40,11 @@ const X_URL = "https://x.com/JamesLaneAI";
 const MEDIUM_URL = "https://medium.com/@Angry_TacoZ";
 const CONSULTING_URL = "https://jameslaneai.com/";
 const PROFILE_PHOTO_URL = "/images/profile/jamesprofile3.jpg";
+const RESUME_PDF_URL = "/resume/James-Lane-Resume.pdf";
+const RESUME_PAGE_URLS = [
+  "/resume/James-Lane-Resume-page-1.png",
+  "/resume/James-Lane-Resume-page-2.png"
+];
 const AUDIO_GUIDE_URL = "/audio/james-ai-audio-guide.mp3";
 const AUDIO_GUIDE_STORAGE_KEY = "james-ai-audio-guide-dismissed";
 // Temporary voiceover hold: use "prompt" here to restore the original first-visit popup.
@@ -195,6 +200,25 @@ const PROJECT_PRESENTATION = {
     ]
   }
 };
+
+function getProjectPresentation(project, fallbackId = "living-resume-ai") {
+  const presentation = PROJECT_PRESENTATION[project.id];
+  if (presentation) {
+    return presentation;
+  }
+
+  const fallback = PROJECT_PRESENTATION[fallbackId] ?? PROJECT_PRESENTATION["living-resume-ai"];
+  return {
+    emphasis: "PUBLIC_PROJECT",
+    version: project.url.includes("github.com") ? "GITHUB_REPO" : "LIVE_DEMO",
+    summary: project.description,
+    featureBadges: ["Product UX", "Public Artifact"],
+    icon: "deployed_code",
+    shortLabel: "Project",
+    detailBullets: [project.ref, "Open the linked artifact to inspect its documented scope."],
+    art: fallback.art
+  };
+}
 
 const WRITING_IMAGES = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCsP-6ASKfZiNYEP7vhnM1zTDKkSEC64mSjtlCnAD6CCpaH_C56RWdPYxvSr8Y5r4G3aZtsViJrAu60jKQ0FQq6B374g49_h0nSyvQ2KwWZRZhhgGQ8SwZ_mDOcbIVtqtmTMews369445ClptkP08Wp_cSP8I1cwVPgTh2BKLHL8nKeejKojNWKspg4eDTvkJku3BHJv2z9hyb_6nGI3GVm_4TpnFzuYdJDitK0IX9zWzYmJ4XBhb_CcrYJBSPm4xkX2z-aQ542Ki0Q",
@@ -894,47 +918,7 @@ function renderHomePage() {
       </section>
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
         <div class="lg:col-span-8 flex flex-col gap-8 md:gap-12">
-          <div class="bg-surface-container-low rounded-xl p-6 sm:p-8 md:p-12 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
-            <div class="flex justify-between items-start mb-12">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                <span class="font-['Space_Grotesk'] text-primary text-[10px] uppercase tracking-[0.2em]">Operational Identity</span>
-              </div>
-              <span class="font-['Space_Grotesk'] text-on-surface-variant/40 text-[10px] uppercase tracking-widest">ID-4092-X</span>
-            </div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight">${escapeHtml(briefingPrimary.title)}</h2>
-            <div class="grid md:grid-cols-2 gap-8 md:gap-12">
-              <div class="space-y-6">
-                <p class="text-lg text-on-surface-variant leading-relaxed">${escapeHtml(briefingPrimary.body)}</p>
-                <div class="flex flex-wrap gap-2">
-                  ${supportTags
-                    .map(
-                      (tag) => `
-                        <span class="flex items-center gap-2 border-l-2 border-primary pl-3 py-1 font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface-variant">${escapeHtml(tag)}</span>
-                      `
-                    )
-                    .join("")}
-                </div>
-              </div>
-              <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-lg border border-outline-variant/10">
-                <div class="relative rounded-xl overflow-hidden mb-5 aspect-[4/5] bg-surface-container-high">
-                  <img class="w-full h-full object-cover" src="${PROFILE_PHOTO_URL}" alt="Portrait of James Lane at his desk"/>
-                  <div class="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent"></div>
-                  <div class="absolute left-4 right-4 bottom-4">
-                    <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-primary/90 mb-2">James Lane</div>
-                    <div class="text-xl font-bold text-on-surface leading-tight">Systems-oriented builder with a source-bound AI front door.</div>
-                  </div>
-                </div>
-                <div class="text-[10px] font-['Space_Grotesk'] text-primary/60 uppercase mb-4 tracking-widest">Current Vector</div>
-                <div class="text-xl font-bold text-on-surface mb-2">${escapeHtml(vectorCard.title)}</div>
-                <p class="text-sm text-on-surface-variant/70 mb-4">${escapeHtml(vectorCard.body)}</p>
-                <div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
-                  <div class="bg-primary h-full" style="width: ${modeProgress(mode.id)}%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          ${renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags)}
         </div>
         <aside class="lg:col-span-4 space-y-8 md:space-y-12">
           <div class="sticky top-28">
@@ -987,6 +971,83 @@ function renderHomePage() {
       </div>
     </footer>
     ${renderMobileBottomNav("home")}
+  `;
+}
+
+function renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags) {
+  if (mode.id === "resume") {
+    return renderResumeDocumentPanel();
+  }
+
+  return `
+    <section class="bg-surface-container-low rounded-xl p-6 sm:p-8 md:p-12 relative overflow-hidden group">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
+      <div class="flex justify-between items-start mb-12">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          <span class="font-['Space_Grotesk'] text-primary text-[10px] uppercase tracking-[0.2em]">Operational Identity</span>
+        </div>
+        <span class="font-['Space_Grotesk'] text-on-surface-variant/40 text-[10px] uppercase tracking-widest">ID-4092-X</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight">${escapeHtml(briefingPrimary.title)}</h2>
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div class="space-y-6">
+          <p class="text-lg text-on-surface-variant leading-relaxed">${escapeHtml(briefingPrimary.body)}</p>
+          <div class="flex flex-wrap gap-2">
+            ${supportTags
+              .map(
+                (tag) => `
+                  <span class="flex items-center gap-2 border-l-2 border-primary pl-3 py-1 font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface-variant">${escapeHtml(tag)}</span>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-lg border border-outline-variant/10">
+          <div class="relative rounded-xl overflow-hidden mb-5 aspect-[4/5] bg-surface-container-high">
+            <img class="w-full h-full object-cover" src="${PROFILE_PHOTO_URL}" alt="Portrait of James Lane at his desk"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent"></div>
+            <div class="absolute left-4 right-4 bottom-4">
+              <div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.24em] text-primary/90 mb-2">James Lane</div>
+              <div class="text-xl font-bold text-on-surface leading-tight">Systems-oriented builder with a source-bound AI front door.</div>
+            </div>
+          </div>
+          <div class="text-[10px] font-['Space_Grotesk'] text-primary/60 uppercase mb-4 tracking-widest">Current Vector</div>
+          <div class="text-xl font-bold text-on-surface mb-2">${escapeHtml(vectorCard.title)}</div>
+          <p class="text-sm text-on-surface-variant/70 mb-4">${escapeHtml(vectorCard.body)}</p>
+          <div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+            <div class="bg-primary h-full" style="width: ${modeProgress(mode.id)}%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderResumeDocumentPanel() {
+  return `
+    <section class="overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-low" data-resume-viewer>
+      <header class="flex flex-col gap-5 border-b border-outline-variant/10 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div>
+          <div class="mb-2 font-label text-[10px] uppercase tracking-[0.22em] text-primary">Current resume</div>
+          <h2 class="text-2xl font-bold tracking-normal text-on-surface sm:text-3xl">James Lane</h2>
+          <p class="mt-2 text-sm text-on-surface-variant/70">AI Product &amp; UX Engineer</p>
+        </div>
+        <a class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 font-label text-[10px] font-bold uppercase tracking-[0.16em] text-on-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low" href="${RESUME_PDF_URL}" download="James-Lane-Resume.pdf" data-resume-download>
+          <span class="material-symbols-outlined text-base" aria-hidden="true">download</span>
+          Download PDF
+        </a>
+      </header>
+      <div class="space-y-4 bg-[#d8d9d4] p-2 sm:p-4">
+        ${RESUME_PAGE_URLS.map(
+          (pageUrl, index) => `
+            <a class="block overflow-hidden bg-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] focus:outline-none focus:ring-2 focus:ring-primary" href="${pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open resume page ${index + 1} at full size" data-resume-page-link>
+              <img class="block h-auto w-full" src="${pageUrl}" alt="Page ${index + 1} of James Lane's current resume" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} data-resume-page/>
+            </a>
+          `
+        ).join("")}
+      </div>
+    </section>
   `;
 }
 
@@ -2182,7 +2243,7 @@ function renderProjectsPage() {
 }
 
 function renderFeaturedProjectCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
+  const meta = getProjectPresentation(project);
 
   return `
     <div class="artifact-card artifact-card--feature group relative overflow-hidden glass-panel rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all duration-500 cursor-pointer min-h-[420px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
@@ -2204,7 +2265,7 @@ function renderFeaturedProjectCard(project) {
 }
 
 function renderProjectSummaryCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["caa-2026-pbm-regulatory-assistant"];
+  const meta = getProjectPresentation(project, "living-resume-ai");
   return `
     <div class="artifact-card artifact-card--summary glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div>
@@ -2224,7 +2285,7 @@ function renderProjectSummaryCard(project) {
 }
 
 function renderProjectImageCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["blkvue-ai-security-intake-bot"];
+  const meta = getProjectPresentation(project, "blkvue-ai-security-intake-bot");
   return `
     <div class="artifact-card artifact-card--image glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 hover:bg-surface-container-highest/40 transition-all cursor-pointer group min-h-[320px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div class="h-32 md:h-28 mb-5 bg-surface-container-lowest rounded-lg overflow-hidden relative">
@@ -2240,7 +2301,7 @@ function renderProjectImageCard(project) {
 }
 
 function renderProjectDetailCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["jameslaneai-com"];
+  const meta = getProjectPresentation(project, "jameslaneai-com");
   const detailTitle = escapeHtml(project.title)
     .replace(/([a-z])([A-Z])/g, "$1<wbr>$2")
     .replace(/\./g, "<wbr>.");
@@ -2264,7 +2325,7 @@ function renderProjectDetailCard(project) {
 }
 
 function renderProjectCompactCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["cruisn-pa"];
+  const meta = getProjectPresentation(project, "cruisn-pa");
   return `
     <div class="artifact-card artifact-card--compact glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 flex flex-col justify-between hover:bg-surface-container-highest/40 transition-all cursor-pointer min-h-[280px] md:min-h-0" data-open-url="${escapeAttribute(project.url)}">
       <div>
@@ -2278,7 +2339,7 @@ function renderProjectCompactCard(project) {
 }
 
 function renderProjectHighlightCard(project) {
-  const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["iron-shores-playable-demo"];
+  const meta = getProjectPresentation(project, "iron-shores-playable-demo");
   const art = meta.art ?? {
     src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB9Zq4IanyUguwUuEW8UqH97A39cS5pkPzmxuZnIPA1OdBB-TXLwVNSdo1ya_U-b4kXWWn_0aM49ubbN2IeG6O2zcvopzI2qUNhEiykED0w7XRoGBifLs1N8ailT0AlHDOuepeacbUrJXJMnxoxLzLE1W3JMs2cFZh9aWlm4cxj6hnOSr8U6fAOy2p0F0V9lmPZ3U6Usz8pJb-rWhB2LfG_A1DQp7K7lbogPVbgzRLkuWvbD3SWc58Rd4nKwIy5ppqfcDMOf6hDufeX",
     alt: "Abstract project highlight art"
@@ -2334,7 +2395,7 @@ function renderSupplementalProjectCards(projects) {
     <section class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 xl:gap-6">
       ${projects
         .map((project) => {
-          const meta = PROJECT_PRESENTATION[project.id] ?? PROJECT_PRESENTATION["living-resume-ai"];
+          const meta = getProjectPresentation(project);
 
           return `
             <article class="artifact-card glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-7 min-h-[360px] flex flex-col justify-between hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
@@ -2420,9 +2481,9 @@ function getPageFromHash() {
 
 function deriveModeSupportTags(mode) {
   const tagMap = {
-    profile: ["Nontraditional Candidate", "Systems Thinker", "Learns By Building"],
+    profile: ["Product UX", "Systems Thinking", "Build Evidence"],
     fit: ["Strong Fit Signals", "Stretch Fit Framing", "Mismatch Risk"],
-    evidence: ["Source Grounded", "Build Pattern", "Practical Reasoning"],
+    evidence: ["Evidence Bound", "Build Pattern", "Clear Reasoning"],
     projects: ["Live Projects", "Shipped Work", "Public Demos"],
     writing: ["Published Essays", "AI Analysis", "Public Argument"],
     health: ["Self-Disclosed Context", "Accommodation Fit", "Source Links"],
@@ -2437,9 +2498,8 @@ function renderProjectList(projects) {
     <div class="flex flex-col gap-6">
       ${projects
         .map((project, index) => {
-          const meta =
-            PROJECT_PRESENTATION[project.id] ??
-            PROJECT_PRESENTATION[Object.keys(PROJECT_PRESENTATION)[index % Object.keys(PROJECT_PRESENTATION).length]];
+          const fallbackId = Object.keys(PROJECT_PRESENTATION)[index % Object.keys(PROJECT_PRESENTATION).length];
+          const meta = getProjectPresentation(project, fallbackId);
 
           return `
             <div class="glass-panel rounded-xl border border-outline-variant/10 p-6 md:p-8 hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
