@@ -167,7 +167,7 @@ async function verifyPage(browser, viewport, pageTarget) {
           brandRect.height > 0
       );
       const brandCopyIsCorrect =
-        brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "JamesAQI" &&
+        brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "James AI" &&
         brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI-powered living resume";
       const homeEvidenceCards = [...document.querySelectorAll("[data-home-evidence-card]")];
       const homeEvidenceAffordancesAreHonest = homeEvidenceCards.every((card) => {

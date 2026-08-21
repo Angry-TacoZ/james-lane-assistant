@@ -28,7 +28,7 @@ Resolution: retained it for the assistant architecture and documented retrieval 
 
 ### Low: generic subtitle
 
-"An AI-powered living resume" is broad branding rather than a detailed value proposition. It was explicitly selected for the JamesAQI subtitle, so it remains. The spelling is corrected to "AI-powered."
+"An AI-powered living resume" is broad branding rather than a detailed value proposition. It was explicitly selected for the James AI subtitle, so it remains. The spelling is corrected to "AI-powered."
 
 ### Low: supplied resume transition framing
 

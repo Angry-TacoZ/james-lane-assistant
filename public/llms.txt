@@ -22,9 +22,9 @@ The interactive assistant uses a lightweight retrieval-augmented generation appr
 
 ## Human Pages
 
-- [Nexus / Assistant](https://jamesai.space/)
-- [Evolution / Writing](https://jamesai.space/#writing)
-- [Artifacts / Projects](https://jamesai.space/#projects)
+- [AI Assistant](https://jamesai.space/)
+- [Writing](https://jamesai.space/#writing)
+- [AI Engineering](https://jamesai.space/#projects)
 - [Design / Art and Visual Work](https://jamesai.space/#design)
 - [Health / Accessibility and Work Design](https://jamesai.space/#health)
 - [Contact](https://jamesai.space/#contact)

@@ -20,7 +20,7 @@ const isLocalPreviewHost =
   window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 const canRemoteSynthesize = Boolean(synthesizeUrl) && !isLocalPreviewHost;
 const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
-const BRAND_NAME = "JamesAQI";
+const BRAND_NAME = "James AI";
 const BRAND_TAGLINE = "An AI-powered living resume";
 
 const PAGE_TITLES = {
@@ -1340,8 +1340,8 @@ function renderWritingPage() {
       <div class="px-6 mt-auto space-y-4">
         <button class="w-full py-3 rounded-lg neural-gradient text-on-primary font-label text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-primary/10" data-page-link="home" data-focus-composer="true">ASK ASSISTANT</button>
         <div class="pt-4 border-t border-[#282A2C]/50 space-y-2">
-          <a class="flex items-center gap-2 text-gray-500 hover:text-[#B1D09A] transition-colors font-label text-[10px] uppercase tracking-widest" href="#projects" data-page-link="projects"><span class="material-symbols-outlined text-xs">query_stats</span>Artifacts</a>
-          <a class="flex items-center gap-2 text-gray-500 hover:text-[#B1D09A] transition-colors font-label text-[10px] uppercase tracking-widest" href="#" data-page-link="home"><span class="material-symbols-outlined text-xs">home</span>Nexus</a>
+          <a class="flex items-center gap-2 text-gray-500 hover:text-[#B1D09A] transition-colors font-label text-[10px] uppercase tracking-widest" href="#projects" data-page-link="projects"><span class="material-symbols-outlined text-xs">query_stats</span>AI Engineering</a>
+          <a class="flex items-center gap-2 text-gray-500 hover:text-[#B1D09A] transition-colors font-label text-[10px] uppercase tracking-widest" href="#" data-page-link="home"><span class="material-symbols-outlined text-xs">home</span>AI Assistant</a>
         </div>
       </div>
     </aside>
@@ -1575,8 +1575,8 @@ function renderContactPage() {
         <button class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-label text-[10px] font-bold tracking-widest rounded-lg shadow-lg shadow-primary/10" data-open-url="${escapeAttribute(CONTACT_MAILTO)}">EMAIL JAMES</button>
       </div>
       <div class="border-t border-[#282A2C]/50 pt-6">
-        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-sm">hub</span><span>Artifacts</span></div>
-        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>Nexus</span></div>
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="projects"><span class="material-symbols-outlined text-sm">hub</span><span>AI Engineering</span></div>
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all cursor-pointer" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>AI Assistant</span></div>
       </div>
     </aside>
     <main class="lg:ml-64 pt-24 px-4 sm:px-5 md:px-12 pb-28 md:pb-24 min-h-screen">
@@ -1681,8 +1681,8 @@ function renderEvidencePage() {
         <button class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-label text-[10px] font-bold tracking-widest rounded-lg shadow-lg shadow-primary/10" data-page-link="home" data-focus-composer="true">ASK ASSISTANT</button>
       </div>
       <div class="border-t border-[#282A2C]/50 pt-6">
-        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all" data-page-link="projects"><span class="material-symbols-outlined text-sm">hub</span><span>Artifacts</span></div>
-        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>Nexus</span></div>
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all" data-page-link="projects"><span class="material-symbols-outlined text-sm">hub</span><span>AI Engineering</span></div>
+        <div class="flex items-center gap-3 text-gray-500 px-4 py-2 hover:bg-[#282A2C] font-label text-[10px] uppercase tracking-widest transition-all" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>AI Assistant</span></div>
       </div>
     </aside>
     <main class="lg:ml-64 pt-24 px-4 sm:px-5 md:px-12 pb-28 md:pb-24 technical-grid min-h-screen">
@@ -1791,9 +1791,9 @@ function renderEvidencePage() {
         ${renderBrandLockup()}
         <div class="flex gap-8">
           <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="mailto:tiburo13@gmail.com">Contact</a>
-          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#" data-page-link="home">Nexus</a>
-          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#writing" data-page-link="writing">Evolution</a>
-          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#projects" data-page-link="projects">Artifacts</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#" data-page-link="home">AI Assistant</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#writing" data-page-link="writing">Writing</a>
+          <a class="text-gray-500 hover:text-primary transition-colors font-label text-[10px] uppercase tracking-[0.2em]" href="#projects" data-page-link="projects">AI Engineering</a>
         </div>
         <div class="text-gray-600 font-label text-[10px] uppercase tracking-widest">© 2024 SYSTEM CORE VER 2.0.4</div>
       </div>
@@ -1883,6 +1883,7 @@ function renderEvidenceSourceCards(matches) {
 function renderArtDesignPage() {
   const featured = artDesignPortfolio.find((entry) => entry.variant === "feature") ?? artDesignPortfolio[0];
   const supporting = artDesignPortfolio.filter((entry) => entry.id !== featured.id);
+  const featuredProductDesigns = getFeaturedProductDesigns();
 
   return `
     <header class="fixed top-0 w-full z-50 bg-[#121415]/80 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-2xl shadow-black/40">
@@ -1946,6 +1947,19 @@ function renderArtDesignPage() {
           </div>
         </section>
 
+        <section class="mb-10 md:mb-12" aria-labelledby="product-design-title">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5 md:mb-6">
+            <div>
+              <span class="font-label text-[10px] uppercase tracking-[0.24em] text-primary">AI Product Design</span>
+              <h2 id="product-design-title" class="mt-2 text-3xl md:text-4xl font-headline font-extrabold tracking-tight text-on-surface">Featured Product Work</h2>
+            </div>
+            <p class="max-w-xl text-sm text-on-surface-variant leading-relaxed">Interaction and decision-support concepts that make constraints, evidence, and user choices visible.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            ${featuredProductDesigns.map((project) => renderDesignProjectCard(project)).join("")}
+          </div>
+        </section>
+
         <section class="art-design-grid">
           ${supporting.map((entry) => renderArtDesignCard(entry)).join("")}
         </section>
@@ -1969,6 +1983,30 @@ function renderArtDesignPage() {
       </button>
     </div>
     ${renderMobileBottomNav("design")}
+  `;
+}
+
+function getFeaturedProductDesigns() {
+  const featuredIds = new Set(["delivery-composer", "blue-ambient-shopping-agent", "fieldline-aec", "cruisn-pa"]);
+  return liveProjects.filter((project) => featuredIds.has(project.id));
+}
+
+function renderDesignProjectCard(project) {
+  const meta = getProjectPresentation(project);
+
+  return `
+    <article class="group rounded-xl border border-outline-variant/10 bg-surface-container-low p-5 md:p-6 flex flex-col hover:border-primary/30 hover:bg-surface-container-highest/40 transition-all cursor-pointer" data-open-url="${escapeAttribute(project.url)}">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <span class="material-symbols-outlined text-primary text-2xl">${escapeHtml(meta.icon)}</span>
+        <span class="font-label text-[9px] uppercase tracking-widest text-primary">${escapeHtml(meta.emphasis)}</span>
+      </div>
+      <h3 class="text-2xl font-headline font-bold tracking-tight text-on-surface mb-3 group-hover:text-primary transition-colors">${escapeHtml(project.title)}</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(project.description)}</p>
+      <div class="mt-auto pt-6 flex items-center justify-between gap-3 text-primary font-label text-[10px] uppercase tracking-widest">
+        <span>${project.url.includes("github.com") ? "Open Repository" : "Open Project"}</span>
+        <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+      </div>
+    </article>
   `;
 }
 
@@ -2133,13 +2171,15 @@ function renderHealthConditionCard(condition) {
 }
 
 function renderProjectsPage() {
-  const filteredProjects = getFilteredProjects();
-  const featured = filteredProjects[0] ?? liveProjects[0];
-  const secondary = filteredProjects[1] ?? liveProjects[1];
-  const tertiary = filteredProjects[2] ?? liveProjects[2];
-  const detail = filteredProjects[3] ?? liveProjects[3];
-  const compact = filteredProjects[4] ?? liveProjects[4];
-  const highlight = filteredProjects[5] ?? liveProjects[5];
+  const featuredDesignIds = new Set(getFeaturedProductDesigns().map((project) => project.id));
+  const filteredProjects = getFilteredProjects().filter((project) => !featuredDesignIds.has(project.id));
+  const engineeringProjects = liveProjects.filter((project) => !featuredDesignIds.has(project.id));
+  const featured = filteredProjects[0] ?? engineeringProjects[0];
+  const secondary = filteredProjects[1] ?? engineeringProjects[1];
+  const tertiary = filteredProjects[2] ?? engineeringProjects[2];
+  const detail = filteredProjects[3] ?? engineeringProjects[3];
+  const compact = filteredProjects[4] ?? engineeringProjects[4];
+  const highlight = filteredProjects[5] ?? engineeringProjects[5];
   const supplementalProjects = filteredProjects.slice(6);
 
   return `
@@ -2178,8 +2218,8 @@ function renderProjectsPage() {
           <span class="material-symbols-outlined text-sm">bolt</span>ASK ASSISTANT
         </button>
         <div class="space-y-1">
-          <a class="flex items-center gap-3 text-gray-600 px-4 py-2 hover:text-gray-400 transition-all font-label text-[10px] uppercase tracking-widest" href="#" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>Nexus</span></a>
-          <a class="flex items-center gap-3 text-gray-600 px-4 py-2 hover:text-gray-400 transition-all font-label text-[10px] uppercase tracking-widest" href="#writing" data-page-link="writing"><span class="material-symbols-outlined text-sm">article</span><span>Evolution</span></a>
+          <a class="flex items-center gap-3 text-gray-600 px-4 py-2 hover:text-gray-400 transition-all font-label text-[10px] uppercase tracking-widest" href="#" data-page-link="home"><span class="material-symbols-outlined text-sm">home</span><span>AI Assistant</span></a>
+          <a class="flex items-center gap-3 text-gray-600 px-4 py-2 hover:text-gray-400 transition-all font-label text-[10px] uppercase tracking-widest" href="#writing" data-page-link="writing"><span class="material-symbols-outlined text-sm">article</span><span>Writing</span></a>
         </div>
       </div>
     </aside>
@@ -2688,9 +2728,9 @@ function truncate(value, length) {
 
 function renderPrimaryNavLinks(activePage, variant = "top") {
   const items = [
-    { page: "home", label: "Nexus" },
-    { page: "writing", label: "Evolution" },
-    { page: "projects", label: "Artifacts" },
+    { page: "home", label: "AI Assistant" },
+    { page: "writing", label: "Writing" },
+    { page: "projects", label: "AI Engineering" },
     { page: "design", label: "Design" },
     { page: "health", label: "Health" },
     { page: "contact", label: "Contact" }
@@ -2719,9 +2759,9 @@ function renderPrimaryNavLinks(activePage, variant = "top") {
 
 function renderMobileBottomNav(activePage) {
   const items = [
-    { page: "home", label: "Nexus", shortLabel: "NEXUS" },
-    { page: "writing", label: "Evolution", shortLabel: "EVO" },
-    { page: "projects", label: "Artifacts", shortLabel: "ART" },
+    { page: "home", label: "AI Assistant", shortLabel: "AI" },
+    { page: "writing", label: "Writing", shortLabel: "WRITE" },
+    { page: "projects", label: "AI Engineering", shortLabel: "ENG" },
     { page: "design", label: "Design", shortLabel: "DES" },
     { page: "health", label: "Health", shortLabel: "HLTH" },
     { page: "contact", label: "Contact", shortLabel: "CONT" }
