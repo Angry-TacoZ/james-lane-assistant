@@ -12,7 +12,7 @@ const questions = [
   "How does Blue keep a curated laptop collection stable when memory changes?",
   "What does Personal Job Discovery do?",
   "Is Fieldline connected to a real AEC platform?",
-  "What has James Lane written on Medium?",
+  "What articles has James Lane published?",
   "What is P(doom) or Big Boon about?",
   "Are these writing samples opinion pieces or internal cognition?",
   "What was the full ChatGPT analysis linked from The Constitution needs you?",

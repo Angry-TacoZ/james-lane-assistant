@@ -119,12 +119,13 @@ describe("James AI retrieval", () => {
   });
 
   it("lists James's published writing from the writing lens", () => {
-    const response = askAssistant("What has James Lane written on Medium?", [], {
+    const response = askAssistant("What articles has James Lane published?", [], {
       modeId: "writing",
       preferredIntent: "writing"
     });
 
     expect(response.refused).toBe(false);
+    expect(response.answer).toContain("https://lnkd.in/p/g3_M6bTa");
     expect(response.answer).toMatch(/P\(doom\) or Big Boon|Ode to Miata|Et tu, Mom|The Constitution needs you/i);
     expect(response.answer).toContain("[writing-catalog]");
   });

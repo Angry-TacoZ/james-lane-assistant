@@ -180,7 +180,7 @@ export const profileModes = [
     answerStyle:
       "Lead with the most relevant article or writing pattern, note when something is a published opinion piece, and keep the distinction from internal cognition explicit.",
     starterQuestions: [
-      "What has James Lane written on Medium?",
+      "What articles has James Lane published?",
       "What writing best shows James's AI thinking?",
       "What is P(doom) or Big Boon about?",
       "Are these writing samples opinion pieces or internal cognition?"
