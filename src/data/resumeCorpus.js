@@ -170,7 +170,7 @@ export const approvedSources = [
 export const starterQuestions = [
   "How should James Lane be described to employers?",
   "What live projects can I review?",
-  "What has James Lane written on Medium?",
+  "What articles has James Lane published?",
   "What kinds of environments are the best fit for James Lane?",
   "What are James Lane's main tradeoffs or friction points?",
   "What evidence shows how James Lane works?",

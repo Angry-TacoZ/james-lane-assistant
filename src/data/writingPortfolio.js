@@ -1,5 +1,35 @@
 export const writingPortfolio = [
   {
+    id: "navigating-the-job-economy-while-autistic",
+    title: "Your company is likely discriminating against Neurodivergent applicants and you don't even know it!",
+    headline: "",
+    url: "https://lnkd.in/p/g3_M6bTa",
+    dateLabel: "August 11, 2026",
+    publication: "LinkedIn",
+    category: "Personal essay",
+    description:
+      "LinkedIn article about the current job economy, hiring barriers, and the challenges of navigating them while autistic.",
+    demonstrates: [
+      "employment analysis",
+      "lived-experience writing",
+      "accessibility advocacy",
+      "public writing"
+    ],
+    aliases: [
+      "your company is likely discriminating against neurodivergent applicants",
+      "job economy article",
+      "autistic job seeker article",
+      "neurodivergent applicants article",
+      "linkedin job economy article"
+    ],
+    corpusItems: [
+      "Classification: Published personal essay by James Earl Lane on LinkedIn. Treat it as public writing, not internal cognition or profile truth beyond the essay itself.",
+      "Theme: Discusses the current job economy, hiring barriers, and the challenges of navigating them while autistic.",
+      "Summary: Connects lived experience of job seeking with the practical barriers neurodivergent people can encounter in the current labor market.",
+      "Demonstrates: Employment analysis, lived-experience writing, accessibility advocacy, and public communication."
+    ]
+  },
+  {
     id: "dont-be-duped-by-government-propaganda",
     title: "Don't be duped by government propaganda",
     headline: "",
