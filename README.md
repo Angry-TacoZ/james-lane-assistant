@@ -1,50 +1,102 @@
-# James Lane Assistant
+# James AI
 
-A Firebase-hosted living-resume assistant that answers only from the approved local source corpus.
+[James AI](https://james-lane-web-resume.web.app/) is James Lane's source-grounded living resume and portfolio. It gives visitors a way to explore his work, writing, projects, work-design context, and current resume through a bounded assistant instead of a static page alone.
 
-Current resume source:
+The site is an employer-facing portfolio artifact. It is not a general web-search chatbot and does not claim knowledge beyond the approved public source corpus in this repository.
 
-- Public download: `/resume/James-Lane-Resume.pdf`
+## What Visitors Can Do
 
-The public PDF is a content-faithful rendering of the supplied DOCX for browser preview and download.
+- Ask source-backed questions about James's experience, working style, role fit, projects, writing, and accessibility context.
+- Browse AI Engineering, Design, Writing, Health, Contact, and resume views.
+- Open live projects, GitHub repositories, public writing, hosted portfolio media, and a downloadable resume PDF.
+- Review the evidence used for the most recent assistant answer.
+- Use an optional audio guide with play, pause, replay, close, and reopen controls on desktop and mobile.
 
-The approved corpus also includes intentionally public context about working style, accessibility, and work design. That context helps explain the environments and tools where James does his best work; it is not a medical assessment or a substitute for evaluating technical work and experience.
+## How Answers Work
 
-Additional approved sources are bundled as Markdown/data files in this repository, including:
+1. The browser performs deterministic retrieval over the local corpus in `src/data/resumeCorpus.js`, the `docs/` source files, and curated portfolio data modules.
+2. It selects a small set of approved excerpts and shows the matching evidence in the interface.
+3. In the deployed site, the browser sends only those selected references and approved excerpts to the `synthesize` Firebase Function for Claude-backed conversational synthesis.
+4. The Function validates every submitted reference, title, label, and excerpt against `functions/approved-source-allowlist.json` before calling the provider.
+5. If synthesis is unavailable or rejected, the client returns a readable deterministic answer from the retrieved excerpts.
 
-- condensed cognitive/profile guidance in `docs/cognitive-profile.md`
-- representation and communication rules in `docs/communication-rules.md`
-- role-fit and environment-fit models in `docs/role-fit-model.md` and `docs/environment-fit-model.md`
-- evidence/project context in `docs/evidence-and-projects.md`
-- health, accessibility, and work-design context in `docs/health-and-neurodivergence-context.md`
-- public writing, art/design, live-project, and portfolio indexes
+This design separates retrieval and access control from generative wording. Claude can make an answer easier to read, but it cannot retrieve arbitrary documents or use a browser-provided API key.
 
-## Guarantees
+## Boundaries And Safeguards
 
-- No web browsing or external search.
-- Answers come only from approved resume excerpts, Markdown profile files, and curated local data modules stored in the source corpus.
-- If an answer is not explicitly supported, the assistant refuses with the required exact message.
-- Each answer includes stable internal references such as `p1-summary`, `cognitive-profile-*`, or `p2-tools-and-platforms`.
+- No general web browsing or external search is used for assistant answers.
+- The Anthropic key is a Firebase Secret Manager secret named `ANTHROPIC_API_KEY`; it is not shipped to the browser.
+- The Function accepts `POST` requests only from the deployed site origins, checks same-site fetch metadata and host, validates request size and shape, and limits requests with an in-memory per-instance rate limit.
+- The Function restricts synthesis to approved source references and their exact allowlisted items.
+- Published writing is treated as public writing and analysis, not hidden cognition or profile truth beyond what the text itself establishes.
+- The assistant refuses questions that are outside the approved corpus rather than filling gaps with unsupported claims.
 
-## Commands
+The per-instance rate limit is a lightweight abuse control, not a substitute for account-level quota, budget alerts, or global rate limiting if this site is expanded into a higher-traffic public service.
+
+## Stack
+
+- Vite and vanilla JavaScript
+- Tailwind CSS
+- Firebase Hosting and a Firebase Functions v2 HTTPS endpoint
+- Anthropic Claude Haiku for server-side synthesis
+- Vitest and Node's built-in test runner
+- Playwright responsive browser checks
+- GitHub Actions verification
+
+## Local Setup
+
+Requirements: Node.js 22 and npm.
 
 ```powershell
-npm install
+npm ci
+npm --prefix functions ci
 npx playwright install chromium
+npm run verify:all
+npm run dev
+```
+
+Local development intentionally uses the deterministic response path. A deployed synthesis endpoint is configured through `VITE_SYNTHESIZE_URL`; do not put an Anthropic key in any `VITE_*` variable.
+
+## Verification
+
+```powershell
 npm run test
 npm run test:functions
-npm run verify
 npm run build
+npm run verify
 npm run verify:responsive
 npm run verify:all
 ```
 
-- `verify:responsive` builds on the current `dist` output by starting a local preview and checking each major route on mobile and desktop viewports.
-- `verify:all` runs the source allowlist generation, unit tests, function tests, build, answer smoke check, and responsive browser check.
-- Playwright-managed Chromium must be installed once with `npx playwright install chromium`. CI installs Chromium and its Linux system dependencies before running the full gate.
+`verify:all` regenerates the Functions allowlist, runs application and Functions tests, builds the site, exercises the retrieval evaluation set, and checks all primary routes plus the audio-guide flow at desktop and mobile viewports. GitHub Actions runs the same verification workflow on pull requests and pushes to `main`.
 
-## Firebase
+When changes affect the source corpus, commit the regenerated `functions/approved-source-allowlist.json` alongside the source change. It is part of the Function's server-side validation contract.
 
-1. Copy `.firebaserc.example` to `.firebaserc`.
-2. Replace the placeholder project ID with a new Firebase project.
-3. Run `firebase deploy --only hosting`.
+## Firebase Deployment
+
+The Firebase project mapping is intentionally excluded from source control. For a new project:
+
+```powershell
+Copy-Item .firebaserc.example .firebaserc
+# Replace the placeholder project ID in .firebaserc.
+firebase functions:secrets:set ANTHROPIC_API_KEY
+```
+
+For a production release from reviewed `main`:
+
+```powershell
+npm run verify:all
+powershell -ExecutionPolicy Bypass -File C:\Users\angry\.codex\sessions\scripts\predeploy-secret-scan.ps1 -Path <project-root>
+firebase deploy --only "hosting,functions:synthesize"
+```
+
+Deploy Hosting and `synthesize` together when the approved corpus or allowlist changes. After deployment, verify the live site and its primary assistant flow before calling the release complete.
+
+## Public Resources
+
+- Live site: [james-lane-web-resume.web.app](https://james-lane-web-resume.web.app/)
+- Custom domain: [jamesai.space](https://jamesai.space/)
+- AI-readable summary: [`/llms.txt`](https://jamesai.space/llms.txt)
+- Expanded AI-readable context: [`/llms-full.txt`](https://jamesai.space/llms-full.txt)
+- Resume PDF: [`/resume/James-Lane-Resume.pdf`](https://jamesai.space/resume/James-Lane-Resume.pdf)
+- Privacy notice: [`/privacy.html`](https://jamesai.space/privacy.html)
