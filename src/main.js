@@ -502,6 +502,12 @@ function bindGlobalEvents() {
     }
   });
 
+  document.addEventListener("change", async (event) => {
+    if (event.target.matches("[data-mode-select]")) {
+      await switchMode(event.target.value);
+    }
+  });
+
   document.addEventListener("keydown", async (event) => {
     if (event.key === "Enter" && event.target.matches("[data-home-input]")) {
       event.preventDefault();
@@ -856,12 +862,9 @@ function renderHomePage() {
           </div>
         </div>
       </div>
-      <div class="flex-1 flex flex-col gap-2">
-        ${renderHomeSideModeLink("profile", "psychology_alt", "Consult")}
-        ${renderHomeSideModeLink("fit", "terminal", "Debug")}
-        ${renderHomeSideModeLink("evidence", "visibility", "Review")}
-        ${renderHomeSideModeLink("projects", "architecture", "Architect")}
-      </div>
+      <nav class="flex-1" aria-label="Primary navigation">
+        ${renderPrimaryNavLinks("home", "side")}
+      </nav>
       ${renderAudioGuideDock("desktop")}
       <div class="px-6 py-8 mt-auto">
         ${renderAudioGuideLauncher()}
@@ -905,17 +908,6 @@ function renderHomePage() {
             </div>
           </div>
           </section>
-      <section class="max-w-5xl mx-auto mb-8">
-        <div class="flex overflow-x-auto no-scrollbar gap-3 md:gap-4 px-1 py-2">
-          ${profileModes
-            .map(
-              (entry) => `
-                <button class="glass-panel px-5 md:px-8 py-3 rounded-full ${entry.id === pageState.modeId ? "bg-surface-container-highest text-primary border border-primary/30" : "bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant"} font-['Space_Grotesk'] text-[10px] uppercase tracking-widest transition-all whitespace-nowrap" data-mode-id="${entry.id}">${escapeHtml(entry.label)}</button>
-              `
-            )
-            .join("")}
-        </div>
-      </section>
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
         <div class="lg:col-span-8 flex flex-col gap-8 md:gap-12">
           ${renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags)}
@@ -931,9 +923,9 @@ function renderHomePage() {
               <div class="pt-8 border-t border-outline-variant/10">
                 <div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant/70 uppercase tracking-widest mb-4">Quick Links</div>
                 <div class="flex gap-4">
-                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#projects" data-page-link="projects" data-home-quick-link aria-label="View projects"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">terminal</span></a>
-                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#writing" data-page-link="writing" data-home-quick-link aria-label="Read writing"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">description</span></a>
-                  <a class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all" href="#contact" data-page-link="contact" data-home-quick-link aria-label="Open contact page"><span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">contact_mail</span></a>
+                  ${renderHomeQuickLink("projects", "AI Engineering")}
+                  ${renderHomeQuickLink("writing", "Writing")}
+                  ${renderHomeQuickLink("contact", "Contact")}
                 </div>
               </div>
             </div>
@@ -1185,26 +1177,41 @@ function renderAudioGuideDock(variant = "desktop") {
   `;
 }
 
-function renderHomeSideModeLink(modeId, icon, label) {
-  const active = pageState.modeId === modeId;
-
+function renderHomeQuickLink(page, label) {
   return `
-    <a class="flex items-center gap-4 px-6 py-4 ${active ? "bg-[#282A2C] border-l-4 border-[#B1D09A] text-[#B1D09A]" : "text-[#E2E2E5]/40 hover:bg-[#282A2C]/50 hover:text-[#B1D09A]"} transition-all duration-300" href="#" data-mode-id="${modeId}">
-      <span class="material-symbols-outlined">${icon}</span>
-      <span class="hidden md:block font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">${label}</span>
+    <a class="group relative flex h-12 w-12 items-center justify-center rounded border border-transparent bg-surface-container-high text-on-surface-variant grayscale transition-all duration-200 hover:border-primary/40 hover:text-primary hover:grayscale-0 hover:shadow-[0_0_16px_rgba(177,208,154,0.35)] focus-visible:border-primary/50 focus-visible:text-primary focus-visible:grayscale-0 focus-visible:outline-none focus-visible:shadow-[0_0_16px_rgba(177,208,154,0.35)]" href="#${page}" data-page-link="${page}" data-home-quick-link data-home-quick-link-page="${page}" aria-label="${label}">
+      <span class="material-symbols-outlined" aria-hidden="true">${primaryPageIcon(page)}</span>
+      <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-surface-container-highest px-2 py-1 font-label text-[9px] uppercase tracking-widest text-primary opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100" data-home-quick-link-label aria-hidden="true">${label}</span>
     </a>
+  `;
+}
+
+function renderAssistantFocusSelect() {
+  return `
+    <label class="ml-auto flex min-w-0 items-center gap-2 text-on-surface-variant">
+      <span class="font-['Space_Grotesk'] text-[9px] uppercase tracking-widest">Assistant focus</span>
+      <select class="max-w-32 rounded border border-primary/20 bg-surface-container-high px-2 py-1.5 font-['Space_Grotesk'] text-[10px] uppercase tracking-wide text-primary outline-none transition-colors hover:border-primary/50 focus:border-primary/60" data-mode-select aria-label="Assistant focus">
+        ${profileModes
+          .map(
+            (entry) =>
+              `<option value="${entry.id}" ${entry.id === pageState.modeId ? "selected" : ""}>${escapeHtml(entry.label)}</option>`
+          )
+          .join("")}
+      </select>
+    </label>
   `;
 }
 
 function renderHomeChatPanel(displayedHistory, placeholder, modeSeedLoading = false) {
       return `
         <div class="bg-surface-container-low rounded-xl flex flex-col border border-outline-variant/5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-        <div class="px-4 sm:px-8 py-4 sm:py-6 border-b border-outline-variant/5 flex justify-between items-center gap-3">
+        <div class="px-4 sm:px-8 py-4 sm:py-6 border-b border-outline-variant/5 flex flex-wrap items-center gap-3">
         <div class="flex items-center gap-3">
           <span class="material-symbols-outlined text-primary">forum</span>
           <span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-on-surface">Neural Chat Interface</span>
         </div>
-        <span class="px-3 py-1 bg-surface-container-high rounded text-[10px] font-mono text-primary">v2.0.4-STABLE</span>
+        ${renderAssistantFocusSelect()}
+        <span class="hidden sm:inline-flex px-3 py-1 bg-surface-container-high rounded text-[10px] font-mono text-primary">v2.0.4-STABLE</span>
       </div>
         <div class="p-4 sm:p-8 space-y-4 sm:space-y-6 max-h-[360px] overflow-y-auto no-scrollbar" data-home-history>
           ${displayedHistory

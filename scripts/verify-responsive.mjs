@@ -149,6 +149,29 @@ async function verifyPage(browser, viewport, pageTarget) {
       const homeQuickLinksAreAccessible =
         homeQuickLinks.length === 0 ||
         homeQuickLinks.every((element) => element.matches("a, button") && element.getAttribute("aria-label"));
+      const homeQuickLinksUseSharedIcons =
+        pageTargetName !== "home" ||
+        homeQuickLinks.every((element) => {
+          const page = element.getAttribute("data-home-quick-link-page");
+          const icon = element.querySelector(".material-symbols-outlined")?.textContent?.trim();
+          const expectedIcons = { projects: "hub", writing: "article", contact: "contact_mail" };
+
+          return expectedIcons[page] === icon && Boolean(element.querySelector("[data-home-quick-link-label]"));
+        });
+      const assistantFocusControlIsClear =
+        pageTargetName !== "home" ||
+        (() => {
+          const focusSelect = document.querySelector("[data-mode-select]");
+          const modeButtons = document.querySelectorAll("[data-mode-id]");
+          const expectedModes = ["profile", "fit", "evidence", "projects", "writing", "health", "resume"];
+
+          return (
+            focusSelect?.matches("select") &&
+            focusSelect.getAttribute("aria-label") === "Assistant focus" &&
+            modeButtons.length === 0 &&
+            [...focusSelect.options].map((option) => option.value).join(",") === expectedModes.join(",")
+          );
+        })();
       const homeComposerIsAccessible =
         pageTargetName !== "home" ||
         Boolean(
@@ -197,6 +220,8 @@ async function verifyPage(browser, viewport, pageTarget) {
         visibleNavLinks,
         navControlsAreSemantic,
         homeQuickLinksAreAccessible,
+        homeQuickLinksUseSharedIcons,
+        assistantFocusControlIsClear,
         homeComposerIsAccessible,
         brandLockupIsVisible,
         brandCopyIsCorrect,
@@ -214,11 +239,41 @@ async function verifyPage(browser, viewport, pageTarget) {
     assert(result.visibleNavLinks > 0, `${viewport.name}/${pageTarget.name} expected navigation has no visible controls`);
     assert(result.navControlsAreSemantic, `${viewport.name}/${pageTarget.name} navigation includes non-semantic controls`);
     assert(result.homeQuickLinksAreAccessible, `${viewport.name}/${pageTarget.name} home quick links are not accessible controls`);
+    assert(result.homeQuickLinksUseSharedIcons, `${viewport.name}/${pageTarget.name} home quick links do not use shared page icons and labels`);
+    assert(result.assistantFocusControlIsClear, `${viewport.name}/${pageTarget.name} assistant focus controls are duplicated or unclear`);
     assert(result.homeComposerIsAccessible, `${viewport.name}/${pageTarget.name} home composer is missing accessible labels`);
     assert(result.brandLockupIsVisible, `${viewport.name}/${pageTarget.name} brand lockup is missing or hidden`);
     assert(result.brandCopyIsCorrect, `${viewport.name}/${pageTarget.name} brand copy is incorrect`);
     assert(result.homeEvidenceAffordancesAreHonest, `${viewport.name}/${pageTarget.name} evidence cards imply unavailable links`);
     assert(result.widthOverflow <= 2, `${viewport.name}/${pageTarget.name} has horizontal overflow of ${result.widthOverflow}px`);
+  } finally {
+    await context.close();
+  }
+}
+
+async function verifyHomeQuickLinkInteraction(browser) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+
+  try {
+    const page = await context.newPage();
+    await page.goto(`${BASE_URL}/?qa=responsive-quick-links`, { waitUntil: "networkidle" });
+
+    for (const pageName of ["projects", "writing", "contact"]) {
+      const quickLink = page.locator(`[data-home-quick-link-page="${pageName}"]`);
+      const label = quickLink.locator("[data-home-quick-link-label]");
+
+      await quickLink.scrollIntoViewIfNeeded();
+      await quickLink.hover();
+      await page.waitForFunction((element) => getComputedStyle(element).opacity === "1", await label.elementHandle());
+      assert(await quickLink.evaluate((element) => getComputedStyle(element).boxShadow !== "none"), `${pageName} quick-link has no hover glow`);
+
+      await quickLink.focus();
+      await page.waitForFunction((element) => getComputedStyle(element).opacity === "1", await label.elementHandle());
+
+      await page.mouse.move(0, 0);
+      await quickLink.evaluate((element) => element.blur());
+      await page.waitForFunction((element) => getComputedStyle(element).opacity === "0", await label.elementHandle());
+    }
   } finally {
     await context.close();
   }
@@ -319,7 +374,7 @@ async function verifyResumeViewer(browser) {
       });
 
       await page.goto(`${BASE_URL}/?qa=responsive-resume-${viewport.name}`, { waitUntil: "networkidle" });
-      await page.click('[data-mode-id="resume"]');
+      await page.selectOption("[data-mode-select]", "resume");
       await page.waitForSelector("[data-resume-viewer]");
       await page.waitForFunction(
         () => [...document.querySelectorAll("[data-resume-page]")].every((image) => image.complete && image.naturalWidth > 0)
@@ -382,6 +437,7 @@ async function main() {
 
       await verifyAudioGuide(browser);
       await verifyResumeViewer(browser);
+      await verifyHomeQuickLinkInteraction(browser);
     } finally {
       await browser.close();
     }
