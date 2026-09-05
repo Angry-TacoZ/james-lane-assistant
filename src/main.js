@@ -29,7 +29,8 @@ const PAGE_TITLES = {
   contact: `${BRAND_NAME} | Contact`,
   projects: `${BRAND_NAME} | Projects`,
   design: `${BRAND_NAME} | Art & Design`,
-  health: `${BRAND_NAME} | Health & Accessibility`
+  health: `${BRAND_NAME} | Health & Accessibility`,
+  resume: `${BRAND_NAME} | Resume`
 };
 
 const CONTACT_EMAIL = "tiburo13@gmail.com";
@@ -748,6 +749,9 @@ function render() {
     case "health":
       pageHtml = renderHealthPage();
       break;
+    case "resume":
+      pageHtml = renderResumePage();
+      break;
     case "home":
     default:
       pageHtml = renderHomePage();
@@ -1041,6 +1045,46 @@ function renderResumeDocumentPanel() {
         ).join("")}
       </div>
     </section>
+  `;
+}
+
+function renderResumePage() {
+  return `
+    <header class="fixed top-0 z-50 flex h-16 w-full items-center justify-between bg-[#121415]/80 px-4 shadow-2xl shadow-black/40 backdrop-blur-xl md:px-8">
+      ${renderBrandLockup()}
+      <nav class="hidden items-center gap-4 overflow-x-auto no-scrollbar md:flex md:gap-8" data-responsive-nav="desktop">
+        ${renderPrimaryNavLinks("resume", "top")}
+      </nav>
+      <button class="rounded-full p-2 text-[#B1D09A] transition-transform active:scale-90" data-page-link="home" data-focus-composer="true" aria-label="Ask assistant">
+        <span class="material-symbols-outlined">account_circle</span>
+      </button>
+    </header>
+    <aside class="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col border-r border-[#282A2C]/50 bg-[#0C0E10] pb-8 pt-20 lg:flex">
+      <div class="px-6 pb-8">
+        <div class="font-label text-xs uppercase tracking-widest text-primary">Current Resume</div>
+        <div class="mt-1 font-label text-[10px] tracking-widest text-gray-500">James Lane</div>
+      </div>
+      <nav class="flex-1" aria-label="Primary navigation">
+        ${renderPrimaryNavLinks("resume", "side")}
+      </nav>
+      <div class="px-6">
+        <button class="w-full rounded-lg bg-surface-container-high py-3 font-label text-[10px] font-bold uppercase tracking-widest text-on-surface transition-colors hover:bg-surface-container-highest" data-page-link="home" data-focus-composer="true">Ask Assistant</button>
+      </div>
+    </aside>
+    <main class="min-h-screen px-4 pb-28 pt-24 sm:px-5 md:px-8 lg:ml-64">
+      <section class="mx-auto max-w-5xl">
+        <header class="mb-8 sm:mb-10">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="h-px w-12 bg-primary"></div>
+            <span class="font-label text-xs uppercase tracking-[0.3em] text-primary">Professional Resume</span>
+          </div>
+          <h1 class="text-4xl font-extrabold tracking-normal text-on-surface sm:text-5xl">James Lane <span class="text-primary">Resume</span></h1>
+          <p class="mt-4 max-w-2xl text-base leading-relaxed text-on-surface-variant">Current work history, product experience, and technical background.</p>
+        </header>
+        ${renderResumeDocumentPanel()}
+      </section>
+    </main>
+    ${renderMobileBottomNav("resume")}
   `;
 }
 
@@ -2522,7 +2566,7 @@ function getPageFromHash() {
   if (hash === "evidence") {
     return "contact";
   }
-  if (hash === "writing" || hash === "contact" || hash === "projects" || hash === "design" || hash === "health") {
+  if (hash === "writing" || hash === "contact" || hash === "projects" || hash === "design" || hash === "health" || hash === "resume") {
     return hash;
   }
   return "home";
@@ -2740,6 +2784,7 @@ function renderPrimaryNavLinks(activePage, variant = "top") {
     { page: "projects", label: "AI Engineering" },
     { page: "design", label: "Design" },
     { page: "health", label: "Health" },
+    { page: "resume", label: "Resume" },
     { page: "contact", label: "Contact" }
   ];
 
@@ -2771,6 +2816,7 @@ function renderMobileBottomNav(activePage) {
     { page: "projects", label: "AI Engineering", shortLabel: "ENG" },
     { page: "design", label: "Design", shortLabel: "DES" },
     { page: "health", label: "Health", shortLabel: "HLTH" },
+    { page: "resume", label: "Resume", shortLabel: "RES" },
     { page: "contact", label: "Contact", shortLabel: "CONT" }
   ];
 
@@ -2780,7 +2826,7 @@ function renderMobileBottomNav(activePage) {
         .map((item) => {
           const active = item.page === activePage;
           return `
-            <a class="flex flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"} min-w-[54px]" href="#${item.page}" data-page-link="${item.page}" ${active ? 'aria-current="page"' : ""}>
+            <a class="flex min-w-12 flex-col items-center gap-1 ${active ? "text-primary" : "text-gray-500"}" href="#${item.page}" data-page-link="${item.page}" ${active ? 'aria-current="page"' : ""}>
               <span class="material-symbols-outlined" aria-hidden="true" ${active ? 'style="font-variation-settings: \'FILL\' 1;"' : ""}>${primaryPageIcon(item.page)}</span>
               <span class="text-[9px] font-label uppercase">${item.shortLabel}</span>
             </a>
@@ -2803,6 +2849,8 @@ function primaryPageIcon(page) {
       return "palette";
     case "health":
       return "health_and_safety";
+    case "resume":
+      return "picture_as_pdf";
     case "contact":
       return "contact_mail";
     default:
