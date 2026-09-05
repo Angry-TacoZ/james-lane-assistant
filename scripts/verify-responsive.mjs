@@ -17,6 +17,7 @@ const pages = [
   { name: "projects", hash: "#projects" },
   { name: "design", hash: "#design" },
   { name: "health", hash: "#health" },
+  { name: "resume", hash: "#resume" },
   { name: "contact", hash: "#contact" }
 ];
 
@@ -373,8 +374,7 @@ async function verifyResumeViewer(browser) {
         }
       });
 
-      await page.goto(`${BASE_URL}/?qa=responsive-resume-${viewport.name}`, { waitUntil: "networkidle" });
-      await page.selectOption("[data-mode-select]", "resume");
+      await page.goto(`${BASE_URL}/?qa=responsive-resume-${viewport.name}#resume`, { waitUntil: "networkidle" });
       await page.waitForSelector("[data-resume-viewer]");
       await page.waitForFunction(
         () => [...document.querySelectorAll("[data-resume-page]")].every((image) => image.complete && image.naturalWidth > 0)
@@ -393,6 +393,7 @@ async function verifyResumeViewer(browser) {
           downloadHref: download?.getAttribute("href"),
           downloadName: download?.getAttribute("download"),
           operationalIdentityVisible: document.body.innerText.includes("Operational Identity"),
+          pageTitle: document.title,
           widthOverflow: document.documentElement.scrollWidth - window.innerWidth
         };
       });
@@ -405,7 +406,13 @@ async function verifyResumeViewer(browser) {
       assert(result.downloadHref === "/resume/James-Lane-Resume.pdf", `${viewport.name}/resume download targets the wrong file`);
       assert(result.downloadName === "James-Lane-Resume.pdf", `${viewport.name}/resume download filename is incorrect`);
       assert(!result.operationalIdentityVisible, `${viewport.name}/resume still shows the operational identity panel`);
+      assert(result.pageTitle === "James AI | Resume", `${viewport.name}/resume page title is incorrect`);
       assert(result.widthOverflow <= 2, `${viewport.name}/resume has horizontal overflow of ${result.widthOverflow}px`);
+
+      await page.goto(`${BASE_URL}/?qa=responsive-resume-focus-${viewport.name}`, { waitUntil: "networkidle" });
+      await page.selectOption("[data-mode-select]", "resume");
+      await page.waitForSelector("[data-resume-viewer]");
+      assert(await page.locator("[data-resume-download]").isVisible(), `${viewport.name}/resume assistant focus no longer exposes the PDF download`);
     } finally {
       await context.close();
     }
