@@ -11,14 +11,11 @@ import { healthConditions, healthProfileIntro } from "./data/healthProfile.js";
 import { profileModes } from "./data/profileModes.js";
 import { writingPortfolio } from "./data/writingPortfolio.js";
 import { askAssistant } from "./lib/retrieval.js";
-import { synthesize } from "./lib/synthesizer.js";
+import { canUseRemoteSynthesis, synthesize } from "./lib/synthesizer.js";
 
 const app = document.querySelector("#app");
 const modeMap = new Map(profileModes.map((mode) => [mode.id, mode]));
-const synthesizeUrl = import.meta.env.VITE_SYNTHESIZE_URL;
-const isLocalPreviewHost =
-  window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-const canRemoteSynthesize = Boolean(synthesizeUrl) && !isLocalPreviewHost;
+const canRemoteSynthesize = canUseRemoteSynthesis(window.location.hostname);
 const GA_MEASUREMENT_ID = "G-EVR1CM68J6";
 const BRAND_NAME = "James AI";
 const BRAND_TAGLINE = "An AI-powered living resume";
