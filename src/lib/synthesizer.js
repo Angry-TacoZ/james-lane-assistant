@@ -1,8 +1,12 @@
-const FUNCTION_URL = import.meta.env.VITE_SYNTHESIZE_URL;
+export const SYNTHESIS_ENDPOINT = import.meta.env.VITE_SYNTHESIZE_URL || "/api/synthesize";
+
+export function canUseRemoteSynthesis(hostname) {
+  return hostname !== "127.0.0.1" && hostname !== "localhost";
+}
 
 export async function synthesize(question, retrievedMatches, options = {}) {
   try {
-    const response = await fetch(FUNCTION_URL, {
+    const response = await fetch(SYNTHESIS_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question, matches: retrievedMatches, mode: options.mode ?? null })

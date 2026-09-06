@@ -11,9 +11,10 @@
     "test": "vitest run",
     "test:functions": "npm --prefix functions test",
     "verify": "vite-node ./scripts/verify-questions.mjs",
+    "verify:synthesis-endpoint": "node ./scripts/verify-synthesis-endpoint.mjs",
     "setup:browsers": "playwright install chromium",
     "verify:responsive": "node ./scripts/verify-responsive.mjs",
-    "verify:all": "npm run build:functions-allowlist && npm run test && npm run test:functions && npm run build && npm run verify && npm run verify:responsive"
+    "verify:all": "npm run build:functions-allowlist && npm run test && npm run test:functions && npm run build && npm run verify:synthesis-endpoint && npm run verify && npm run verify:responsive"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",
