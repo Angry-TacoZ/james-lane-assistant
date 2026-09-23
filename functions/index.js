@@ -23,7 +23,8 @@ const approvedMatchesByRef = new Map(Object.entries(approvedSourceAllowlist.refs
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b((do|does) not contain (any )?information about|contain no (\w+ )*information|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
-const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|approved sources do not define the role requirements|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
+const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|unable to assess .* fit|direct fit assessment (?:isn['’]?t|is not) possible|approved sources do not define the role requirements|(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define (?:what |the )?|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
+const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+James\b|\bhow\s+would\s+James\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
 const PROJECT_NAME_PATTERNS = [
   /\b(best buy blue|ambient ai shopping agent)\b/i,
   /\bblue\b(?!\s+cross\b)/i,
@@ -273,6 +274,10 @@ function getModePrompt(mode) {
   return mode.answerStyle || "Answer in a compact professional style rather than a checklist unless the question clearly calls for a list.";
 }
 
+function shouldRepairFitDeferral({ answer, question, matches }) {
+  return matches.length > 0 && FIT_QUESTION_PATTERN.test(question) && BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer);
+}
+
 function hasNamedProjectEvidence(question, matches) {
   const sourceText = matches
     .map((match) => `${match.title}\n${match.items.join("\n")}`)
@@ -345,7 +350,10 @@ exports.synthesize = onRequest(
 Your only job is to synthesize the SOURCE MATERIAL below into a clear, conversational response.
 
 STRICT RULES:
-- Use ONLY facts present in the SOURCE MATERIAL. Do not add, invent, or rely on outside knowledge.
+- Use the SOURCE MATERIAL as the sole evidence for claims about James Lane, his experience, projects, qualifications, and fit. Do not invent personal facts or accomplishments.
+- You may use ordinary general knowledge to briefly explain a familiar role, tool, method, or term in the question. This context is not evidence that James has used it, meets a specific employer's requirements, or has a credential. If a term is ambiguous or specialized, state the interpretation you are using.
+- Answer fit and capability questions with the best supported assessment, including a conditional or stretch assessment when appropriate. Do not lead by saying the source material lacks a formal definition when the excerpts support an assessment.
+- If the excerpts do not support even a conditional assessment, say what is unknown without inventing evidence.
 - You may synthesize and interpret relationships between the provided facts when that interpretation is directly supported by multiple excerpts.
 - When an answer includes interpretation rather than a bare fact, keep it anchored with language like "the sources suggest," "the sources portray," or "taken together, the sources indicate."
 - If the source material does not contain enough information to answer, say so plainly.
@@ -360,12 +368,10 @@ STRICT RULES:
 - If the source material explicitly lists strengths, value factors, or capabilities that are relevant to the question, name those factors directly.
 - Do not say the source material fails to specify factors if those factors are explicitly present in the matched source material.
 - If the source material does not establish whether those factors fully compensate for a gap in a specific context, say that limitation plainly after naming the documented factors.
-- Do not ask the user for additional source material. Answer only from the provided matches and state limits plainly when needed.
+- Do not ask the user for additional source material. Ground every answer about James in the provided matches and state limits plainly when needed.
 - Treat the matched excerpts as the complete approved material available for this answer. Do not describe them as incomplete, cut off, truncated, partially visible, or missing unless one of the excerpts explicitly says that.
 - Do not ask for the full text of a document, more of a document section, or additional source material.
-- Do not use general job-market or training knowledge to explain what a role typically entails if that is not explicitly stated in the matched source material.
-- If the question is about fit for a role and the matched source material does not define that role's duties, say that the approved sources do not define the role requirements rather than filling them in from general knowledge.
-- Do not define a role by saying what it "typically," "usually," or "generally" involves unless that description is explicitly present in the matched source material.
+- General context may help interpret the question, but do not present a generic role description as a specific job posting or use it to make unsupported claims about James.
 - When direct evidence for a role is missing, you may infer cautiously from adjacent documented traits, projects, communication patterns, and experiences if multiple matched excerpts support that inference.
 - Distinguish clearly between confirmed evidence, reasonable inference, and unknowns or remaining gaps.
 - Do not refuse a role-fit question if the matched source material supports a conditional or adjacent-evidence assessment. Refuse only when the approved matches make even a conditional assessment impossible.
@@ -472,10 +478,10 @@ ${getModePrompt(mode)}`;
         }
       }
 
-      if (mode?.id === "fit" && BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer)) {
+      if (shouldRepairFitDeferral({ answer, question, matches })) {
         const repairResponse = await requestAnthropic({
           apiKey: anthropicKey.value(),
-          system: `${SYSTEM_PROMPT}\n\nROLE-FIT REPAIR RULES:\n- Your previous answer over-deferred because the role was not defined exactly.\n- Give the best conditional fit judgment the provided excerpts support.\n- Lead with the fit assessment, not with the lack of a formal role definition.\n- Separate direct evidence, adjacent evidence, and unknowns.\n- If the role looks plausible but not fully proven, say so plainly using language like stretch fit, plausible fit, adjacent evidence, or conditional fit.\n- Do not ask for a job description unless it is a brief optional note after you have already answered from the provided material.`,
+          system: `${SYSTEM_PROMPT}\n\nROLE-FIT REPAIR RULES:\n- Your previous answer over-deferred because the role was not defined exactly.\n- Give the best conditional fit judgment the provided excerpts support.\n- You may briefly explain the ordinary meaning of a role or term as context, without treating it as evidence about James or as an employer-specific requirement.\n- Lead with the fit assessment, not with the lack of a formal role definition.\n- Separate direct evidence, adjacent evidence, and unknowns.\n- If the role looks plausible but not fully proven, say so plainly using language like stretch fit, plausible fit, adjacent evidence, or conditional fit.\n- Do not ask for a job description unless it is a brief optional note after you have already answered from the provided material.`,
           userMessage,
           maxAttempts: 2
         });
@@ -504,5 +510,6 @@ exports._test = {
   fallbackFormat,
   hasNamedProjectEvidence,
   isValidMatch,
+  shouldRepairFitDeferral,
   shouldRepairProjectDenial
 };

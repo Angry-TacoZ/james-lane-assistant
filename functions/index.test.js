@@ -89,3 +89,52 @@ test("does not treat Capital Blue Cross experience evidence as the Blue project"
     false
   );
 });
+
+test("repairs over-deferral for fit and capability questions across assistant modes", () => {
+  const cases = [
+    {
+      question: "Would James be good at software engineering using agentic coding?",
+      answer: "The source material doesn't define what agentic coding entails, so a direct fit assessment isn't possible."
+    },
+    {
+      question: "Could James work as a business analyst?",
+      answer: "The approved sources do not define the role requirements."
+    },
+    {
+      question: "Is James qualified for product design work?",
+      answer: "I can't assess fit directly without a formal definition."
+    },
+    {
+      question: "How would James do in a data analyst role?",
+      answer: "The source material does not define the role requirements."
+    },
+    {
+      question: "Does James have the skills for AI product work?",
+      answer: "I am unable to assess his fit without a formal job description."
+    }
+  ];
+
+  for (const { question, answer } of cases) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches: [validMatch()] }), true, question);
+  }
+});
+
+test("does not repair a direct assessment, unrelated question, or empty evidence", () => {
+  const deferral = "The source material doesn't define the term.";
+
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering?",
+    answer: "The sources suggest a plausible fit based on his delivered software projects.",
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "What is Blue?",
+    answer: deferral,
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering?",
+    answer: deferral,
+    matches: []
+  }), false);
+});
