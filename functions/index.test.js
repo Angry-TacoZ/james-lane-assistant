@@ -149,9 +149,8 @@ test("does not repair supported assessments with scoped limitations", () => {
   const answers = [
     "James appears to have a plausible fit based on his delivered software projects. We cannot assess his fit for a specific employer without that employer's requirements.",
     "The sources suggest James has relevant software engineering experience and could plausibly handle agentic coding. We cannot assess his fit for a specific employer without that employer's requirements.",
-    "The approved sources do not define the role requirements, but James appears to be a plausible fit based on his documented work.",
-    "The approved sources do not define the role requirements; James appears to be a plausible fit based on his documented work.",
-    "The approved sources do not define the role requirements and James appears to be a plausible fit based on his documented work."
+    "James appears to be a plausible fit based on his documented projects. The source material does not define the exact employer requirements.",
+    "The sources suggest James could plausibly handle agentic coding. The exact requirements of a specific employer remain unknown."
   ];
 
   for (const answer of answers) {
@@ -163,6 +162,55 @@ test("does not repair supported assessments with scoped limitations", () => {
     answer: answers[1],
     matches: [validMatch()]
   }), false);
+});
+
+test("repairs a source-gap disclaimer leading a fit answer", () => {
+  const question = "Would James be good at software engineering using agentic coding?";
+  const answers = [
+    "The source material doesn't define agentic coding. James appears to be a plausible fit based on his documented projects.",
+    "The approved sources do not define the exact role requirements, but James appears to be a plausible fit based on his documented work.",
+    "The sources don't specify what this employer means by agentic coding. Based on his projects, James could plausibly handle this kind of work."
+  ];
+
+  for (const answer of answers) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches: [validMatch()] }), true, answer);
+    assert.equal(_test.isAcceptableFitRepair({ question, answer, matches: [validMatch()] }), false, answer);
+  }
+  assert.equal(_test.shouldRepairFitDeferral({ question: "What is Blue?", answer: answers[0], matches: [validMatch()] }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Is James a licensed physician?",
+    answer: "The source material does not identify physician licensure.",
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({ question, answer: answers[0], matches: [] }), false);
+});
+
+test("guards unsupported categorical qualification denials across domains", () => {
+  const matches = [validMatch()];
+  const questions = ["Is James a licensed physician?", "Does James hold an AWS certification?"];
+  const denials = [
+    "No. The source material does not identify James as a licensed physician.",
+    "No, James is not a physician.",
+    "James does not have a medical license.",
+    "James does not hold an AWS certification."
+  ];
+
+  for (const question of questions) {
+    for (const answer of denials) {
+      assert.equal(_test.shouldRepairQualificationDenial({ question, answer, matches }), true, `${question}: ${answer}`);
+      assert.equal(_test.qualificationAnswerOrFallback({ question, answer, matches }), "The approved sources do not establish that formal qualification.");
+    }
+    for (const answer of [
+      "The approved sources do not document that qualification for James.",
+      "That qualification cannot be confirmed from the approved material."
+    ]) {
+      assert.equal(_test.shouldRepairQualificationDenial({ question, answer, matches }), false, answer);
+      assert.equal(_test.qualificationAnswerOrFallback({ question, answer, matches }), answer);
+    }
+  }
+  assert.equal(_test.qualificationAnswerOrFallback({ question: questions[0], answer: null, matches }), "The approved sources do not establish that formal qualification.");
+  assert.equal(_test.shouldRepairQualificationDenial({ question: "What is Blue?", answer: denials[0], matches }), false);
+  assert.equal(_test.shouldRepairQualificationDenial({ question: questions[0], answer: denials[0], matches: [] }), false);
 });
 
 test("does not repair direct capability assessments followed by scoped limits", () => {
