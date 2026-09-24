@@ -89,3 +89,142 @@ test("does not treat Capital Blue Cross experience evidence as the Blue project"
     false
   );
 });
+
+test("repairs over-deferral for fit and capability questions across assistant modes", () => {
+  const cases = [
+    {
+      question: "Would James be good at software engineering using agentic coding?",
+      answer: "The source material doesn't define what agentic coding entails, so a direct fit assessment isn't possible."
+    },
+    {
+      question: "Could James work as a business analyst?",
+      answer: "The approved sources do not define the role requirements."
+    },
+    {
+      question: "Is James qualified for product design work?",
+      answer: "I can't assess fit directly without a formal definition."
+    },
+    {
+      question: "How would James do in a data analyst role?",
+      answer: "The source material does not define the role requirements."
+    },
+    {
+      question: "Does James have the skills for AI product work?",
+      answer: "I am unable to assess his fit without a formal job description."
+    }
+  ];
+
+  for (const { question, answer } of cases) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches: [validMatch()] }), true, question);
+  }
+});
+
+test("does not repair a direct assessment, unrelated question, or empty evidence", () => {
+  const deferral = "The source material doesn't define the term.";
+
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering?",
+    answer: "The sources suggest a plausible fit based on his delivered software projects.",
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering using agentic coding?",
+    answer: "James appears to have a plausible fit based on his delivered software projects. The source material doesn't define what a specific employer would require.",
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "What is Blue?",
+    answer: deferral,
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering?",
+    answer: deferral,
+    matches: []
+  }), false);
+});
+
+test("does not repair supported assessments with scoped limitations", () => {
+  const question = "Would James be good at software engineering?";
+  const answers = [
+    "James appears to have a plausible fit based on his delivered software projects. We cannot assess his fit for a specific employer without that employer's requirements.",
+    "The sources suggest James has relevant software engineering experience and could plausibly handle agentic coding. We cannot assess his fit for a specific employer without that employer's requirements.",
+    "The approved sources do not define the role requirements, but James appears to be a plausible fit based on his documented work.",
+    "The approved sources do not define the role requirements; James appears to be a plausible fit based on his documented work.",
+    "The approved sources do not define the role requirements and James appears to be a plausible fit based on his documented work."
+  ];
+
+  for (const answer of answers) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches: [validMatch()] }), false, answer);
+  }
+  assert.equal(_test.shouldRepairFitDeferral({
+    mode: { id: "profile" },
+    question: "Would James be good at software engineering using agentic coding?",
+    answer: answers[1],
+    matches: [validMatch()]
+  }), false);
+});
+
+test("does not repair direct capability assessments followed by scoped limits", () => {
+  const question = "Would James be good at software engineering using agentic coding?";
+  const answers = [
+    "James is capable of agentic coding based on his documented projects. We cannot assess his fit for a specific employer without that employer's requirements.",
+    "James is qualified for this kind of work based on the documented evidence. We cannot assess his fit for a particular employer.",
+    "James is not qualified for this kind of work based on the documented evidence. We cannot assess his fit for a particular employer.",
+    "He is well suited to this kind of work based on the approved evidence. We cannot assess his fit for a specific role without the role requirements.",
+    "James should be able to handle this work based on his documented projects. We cannot assess his fit for a specific employer."
+  ];
+
+  for (const answer of answers) {
+    assert.equal(_test.shouldRepairFitDeferral({ mode: { id: "profile" }, question, answer, matches: [validMatch()] }), false, answer);
+  }
+});
+
+test("uses the same deferral decision when accepting a repaired answer", () => {
+  const question = "Would James be good at software engineering?";
+  const matches = [validMatch()];
+  const standaloneDeferral = "The approved sources do not define the role requirements.";
+  const explicitRefusal = "I can't assess his fit without a formal role definition.";
+  const blanketRefusalAfterTentativeAssessment = "James may be a plausible fit. However, I cannot assess his fit directly at all.";
+  const factOnlyBeforeScopedRefusal = "James has software engineering experience. I cannot assess his fit for a specific employer.";
+  const supportedAnswer = "James appears to have a plausible fit based on his documented work.";
+
+  for (const answer of [standaloneDeferral, explicitRefusal, blanketRefusalAfterTentativeAssessment, factOnlyBeforeScopedRefusal]) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches }), true, answer);
+    assert.equal(_test.isAcceptableFitRepair({ question, answer, matches }), false, answer);
+  }
+  assert.equal(_test.isAcceptableFitRepair({ question, answer: supportedAnswer, matches }), true);
+  assert.equal(_test.isAcceptableFitRepair({ question, answer: "", matches }), false);
+});
+
+test("preserves repair for every Fit-lens starter question", async () => {
+  const { profileModes } = await import("../src/data/profileModes.js");
+  const mode = profileModes.find((entry) => entry.id === "fit");
+  const answer = "I can't assess his fit without a formal role definition.";
+  const matches = [validMatch()];
+
+  for (const question of mode.starterQuestions) {
+    assert.equal(_test.shouldRepairFitDeferral({ mode, question, answer, matches }), true, question);
+    assert.equal(_test.isAcceptableFitRepair({ mode, question, answer, matches }), false, question);
+  }
+  for (const question of mode.starterQuestions.slice(0, 3)) {
+    assert.equal(_test.shouldRepairFitDeferral({ mode: { id: "profile" }, question, answer, matches }), false, question);
+  }
+});
+
+test("repairs explicit over-deferral in subject-oriented he follow-ups", () => {
+  const questions = [
+    "Would he be good at software engineering?",
+    "Could he work as a business analyst?",
+    "Is he qualified for product design work?",
+    "How would he do in a data analyst role?"
+  ];
+
+  for (const question of questions) {
+    assert.equal(_test.shouldRepairFitDeferral({
+      question,
+      answer: "I can't assess fit directly without a formal definition.",
+      matches: [validMatch()]
+    }), true, question);
+  }
+});
