@@ -128,6 +128,11 @@ test("does not repair a direct assessment, unrelated question, or empty evidence
     matches: [validMatch()]
   }), false);
   assert.equal(_test.shouldRepairFitDeferral({
+    question: "Would James be good at software engineering using agentic coding?",
+    answer: "James appears to have a plausible fit based on his delivered software projects. The source material doesn't define what a specific employer would require.",
+    matches: [validMatch()]
+  }), false);
+  assert.equal(_test.shouldRepairFitDeferral({
     question: "What is Blue?",
     answer: deferral,
     matches: [validMatch()]
@@ -137,4 +142,21 @@ test("does not repair a direct assessment, unrelated question, or empty evidence
     answer: deferral,
     matches: []
   }), false);
+});
+
+test("repairs explicit over-deferral in subject-oriented he follow-ups", () => {
+  const questions = [
+    "Would he be good at software engineering?",
+    "Could he work as a business analyst?",
+    "Is he qualified for product design work?",
+    "How would he do in a data analyst role?"
+  ];
+
+  for (const question of questions) {
+    assert.equal(_test.shouldRepairFitDeferral({
+      question,
+      answer: "I can't assess fit directly without a formal definition.",
+      matches: [validMatch()]
+    }), true, question);
+  }
 });

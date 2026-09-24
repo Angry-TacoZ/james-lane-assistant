@@ -23,8 +23,9 @@ const approvedMatchesByRef = new Map(Object.entries(approvedSourceAllowlist.refs
 
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b((do|does) not contain (any )?information about|contain no (\w+ )*information|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
-const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(doesn['’]?t establish .* fit|cannot assess fit directly|can['’]?t assess fit directly|unable to assess .* fit|direct fit assessment (?:isn['’]?t|is not) possible|approved sources do not define the role requirements|(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define (?:what |the )?|doesn['’]?t define (that|the) position['’]?s .*requirements)\b/i;
-const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+James\b|\bhow\s+would\s+James\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
+const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(?:cannot|can['’]?t|unable to)\s+(?:assess|judge|determine)\b[^.\n]{0,80}\bfit\b|\bdirect fit assessment (?:isn['’]?t|is not) possible\b/i;
+const BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN = /^(?:the )?(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define [^.!?\n]+[.!?]?$/i;
+const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+(?:James|he)\b|\bhow\s+would\s+(?:James|he)\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
 const PROJECT_NAME_PATTERNS = [
   /\b(best buy blue|ambient ai shopping agent)\b/i,
   /\bblue\b(?!\s+cross\b)/i,
@@ -275,7 +276,8 @@ function getModePrompt(mode) {
 }
 
 function shouldRepairFitDeferral({ answer, question, matches }) {
-  return matches.length > 0 && FIT_QUESTION_PATTERN.test(question) && BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer);
+  return matches.length > 0 && FIT_QUESTION_PATTERN.test(question) &&
+    (BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer) || BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN.test(answer));
 }
 
 function hasNamedProjectEvidence(question, matches) {
