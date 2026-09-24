@@ -29,6 +29,10 @@ const SUPPORTED_FIT_ASSESSMENT_PATTERN = /\b(?:plausible|conditional|stretch|str
 const CAPABILITY_ASSESSMENT_PATTERN = /\b(?:James|he)\b[^.!?]{0,160}(?:\b(?:can|could|would|may|might|appears?|seems?|looks?)\b[^.!?]{0,100}\b(?:handle|perform|work|succeed|contribute|manage|fit|suited|qualified|capable)\b|\bis\s+(?:not\s+)?(?:well\s+)?(?:capable|qualified|suited)\s+(?:of|for|to)\b|\bshould\s+be\s+able\s+to\b)/i;
 const SPECIFIC_ROLE_LIMITATION_PATTERN = /\b(?:specific|particular)\s+(?:employer|role|job|position)\b/i;
 const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+(?:James|he)\b|\bhow\s+would\s+(?:James|he)\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
+const LEADING_SOURCE_GAP_PATTERN = /^\s*(?:the\s+)?(?:source material|approved sources|sources|provided excerpts)\s+(?:(?:doesn['’]?t|does not|don['’]?t|do not)\s+(?:define|specify|establish|contain|document|identify)\b|lacks?\b)/i;
+const FORMAL_QUALIFICATION_QUESTION_PATTERN = /\b(?:licen[cs](?:e|ed|ure)|certif(?:ied|ication)|credential|degree|diploma|clearance|physician|doctor|attorney|bar admission|cpa)\b/i;
+const CATEGORICAL_QUALIFICATION_DENIAL_PATTERN = /^\s*no\b\s*(?:[.,:;!?-]|$)|\b(?:James(?:\s+Lane)?|he)\s+(?:(?:is\s+not|isn['’]?t)\s+(?:an?\s+)?(?:licensed|certified|qualified|physician|doctor|attorney|cpa)\b|(?:does\s+not|doesn['’]?t)\s+(?:have|hold|possess)\s+(?:an?\s+)?(?:[\w-]+\s+){0,3}(?:licen[cs]e|certification|credential|degree|clearance)\b)/i;
+const UNDOCUMENTED_QUALIFICATION_ANSWER = "The approved sources do not establish that formal qualification.";
 const PROJECT_NAME_PATTERNS = [
   /\b(best buy blue|ambient ai shopping agent)\b/i,
   /\bblue\b(?!\s+cross\b)/i,
@@ -288,12 +292,24 @@ function shouldRepairFitDeferral({ answer, question, matches, mode }) {
       CAPABILITY_ASSESSMENT_PATTERN.test(sentence));
   const scopedLimitation = refusal &&
     SPECIFIC_ROLE_LIMITATION_PATTERN.test(answer.slice(refusal.index));
-  return (Boolean(refusal) && !(supportedAssessmentBeforeRefusal && scopedLimitation)) ||
+  return (!FORMAL_QUALIFICATION_QUESTION_PATTERN.test(question) && LEADING_SOURCE_GAP_PATTERN.test(answer)) ||
+    (Boolean(refusal) && !(supportedAssessmentBeforeRefusal && scopedLimitation)) ||
     BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN.test(answer);
 }
 
 function isAcceptableFitRepair({ answer, question, matches, mode }) {
   return Boolean(answer) && !shouldRepairFitDeferral({ answer, question, matches, mode });
+}
+
+function shouldRepairQualificationDenial({ answer, question, matches }) {
+  return matches.length > 0 && FORMAL_QUALIFICATION_QUESTION_PATTERN.test(question) &&
+    CATEGORICAL_QUALIFICATION_DENIAL_PATTERN.test(answer);
+}
+
+function qualificationAnswerOrFallback({ answer, question, matches }) {
+  return answer && !shouldRepairQualificationDenial({ answer, question, matches })
+    ? answer
+    : UNDOCUMENTED_QUALIFICATION_ANSWER;
 }
 
 function hasNamedProjectEvidence(question, matches) {
@@ -380,6 +396,7 @@ STRICT RULES:
 - Include tradeoffs and limitations honestly - do not oversell.
 - Do not use words like: exceptional, brilliant, visionary, passionate, rockstar, dynamic.
 - Do not add qualifications or achievements not present in the source material.
+- Missing evidence for a formal credential, license, degree, certification, clearance, or regulated qualification means it is undocumented, not that James definitively lacks it. Say it cannot be confirmed from the approved sources. Make a categorical negative claim only when the source material explicitly states that negative.
 - Do not simulate intimacy or act as James Lane in first person.
 - Keep responses under 200 words unless the question genuinely requires more.
 - When the source material refers to political or politically managed workplace environments, interpret that as internal workplace or organizational politics unless a government or public-policy context is explicitly stated in the source.
@@ -516,6 +533,20 @@ ${getModePrompt(mode)}`;
         }
       }
 
+      if (shouldRepairQualificationDenial({ answer, question, matches })) {
+        const repairResponse = await requestAnthropic({
+          apiKey: anthropicKey.value(),
+          system: `${SYSTEM_PROMPT}\n\nQUALIFICATION REPAIR RULES:\n- Your previous answer made a categorical negative claim about a formal qualification that the approved excerpts do not establish.\n- Say that the qualification is undocumented or cannot be confirmed from the approved sources.\n- Do not infer either possession or absence of the qualification.\n- Do not begin with a categorical "No" based only on missing evidence.`,
+          userMessage,
+          maxAttempts: 2
+        });
+        answer = qualificationAnswerOrFallback({
+          answer: repairResponse.ok ? repairResponse.text : null,
+          question,
+          matches
+        });
+      }
+
       res.status(200).json({ answer });
     } catch (err) {
       console.error("Synthesizer error:", err);
@@ -529,6 +560,8 @@ exports._test = {
   hasNamedProjectEvidence,
   isValidMatch,
   isAcceptableFitRepair,
+  qualificationAnswerOrFallback,
+  shouldRepairQualificationDenial,
   shouldRepairFitDeferral,
   shouldRepairProjectDenial
 };
