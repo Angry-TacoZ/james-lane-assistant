@@ -26,6 +26,7 @@ const BAD_PROJECT_DENIAL_PATTERN = /\b((do|does) not contain (any )?information 
 const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(?:cannot|can['’]?t|unable to)\s+(?:assess|judge|determine)\b[^.\n]{0,80}\bfit\b|\bdirect fit assessment (?:isn['’]?t|is not) possible\b/i;
 const BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN = /^(?:the )?(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define (?:(?!\b(?:but|however|yet|although)\b|\band\s+(?:James|he|his|the sources|the evidence)\b)[^.!?;,\n])+[.!?]?$/i;
 const SUPPORTED_FIT_ASSESSMENT_PATTERN = /\b(?:plausible|conditional|stretch|strong|good|poor|weak)\s+fit\b|\b(?:well|poorly)\s+suited\b/i;
+const CAPABILITY_ASSESSMENT_PATTERN = /\b(?:James|he)\b[^.!?]{0,160}\b(?:can|could|would|may|might|appears?|seems?|looks?)\b[^.!?]{0,100}\b(?:handle|perform|work|succeed|contribute|manage|fit|suited|qualified|capable)\b/i;
 const SPECIFIC_ROLE_LIMITATION_PATTERN = /\b(?:specific|particular)\s+(?:employer|role|job|position)\b/i;
 const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+(?:James|he)\b|\bhow\s+would\s+(?:James|he)\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
 const PROJECT_NAME_PATTERNS = [
@@ -277,20 +278,22 @@ function getModePrompt(mode) {
   return mode.answerStyle || "Answer in a compact professional style rather than a checklist unless the question clearly calls for a list.";
 }
 
-function shouldRepairFitDeferral({ answer, question, matches }) {
-  if (matches.length === 0 || !FIT_QUESTION_PATTERN.test(question)) return false;
+function shouldRepairFitDeferral({ answer, question, matches, mode }) {
+  if (matches.length === 0 || (mode?.id !== "fit" && !FIT_QUESTION_PATTERN.test(question))) return false;
 
   const refusal = BAD_ROLEFIT_DEFERRAL_PATTERN.exec(answer);
-  const supportedAssessmentBeforeRefusal = refusal &&
-    SUPPORTED_FIT_ASSESSMENT_PATTERN.test(answer.slice(0, refusal.index));
+  const beforeRefusal = refusal ? answer.slice(0, refusal.index) : "";
+  const supportedAssessmentBeforeRefusal = SUPPORTED_FIT_ASSESSMENT_PATTERN.test(beforeRefusal) ||
+    (beforeRefusal.match(/[^.!?]+[.!?](?=\s|$)/g) || []).some((sentence) =>
+      CAPABILITY_ASSESSMENT_PATTERN.test(sentence));
   const scopedLimitation = refusal &&
     SPECIFIC_ROLE_LIMITATION_PATTERN.test(answer.slice(refusal.index));
   return (Boolean(refusal) && !(supportedAssessmentBeforeRefusal && scopedLimitation)) ||
     BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN.test(answer);
 }
 
-function isAcceptableFitRepair({ answer, question, matches }) {
-  return Boolean(answer) && !shouldRepairFitDeferral({ answer, question, matches });
+function isAcceptableFitRepair({ answer, question, matches, mode }) {
+  return Boolean(answer) && !shouldRepairFitDeferral({ answer, question, matches, mode });
 }
 
 function hasNamedProjectEvidence(question, matches) {
@@ -493,7 +496,7 @@ ${getModePrompt(mode)}`;
         }
       }
 
-      if (shouldRepairFitDeferral({ answer, question, matches })) {
+      if (shouldRepairFitDeferral({ answer, question, matches, mode })) {
         const repairResponse = await requestAnthropic({
           apiKey: anthropicKey.value(),
           system: `${SYSTEM_PROMPT}\n\nROLE-FIT REPAIR RULES:\n- Your previous answer over-deferred because the role was not defined exactly.\n- Give the best conditional fit judgment the provided excerpts support.\n- You may briefly explain the ordinary meaning of a role or term as context, without treating it as evidence about James or as an employer-specific requirement.\n- Lead with the fit assessment, not with the lack of a formal role definition.\n- Separate direct evidence, adjacent evidence, and unknowns.\n- If the role looks plausible but not fully proven, say so plainly using language like stretch fit, plausible fit, adjacent evidence, or conditional fit.\n- Do not ask for a job description unless it is a brief optional note after you have already answered from the provided material.`,
@@ -503,7 +506,7 @@ ${getModePrompt(mode)}`;
 
         if (repairResponse.ok) {
           const repairedText = repairResponse.text;
-          if (isAcceptableFitRepair({ answer: repairedText, question, matches })) {
+          if (isAcceptableFitRepair({ answer: repairedText, question, matches, mode })) {
             answer = repairedText;
           } else {
             answer = fallbackFormat(matches);
