@@ -165,6 +165,20 @@ test("does not repair supported assessments with scoped limitations", () => {
   }), false);
 });
 
+test("does not repair direct capability assessments followed by scoped limits", () => {
+  const question = "Would James be good at software engineering using agentic coding?";
+  const answers = [
+    "James is capable of agentic coding based on his documented projects. We cannot assess his fit for a specific employer without that employer's requirements.",
+    "James is qualified for this kind of work based on the documented evidence. We cannot assess his fit for a particular employer.",
+    "He is well suited to this kind of work based on the approved evidence. We cannot assess his fit for a specific role without the role requirements.",
+    "James should be able to handle this work based on his documented projects. We cannot assess his fit for a specific employer."
+  ];
+
+  for (const answer of answers) {
+    assert.equal(_test.shouldRepairFitDeferral({ mode: { id: "profile" }, question, answer, matches: [validMatch()] }), false, answer);
+  }
+});
+
 test("uses the same deferral decision when accepting a repaired answer", () => {
   const question = "Would James be good at software engineering?";
   const matches = [validMatch()];
