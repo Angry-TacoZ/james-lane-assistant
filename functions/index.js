@@ -24,7 +24,9 @@ const approvedMatchesByRef = new Map(Object.entries(approvedSourceAllowlist.refs
 const BAD_META_RESPONSE_PATTERN = /\b(incomplete|cut off|truncated|partially visible|missing or cut off|need the full text|full text of that document|additional source material|more of the document|need source material|need more source|need a specific example|need.*specific example|to give.*meaningful example|source material.*specific example|source material.*concrete example)\b/i;
 const BAD_PROJECT_DENIAL_PATTERN = /\b((do|does) not contain (any )?information about|contain no (\w+ )*information|cannot answer this question from the approved|can't answer this question from the approved)\b/i;
 const BAD_ROLEFIT_DEFERRAL_PATTERN = /\b(?:cannot|can['’]?t|unable to)\s+(?:assess|judge|determine)\b[^.\n]{0,80}\bfit\b|\bdirect fit assessment (?:isn['’]?t|is not) possible\b/i;
-const BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN = /^(?:the )?(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define [^.!?\n]+[.!?]?$/i;
+const BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN = /^(?:the )?(?:source material|approved sources) (?:doesn['’]?t|does not|do not) define (?:(?!\b(?:but|however|yet|although)\b|\band\s+(?:James|he|his|the sources|the evidence)\b)[^.!?;,\n])+[.!?]?$/i;
+const SUPPORTED_FIT_ASSESSMENT_PATTERN = /\b(?:plausible|conditional|stretch|strong|good|poor|weak)\s+fit\b|\b(?:well|poorly)\s+suited\b/i;
+const SPECIFIC_ROLE_LIMITATION_PATTERN = /\b(?:specific|particular)\s+(?:employer|role|job|position)\b/i;
 const FIT_QUESTION_PATTERN = /\b(?:would|could|can|should|is|does)\s+(?:James|he)\b|\bhow\s+would\s+(?:James|he)\b|\bJames\b.{0,100}\b(?:fit|qualified|suited|capable|good at|good for)\b/i;
 const PROJECT_NAME_PATTERNS = [
   /\b(best buy blue|ambient ai shopping agent)\b/i,
@@ -276,8 +278,19 @@ function getModePrompt(mode) {
 }
 
 function shouldRepairFitDeferral({ answer, question, matches }) {
-  return matches.length > 0 && FIT_QUESTION_PATTERN.test(question) &&
-    (BAD_ROLEFIT_DEFERRAL_PATTERN.test(answer) || BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN.test(answer));
+  if (matches.length === 0 || !FIT_QUESTION_PATTERN.test(question)) return false;
+
+  const refusal = BAD_ROLEFIT_DEFERRAL_PATTERN.exec(answer);
+  const supportedAssessmentBeforeRefusal = refusal &&
+    SUPPORTED_FIT_ASSESSMENT_PATTERN.test(answer.slice(0, refusal.index));
+  const scopedLimitation = refusal &&
+    SPECIFIC_ROLE_LIMITATION_PATTERN.test(answer.slice(refusal.index));
+  return (Boolean(refusal) && !(supportedAssessmentBeforeRefusal && scopedLimitation)) ||
+    BARE_SOURCE_DEFINITION_DEFERRAL_PATTERN.test(answer);
+}
+
+function isAcceptableFitRepair({ answer, question, matches }) {
+  return Boolean(answer) && !shouldRepairFitDeferral({ answer, question, matches });
 }
 
 function hasNamedProjectEvidence(question, matches) {
@@ -490,7 +503,7 @@ ${getModePrompt(mode)}`;
 
         if (repairResponse.ok) {
           const repairedText = repairResponse.text;
-          if (repairedText && !BAD_ROLEFIT_DEFERRAL_PATTERN.test(repairedText)) {
+          if (isAcceptableFitRepair({ answer: repairedText, question, matches })) {
             answer = repairedText;
           } else {
             answer = fallbackFormat(matches);
@@ -512,6 +525,7 @@ exports._test = {
   fallbackFormat,
   hasNamedProjectEvidence,
   isValidMatch,
+  isAcceptableFitRepair,
   shouldRepairFitDeferral,
   shouldRepairProjectDenial
 };

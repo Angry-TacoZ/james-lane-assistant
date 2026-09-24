@@ -144,6 +144,36 @@ test("does not repair a direct assessment, unrelated question, or empty evidence
   }), false);
 });
 
+test("does not repair supported assessments with scoped limitations", () => {
+  const question = "Would James be good at software engineering?";
+  const answers = [
+    "James appears to have a plausible fit based on his delivered software projects. We cannot assess his fit for a specific employer without that employer's requirements.",
+    "The approved sources do not define the role requirements, but James appears to be a plausible fit based on his documented work.",
+    "The approved sources do not define the role requirements; James appears to be a plausible fit based on his documented work.",
+    "The approved sources do not define the role requirements and James appears to be a plausible fit based on his documented work."
+  ];
+
+  for (const answer of answers) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches: [validMatch()] }), false, answer);
+  }
+});
+
+test("uses the same deferral decision when accepting a repaired answer", () => {
+  const question = "Would James be good at software engineering?";
+  const matches = [validMatch()];
+  const standaloneDeferral = "The approved sources do not define the role requirements.";
+  const explicitRefusal = "I can't assess his fit without a formal role definition.";
+  const blanketRefusalAfterTentativeAssessment = "James may be a plausible fit. However, I cannot assess his fit directly at all.";
+  const supportedAnswer = "James appears to have a plausible fit based on his documented work.";
+
+  for (const answer of [standaloneDeferral, explicitRefusal, blanketRefusalAfterTentativeAssessment]) {
+    assert.equal(_test.shouldRepairFitDeferral({ question, answer, matches }), true, answer);
+    assert.equal(_test.isAcceptableFitRepair({ question, answer, matches }), false, answer);
+  }
+  assert.equal(_test.isAcceptableFitRepair({ question, answer: supportedAnswer, matches }), true);
+  assert.equal(_test.isAcceptableFitRepair({ question, answer: "", matches }), false);
+});
+
 test("repairs explicit over-deferral in subject-oriented he follow-ups", () => {
   const questions = [
     "Would he be good at software engineering?",
