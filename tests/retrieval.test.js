@@ -510,6 +510,18 @@ describe("James AI retrieval", () => {
     expect(response.answer).toContain("[p2-education]");
   });
 
+  it("does not attribute unsupported retail and automotive employment to the current resume", () => {
+    const response = askAssistant("What retail and automotive experience has James personally worked in?");
+    const resumeRefs = sourceCorpus.filter((section) => section.group === "resume-pdf");
+
+    expect(resumeRefs.some((section) => section.id === "p2-user-domain-perspective")).toBe(false);
+    expect(resumeRefs.flatMap((section) => section.items.join(" ")).join(" ")).not.toMatch(
+      /hhgregg|OfficeMax|Verizon\/GoWireless|automotive retail and service/i
+    );
+    expect(response.answer).not.toMatch(/hhgregg|OfficeMax|Verizon\/GoWireless|automotive retail and service/i);
+    expect(response.matches?.some((match) => match.referenceId === "p2-user-domain-perspective")).not.toBe(true);
+  });
+
   it("describes Capital Blue Cross as prior experience with the updated dates", () => {
     const response = askAssistant("What role did James Lane have at Capital Blue Cross, and when?");
 

@@ -327,16 +327,6 @@ const resumeSourceCorpus = [
     ]
   },
   {
-    id: "p2-user-domain-perspective",
-    group: "resume-pdf",
-    sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 2",
-    page: 2,
-    title: "User and Domain Perspective",
-    aliases: ["retail", "automotive", "customer-facing", "consumer product", "shopping", "service workflows"],
-    items: ["Earlier work across Best Buy, hhgregg, OfficeMax, Verizon/GoWireless, automotive retail and service, and other customer-facing environments provides firsthand perspective on shopping, product comparison, customer help, and real-world service workflows. The resume connects this background to consumer product UX, retail technology, automotive experiences, and AI-assisted decision tools."]
-  },
-  {
     id: "p1-exp-ai-product-engineer",
     group: "resume-pdf",
     referenceLabel: "Page 1",

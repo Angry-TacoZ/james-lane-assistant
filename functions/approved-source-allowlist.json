@@ -1,6 +1,6 @@
 {
   "generatedFrom": "src/data/resumeCorpus.js",
-  "refCount": 239,
+  "refCount": 238,
   "refs": {
     "p1-contact": {
       "title": "Contact",
@@ -131,16 +131,6 @@
         "Delivery Composer is an AI-assisted consulting staffing workflow built with React, FastAPI, and PostgreSQL/pgvector. It turns a client brief into requirements and candidate evidence, then supports human review, override, and re-evaluation; score deltas and eligibility gates remain visible.",
         "CogFit Jobs presents visible work-fit dimensions, confidence, evidence, and improvement guidance from a structured profile and job posting.",
         "The Ambient AI Shopping Concept uses inspectable, editable, reversible browser-local memory and recommendations that show tradeoffs rather than one opaque answer.",
-        "Supporting resources:"
-      ]
-    },
-    "p2-user-domain-perspective": {
-      "title": "User and Domain Perspective",
-      "sourceLabel": "James-Lane-Resume.pdf",
-      "referenceLabel": "Page 2",
-      "items": [
-        "User and Domain Perspective",
-        "Earlier work across Best Buy, hhgregg, OfficeMax, Verizon/GoWireless, automotive retail and service, and other customer-facing environments provides firsthand perspective on shopping, product comparison, customer help, and real-world service workflows. The resume connects this background to consumer product UX, retail technology, automotive experiences, and AI-assisted decision tools.",
         "Supporting resources:"
       ]
     },
