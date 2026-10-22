@@ -419,6 +419,21 @@ async function verifyResumeViewer(browser) {
   }
 }
 
+async function assertCardLiftAndGlow(card, label) {
+  const element = await card.elementHandle();
+  assert(element, `${label} is missing`);
+  await card.page().waitForFunction((target) => {
+    const transform = new DOMMatrixReadOnly(getComputedStyle(target).transform);
+    return Math.abs(transform.m42 + 3) < 0.1;
+  }, element, { timeout: 2_000 });
+  const hover = await card.evaluate((el) => ({
+    translateY: new DOMMatrixReadOnly(getComputedStyle(el).transform).m42,
+    shadow: getComputedStyle(el).boxShadow
+  }));
+  assert(Math.abs(hover.translateY + 3) < 0.1, `${label} does not lift 3px (computed ${hover.translateY}px)`);
+  assert(hover.shadow.includes("128, 255, 112"), `${label} lacks green glow`);
+}
+
 async function verifyInteractiveCards(browser) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   try {
@@ -430,10 +445,7 @@ async function verifyInteractiveCards(browser) {
         const card = cards.nth(index);
         assert(await card.evaluate((el) => el.classList.contains("interactive-card") && el.tabIndex === 0), `${target.name}/card ${index} lacks shared interaction or keyboard access`);
         await card.hover();
-        await page.waitForTimeout(250);
-        const hover = await card.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
-        assert(hover.transform === "matrix(1, 0, 0, 1, 0, -3)", `${target.name}/card ${index} does not lift`);
-        assert(hover.shadow.includes("128, 255, 112"), `${target.name}/card ${index} lacks green glow`);
+        await assertCardLiftAndGlow(card, `${target.name}/card ${index}`);
       }
     }
     await page.goto(`${BASE_URL}/#writing`, { waitUntil: "networkidle" });
@@ -441,9 +453,7 @@ async function verifyInteractiveCards(browser) {
     assert(await synthesisCard.getAttribute("data-page-link") === "home", "Request Synthesis navigation card is missing its existing route");
     assert(await synthesisCard.evaluate((el) => el.classList.contains("interactive-card") && el.tabIndex === 0 && el.getAttribute("role") === "link"), "Request Synthesis navigation card lacks shared visual and keyboard interaction");
     await synthesisCard.hover();
-    await page.waitForTimeout(250);
-    const synthesisHover = await synthesisCard.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
-    assert(synthesisHover.transform === "matrix(1, 0, 0, 1, 0, -3)" && synthesisHover.shadow.includes("128, 255, 112"), "Request Synthesis navigation card lacks the lift and green glow");
+    await assertCardLiftAndGlow(synthesisCard, "Request Synthesis navigation card");
     await synthesisCard.focus();
     await synthesisCard.press("Enter");
     await page.waitForSelector("[data-home-input]");
@@ -453,9 +463,7 @@ async function verifyInteractiveCards(browser) {
     const resumePreview = page.locator("[data-resume-page-link]").first();
     assert(await resumePreview.evaluate((el) => el.matches("a[href]") && el.classList.contains("interactive-card") && el.tabIndex >= 0), "Resume preview no longer has its native link and shared card interaction");
     await resumePreview.hover();
-    await page.waitForTimeout(250);
-    const resumeHover = await resumePreview.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
-    assert(resumeHover.transform === "matrix(1, 0, 0, 1, 0, -3)" && resumeHover.shadow.includes("128, 255, 112"), "Resume preview lacks the lift and green glow");
+    await assertCardLiftAndGlow(resumePreview, "Resume preview");
 
     await page.goto(`${BASE_URL}/#writing`, { waitUntil: "networkidle" });
     const card = page.locator(".interactive-card[data-open-url]").first();
