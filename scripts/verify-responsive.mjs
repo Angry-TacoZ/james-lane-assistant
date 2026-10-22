@@ -419,6 +419,65 @@ async function verifyResumeViewer(browser) {
   }
 }
 
+async function verifyInteractiveCards(browser) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  try {
+    const page = await context.newPage();
+    for (const target of pages) {
+      await page.goto(`${BASE_URL}/?qa=card-hover${target.hash}`, { waitUntil: "networkidle" });
+      const cards = page.locator("article[data-open-url], div[data-open-url], a[data-home-evidence-card]");
+      for (let index = 0; index < await cards.count(); index += 1) {
+        const card = cards.nth(index);
+        assert(await card.evaluate((el) => el.classList.contains("interactive-card") && el.tabIndex === 0), `${target.name}/card ${index} lacks shared interaction or keyboard access`);
+        await card.hover();
+        await page.waitForTimeout(250);
+        const hover = await card.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
+        assert(hover.transform === "matrix(1, 0, 0, 1, 0, -3)", `${target.name}/card ${index} does not lift`);
+        assert(hover.shadow.includes("128, 255, 112"), `${target.name}/card ${index} lacks green glow`);
+      }
+    }
+    await page.goto(`${BASE_URL}/#writing`, { waitUntil: "networkidle" });
+    const synthesisCard = page.locator("article").filter({ hasText: "Request Synthesis" }).first();
+    assert(await synthesisCard.getAttribute("data-page-link") === "home", "Request Synthesis navigation card is missing its existing route");
+    assert(await synthesisCard.evaluate((el) => el.classList.contains("interactive-card") && el.tabIndex === 0 && el.getAttribute("role") === "link"), "Request Synthesis navigation card lacks shared visual and keyboard interaction");
+    await synthesisCard.hover();
+    await page.waitForTimeout(250);
+    const synthesisHover = await synthesisCard.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
+    assert(synthesisHover.transform === "matrix(1, 0, 0, 1, 0, -3)" && synthesisHover.shadow.includes("128, 255, 112"), "Request Synthesis navigation card lacks the lift and green glow");
+    await synthesisCard.focus();
+    await synthesisCard.press("Enter");
+    await page.waitForSelector("[data-home-input]");
+    assert(await page.locator("[data-home-input]").evaluate((el) => el === document.activeElement), "Request Synthesis keyboard activation no longer focuses the assistant composer");
+
+    await page.goto(`${BASE_URL}/#resume`, { waitUntil: "networkidle" });
+    const resumePreview = page.locator("[data-resume-page-link]").first();
+    assert(await resumePreview.evaluate((el) => el.matches("a[href]") && el.classList.contains("interactive-card") && el.tabIndex >= 0), "Resume preview no longer has its native link and shared card interaction");
+    await resumePreview.hover();
+    await page.waitForTimeout(250);
+    const resumeHover = await resumePreview.evaluate((el) => ({ transform: getComputedStyle(el).transform, shadow: getComputedStyle(el).boxShadow }));
+    assert(resumeHover.transform === "matrix(1, 0, 0, 1, 0, -3)" && resumeHover.shadow.includes("128, 255, 112"), "Resume preview lacks the lift and green glow");
+
+    await page.goto(`${BASE_URL}/#writing`, { waitUntil: "networkidle" });
+    const card = page.locator(".interactive-card[data-open-url]").first();
+    await page.mouse.move(0, 0);
+    await card.focus();
+    assert(await card.evaluate((el) => getComputedStyle(el).outlineStyle === "solid"), "Keyboard card focus lacks an outline");
+    const popupPromise = page.waitForEvent("popup");
+    await card.press("Enter");
+    const popup = await popupPromise;
+    await popup.close();
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await card.hover();
+    assert(await card.evaluate((el) => getComputedStyle(el).transform === "none"), "Reduced-motion card still moves");
+    assert(await card.evaluate((el) => getComputedStyle(el).boxShadow.includes("128, 255, 112")), "Reduced-motion card lost its glow");
+    await page.goto(`${BASE_URL}/#health`, { waitUntil: "networkidle" });
+    assert(await page.locator(".health-condition-card").count() > 0, "Health control cards are missing");
+    assert(await page.locator(".health-condition-card.interactive-card").count() === 0, "Informational cards must not advertise a card action");
+  } finally {
+    await context.close();
+  }
+}
+
 async function main() {
   await assertPreviewPortAvailable();
   const preview = startPreview();
@@ -445,6 +504,7 @@ async function main() {
       await verifyAudioGuide(browser);
       await verifyResumeViewer(browser);
       await verifyHomeQuickLinkInteraction(browser);
+      await verifyInteractiveCards(browser);
     } finally {
       await browser.close();
     }

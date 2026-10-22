@@ -507,6 +507,11 @@ function bindGlobalEvents() {
   });
 
   document.addEventListener("keydown", async (event) => {
+    if (event.key === "Enter" && event.target.matches(".interactive-card:not(a)")) {
+      event.preventDefault();
+      event.target.click();
+      return;
+    }
     if (event.key === "Enter" && event.target.matches("[data-home-input]")) {
       event.preventDefault();
       await handleAsk(pageState.homeDraft);
@@ -756,6 +761,16 @@ function render() {
   }
 
   app.innerHTML = `${pageHtml}${renderGlobalAudioGuideSurface()}`;
+
+  app.querySelectorAll(
+    "article[data-open-url], div[data-open-url], a[data-home-evidence-card], article[data-page-link], a[data-resume-page-link]"
+  ).forEach((card) => {
+    card.classList.add("interactive-card");
+    if (!card.matches("a")) {
+      card.tabIndex = 0;
+      card.setAttribute("role", "link");
+    }
+  });
 
   if (pageState.focusComposer && pageState.page === "home") {
     const composer = document.querySelector("[data-home-input]");
