@@ -1,10 +1,10 @@
 {
   "generatedFrom": "src/data/resumeCorpus.js",
-  "refCount": 235,
+  "refCount": 239,
   "refs": {
     "p1-contact": {
       "title": "Contact",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 1",
       "items": [
         "Contact",
@@ -19,57 +19,55 @@
     },
     "p1-headline": {
       "title": "Professional Headline",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 1",
       "items": [
         "Professional Headline",
-        "AI Product & UX Engineer | Design Engineer | Interactive Prototyping",
+        "AI Engineer, AI Products, Workflow Automation & Applied LLM Systems",
         "Supporting resources:"
       ]
     },
     "p1-summary": {
-      "title": "Product Design Profile",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+      "title": "Summary",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 1",
       "items": [
-        "Product Design Profile",
-        "Career-changing AI product builder focused on user-facing systems for decisions, AI output, and complex workflows.",
-        "Combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.",
-        "Turns ambiguous operational problems into clear interaction models, evidence-rich interfaces, human review paths, and working prototypes.",
+        "Summary",
+        "AI engineer who designs and builds working LLM systems, mostly retrieval-backed assistants and tools that keep a human in charge of the final decision.",
+        "Drove an enterprise AI assistant from a written proposal through VP and committee approval to pilot stage inside a healthcare company.",
+        "Seven years of enterprise systems support. Builds in public: 45 active repositories, at least 9 live, mostly React/TypeScript frontends with Python/FastAPI backends, pgvector retrieval, and Firebase or Cloudflare deployment.",
         "Supporting resources:"
       ]
     },
-    "p1-functional-capabilities": {
-      "title": "Functional Capabilities",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+    "p1-how-i-work": {
+      "title": "How I Work",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 1",
       "items": [
-        "Functional Capabilities",
-        "AI Product & Interaction Design: user flows, interaction models, decision-support UX, progressive disclosure, human-in-the-loop design, explainability, inspectable memory, and workflow states.",
-        "Frontend Product Engineering: React, TypeScript, JavaScript, Vite, Framer Motion, responsive interfaces, component-based UI, local state, Firebase Hosting, and accessible interaction patterns.",
-        "AI Experience Design: LLM-assisted workflows, retrieval-backed interfaces, deterministic and generative hybrid systems, source grounding, bounded automation, review and override loops, visible evidence, and constraints.",
-        "Rapid Prototyping & Validation: linting, type checks, tests, builds, browser inspection, Playwright, and deployment checks.",
-        "Systems & Workflow Translation: maps business rules, dependencies, edge cases, and user decisions into understandable product experiences.",
+        "How I Work",
+        "James identifies as neurodivergent, with Autism Level 1 and ADHD, and says this shapes how he works.",
+        "He does his best work with written expectations, direct communication, a predictable schedule, and advance notice when plans change.",
+        "He describes strengths in sustained focus on hard problems, pattern recognition, and finding process failures beneath symptoms; he communicates directly and values candor and systems thinking.",
         "Supporting resources:"
       ]
     },
     "p1-tools-and-platforms": {
-      "title": "Tools & Technologies",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
-      "referenceLabel": "Page 1",
+      "title": "Technical Skills",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
       "items": [
-        "Tools & Technologies",
-        "Design / Frontend: React, TypeScript, JavaScript, Vite, Framer Motion, responsive UI, component systems, HTML/CSS.",
-        "AI / Product Systems: ChatGPT, Claude, Codex, Gemini, prompt/RAG design, retrieval, agent workflows, memory UX, evaluation, and human review.",
-        "Backend / Platform: Firebase Hosting, Functions, Auth, App Check, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, and REST/JSON APIs.",
-        "Delivery / Quality: Git, GitHub, pull requests, GitHub Actions, CI/CD, Vitest, Playwright, ESLint, pytest, secret scanning, and deployment verification.",
+        "Technical Skills",
+        "AI/LLM: RAG design, prompt engineering, agent workflows, evaluation harnesses, source grounding, human-in-the-loop design, and Copilot Studio.",
+        "Languages/Frameworks: TypeScript, JavaScript, Python, React, Vite, FastAPI, Framer Motion, and HTML/CSS.",
+        "Data/Backend: PostgreSQL, pgvector, SQLite, REST/JSON APIs, Firebase Hosting/Functions/Auth/App Check, and Cloudflare Workers.",
+        "Quality/Delivery: Git/GitHub, GitHub Actions, CI/CD, Vitest, Playwright, pytest, ESLint, and deployment verification.",
         "Supporting resources:"
       ]
     },
     "p1-project-blue-shopping-agent": {
       "title": "Blue - Ambient AI Shopping Agent Concept",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
-      "referenceLabel": "Page 1",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
       "items": [
         "Blue - Ambient AI Shopping Agent Concept",
         "Public GitHub repo and live concept: https://github.com/Angry-TacoZ/best-buy-blue-concept and https://angry-tacoz.github.io/best-buy-blue-concept/.",
@@ -82,8 +80,8 @@
     },
     "p1-project-delivery-composer": {
       "title": "Delivery Composer - AI-Assisted Consulting Staffing Workflow",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
-      "referenceLabel": "Page 1",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
       "items": [
         "Delivery Composer - AI-Assisted Consulting Staffing Workflow",
         "Public GitHub repo and live demo: https://github.com/Angry-TacoZ/delivery-composer and https://composer.jamesai.space/.",
@@ -94,26 +92,68 @@
       ]
     },
     "p2-additional-product-evidence": {
-      "title": "Additional Product & AI Build Evidence",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+      "title": "Living Resume / Recruiter Assistant",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 2",
       "items": [
-        "Additional Product & AI Build Evidence",
-        "CogFit Jobs: explainable AI work-fit interface with visible fit dimensions, confidence, evidence, and improvement guidance.",
-        "James AI Living Resume: recruiter-facing portfolio assistant built with React/Vite, Firebase Hosting/Functions, verified resume data, and voice guidance.",
-        "PDF Equipment Checker: deterministic document-validation tool and hosted upload flow for comparing equipment schedules against plan drawings.",
-        "Responsible Vibe Coding Playbook: published AI-assisted development workflow centered on inspect-before-edit, explicit trust boundaries, scoped implementation, verification, and traceable deployment.",
+        "Living Resume / Recruiter Assistant",
+        "Source-grounded, recruiter-facing portfolio assistant built with React/Vite and Firebase Hosting/Functions, with verified resume data and voice guidance.",
+        "The resume describes it as a portfolio that interviews itself.",
         "Supporting resources:"
       ]
     },
-    "p2-exp-ai-product-builder": {
-      "title": "AI Product Builder - JamesLaneAI.com | 2025-Present",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+    "p2-project-cogfit-jobs": {
+      "title": "CogFit Jobs",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 2",
       "items": [
-        "AI Product Builder - JamesLaneAI.com | 2025-Present",
-        "Designs and builds AI-enabled products, workflow tools, frontend concepts, and portfolio prototypes from problem framing through working implementation.",
-        "Translates business problems into user-facing workflows, explicit decision points, bounded automation, and reviewable product behavior.",
+        "CogFit Jobs",
+        "Explainable AI work-fit interface that turns a structured profile and job posting into visible fit dimensions, confidence levels, evidence, and improvement guidance.",
+        "Supporting resources:"
+      ]
+    },
+    "p2-project-ambient-shopping": {
+      "title": "Ambient AI Shopping Concept",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
+      "items": [
+        "Ambient AI Shopping Concept",
+        "Retail AI interaction model with browser-local memory the user can inspect, edit, and undo, and recommendations that show their tradeoffs instead of one opaque answer.",
+        "Supporting resources:"
+      ]
+    },
+    "p2-selected-projects": {
+      "title": "Selected Projects",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
+      "items": [
+        "Selected Projects",
+        "Delivery Composer is an AI-assisted consulting staffing workflow built with React, FastAPI, and PostgreSQL/pgvector. It turns a client brief into requirements and candidate evidence, then supports human review, override, and re-evaluation; score deltas and eligibility gates remain visible.",
+        "CogFit Jobs presents visible work-fit dimensions, confidence, evidence, and improvement guidance from a structured profile and job posting.",
+        "The Ambient AI Shopping Concept uses inspectable, editable, reversible browser-local memory and recommendations that show tradeoffs rather than one opaque answer.",
+        "Supporting resources:"
+      ]
+    },
+    "p2-user-domain-perspective": {
+      "title": "User and Domain Perspective",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 2",
+      "items": [
+        "User and Domain Perspective",
+        "Earlier work across Best Buy, hhgregg, OfficeMax, Verizon/GoWireless, automotive retail and service, and other customer-facing environments provides firsthand perspective on shopping, product comparison, customer help, and real-world service workflows. The resume connects this background to consumer product UX, retail technology, automotive experiences, and AI-assisted decision tools.",
+        "Supporting resources:"
+      ]
+    },
+    "p1-exp-ai-product-engineer": {
+      "title": "AI Product Engineer (Independent) | 2025-Present",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 1",
+      "items": [
+        "AI Product Engineer (Independent) | 2025-Present",
+        "Designs and builds AI products from the first sketch of the problem through deployment and evaluation.",
+        "Builds retrieval-backed assistants that cite sources, bounded automation with human review and override, and hybrid workflows mixing deterministic steps with generated output.",
+        "Uses structured A/B model comparisons, linting and type checks, Playwright browser verification, and live-deployment checks.",
+        "Documents an inspect-before-edit method, explicit trust boundaries, scoped changes, and traceable deployments.",
         "Supporting resources:"
       ]
     },
@@ -131,22 +171,26 @@
     },
     "p2-exp-capital-blue-cross": {
       "title": "Claims Examiner I - Capital Blue Cross | 2025-2026",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
-      "referenceLabel": "Page 2",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Page 1",
       "items": [
         "Claims Examiner I - Capital Blue Cross | 2025-2026",
-        "Designed a PHI-safe AI assistant pilot for complex claims workflows, including source grounding, linked-step navigation, human review, governance boundaries, and structured A/B evaluation.",
+        "Found recurring process failures in complex claims workflows and proposed fixes, flagging more improvement opportunities than the review pipeline could absorb.",
+        "Proposed a PHI-safe AI assistant pilot for claims workflows, with source grounding, linked-step navigation, human review gates, and governance boundaries. A VP and both enterprise AI committees backed the proposal; it projected 40,000 labor hours a year in savings and the pilot was approved.",
+        "Began building the assistant in Copilot Studio and set up an A/B evaluation plan to measure its effect on examiner throughput and accuracy.",
+        "Learned the Facets claims platform and its plan rules quickly; the resume says this confirmed system design and automation are where James does his best work.",
         "Supporting resources:"
       ]
     },
     "p2-exp-randstad-icu-medical": {
-      "title": "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
-      "referenceLabel": "Page 2",
+      "title": "Help Desk Analyst / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
+      "sourceLabel": "James-Lane-Resume.pdf",
+      "referenceLabel": "Pages 1-2",
       "items": [
-        "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
+        "Help Desk Analyst / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
         "Supported more than 3,000 enterprise users across Microsoft 365, Active Directory, Azure AD, Oracle EBS, VPN/VDI, and ServiceNow.",
-        "Converted recurring support friction into scripts, macros, technical documentation, escalation templates, and workflow improvements.",
+        "Turned recurring support problems into permanent fixes through scripts, macros, documentation, and escalation templates that cut down repeat tickets.",
+        "Proposed an AI assistant to improve service-desk efficiency; that proposal started the move into AI systems work.",
         "Supporting resources:"
       ]
     },
@@ -384,14 +428,15 @@
     },
     "p2-education": {
       "title": "Education and Certification",
-      "sourceLabel": "James_Lane_AI_Product_UX_Functional.docx",
+      "sourceLabel": "James-Lane-Resume.pdf",
       "referenceLabel": "Page 2",
       "items": [
         "Education and Certification",
         "High School Diploma | Hephzibah High School",
         "AI Fluency: Framework & Foundations (Anthropic)",
-        "Academy Accreditation: Generative AI Fundamentals (Databricks)",
+        "Generative AI Fundamentals (Databricks)",
         "Business Analysis Foundations",
+        "Prompt Engineering and AI Agents (LinkedIn Learning)",
         "Supporting resources:"
       ]
     },
@@ -2315,7 +2360,7 @@
       "items": [
         "Employer-Facing Framing Rules",
         "When speaking to employers or in employer-facing contexts:",
-        "present James as an AI product and UX engineer with a nontraditional background only when that context is relevant",
+        "present James as an Agentic Engineer focused on AI products and applied LLM systems; mention his nontraditional background only when relevant",
         "explain how he thinks, learns, and works",
         "connect style to likely outcomes",
         "state strengths and tradeoffs together",
@@ -2425,7 +2470,7 @@
       "items": [
         "Preferred Summary Pattern",
         "When a short summary is needed, use a structure like:",
-        "\"James is an AI product and UX engineer who builds workflow tools and interactive prototypes with visible constraints, evidence, and human review.\"",
+        "\"James is an Agentic Engineer who builds AI products and workflow tools with visible constraints, evidence, and human review.\"",
         "This is better than:",
         "\"James is an innovative professional with a passion for solving problems in dynamic environments.\"",
         "Supporting resources:"
@@ -2474,7 +2519,7 @@
       "referenceLabel": "core-identity.md",
       "items": [
         "Identity Summary",
-        "James Lane is an AI product and UX engineer with a background spanning enterprise IT support, healthcare operations, interaction design, and practical tool-building.",
+        "James Lane's public-facing professional title is Agentic Engineer. His current resume headline is \"AI Engineer, AI Products, Workflow Automation & Applied LLM Systems.\" His background spans enterprise IT support, healthcare operations, interaction design, and practical tool-building.",
         "He is not best represented by title history alone.",
         "The strongest evidence of his work appears in how he:",
         "turns ambiguous needs into interaction flows and constraints",
@@ -2490,7 +2535,7 @@
       "referenceLabel": "core-identity.md",
       "items": [
         "Current Professional Position",
-        "James's current resume identifies ongoing work as AI Product Builder at JamesLaneAI.com.",
+        "James's current resume lists AI Product Engineer (Independent), 2025-Present. The resume describes work designing and building AI products from problem framing through deployment and evaluation.",
         "His work background also includes enterprise IT or help-desk-style support, access or account support, troubleshooting, and process-oriented work inside structured organizations.",
         "He has developed strong familiarity with:",
         "troubleshooting multi-layered systems",
@@ -2526,7 +2571,7 @@
       "items": [
         "Candidate Type",
         "James should be represented as:",
-        "an AI product and UX engineer",
+        "an Agentic Engineer focused on AI products and applied LLM systems",
         "serious and self-directed",
         "evidence-oriented and builder-minded",
         "experienced in healthcare operations and enterprise systems support",
@@ -2661,7 +2706,7 @@
       "referenceLabel": "core-identity.md",
       "items": [
         "Safe Summary",
-        "James Lane is an AI product and UX engineer with a background in enterprise support, healthcare operations, interaction design, and practical tool-building. His portfolio is best understood through the workflows, constraints, evidence, and verification visible in the work.",
+        "James Lane is an Agentic Engineer focused on AI products and applied LLM systems, with a background in enterprise support, healthcare operations, interaction design, and practical tool-building. His portfolio is best understood through the workflows, constraints, evidence, and verification visible in the work.",
         "Supporting resources:"
       ]
     },

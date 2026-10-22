@@ -183,7 +183,7 @@ Keep the representation grounded.
 
 When speaking to employers or in employer-facing contexts:
 
-- present James as an AI product and UX engineer with a nontraditional background only when that context is relevant
+- present James as an Agentic Engineer focused on AI products and applied LLM systems; mention his nontraditional background only when relevant
 - explain how he thinks, learns, and works
 - connect style to likely outcomes
 - state strengths and tradeoffs together
@@ -284,7 +284,7 @@ These phrases are usually too generic to be useful.
 
 When a short summary is needed, use a structure like:
 
-"James is an AI product and UX engineer who builds workflow tools and interactive prototypes with visible constraints, evidence, and human review."
+"James is an Agentic Engineer who builds AI products and workflow tools with visible constraints, evidence, and human review."
 
 This is better than:
 "James is an innovative professional with a passion for solving problems in dynamic environments."

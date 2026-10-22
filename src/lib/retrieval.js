@@ -556,6 +556,10 @@ function getIntent(question, preferredIntent = null) {
     return "workLocation";
   }
 
+  if (/\b(education|school|diploma|schooling|academic|certification|certifications|anthropic|databricks)\b/.test(normalized)) {
+    return "education";
+  }
+
   if (matchedWritingEntity) {
     return "writing";
   }
@@ -1163,18 +1167,18 @@ function pickSections(scoredSections, intent, question = "") {
     if (intent === "roleFit" && BA_CAPABILITY_PATTERN.test(normalizedQuestion)) {
       const selected = [];
       const summary = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /product design profile|professional summary/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /summary/.test(normalizeText(entry.section.title))
       );
       const strengths = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /functional capabilities|core strengths|core skills/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /how i work|selected projects|core strengths|core skills/.test(normalizeText(entry.section.title))
       );
       const tools = limitedSections.find(
-        (entry) => entry.section.group === "resume-pdf" && /\btools\b|core skills/.test(normalizeText(entry.section.title))
+        (entry) => entry.section.group === "resume-pdf" && /technical skills|\btools\b|core skills/.test(normalizeText(entry.section.title))
       );
       const experience = limitedSections.find(
         (entry) =>
           entry.section.group === "resume-pdf" &&
-          /jameslaneai|ai product builder|james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
+          /jameslaneai|ai product engineer|ai product builder|james lane ai consulting|ai consultant|capital blue cross|claims examiner|help desk analyst/.test(
             normalizeText(entry.section.title)
           )
       );
@@ -1260,6 +1264,13 @@ function pickSections(scoredSections, intent, question = "") {
       }
 
       return selected;
+    }
+
+    if (intent === "education") {
+      const education = limitedSections.find((entry) =>
+        /education|certification/.test(normalizeText(entry.section.title))
+      );
+      return education ? [education] : [];
     }
 
     if (intent === "workLocation") {

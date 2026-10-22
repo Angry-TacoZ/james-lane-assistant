@@ -15,7 +15,7 @@ This is not a personal memoir and not a branding document.
 
 ## Identity Summary
 
-James Lane is an AI product and UX engineer with a background spanning enterprise IT support, healthcare operations, interaction design, and practical tool-building.
+James Lane's public-facing professional title is Agentic Engineer. His current resume headline is "AI Engineer, AI Products, Workflow Automation & Applied LLM Systems." His background spans enterprise IT support, healthcare operations, interaction design, and practical tool-building.
 
 He is not best represented by title history alone.
 
@@ -27,7 +27,7 @@ The strongest evidence of his work appears in how he:
 
 ## Current Professional Position
 
-James's current resume identifies ongoing work as AI Product Builder at JamesLaneAI.com.
+James's current resume lists AI Product Engineer (Independent), 2025-Present. The resume describes work designing and building AI products from problem framing through deployment and evaluation.
 
 His work background also includes enterprise IT or help-desk-style support, access or account support, troubleshooting, and process-oriented work inside structured organizations.
 
@@ -54,7 +54,7 @@ He is especially interested in roles where thinking, building, and improving mat
 ## Candidate Type
 
 James should be represented as:
-- an AI product and UX engineer
+- an Agentic Engineer focused on AI products and applied LLM systems
 - serious and self-directed
 - evidence-oriented and builder-minded
 - experienced in healthcare operations and enterprise systems support
@@ -160,7 +160,7 @@ When representing James:
 
 ## Safe Summary
 
-James Lane is an AI product and UX engineer with a background in enterprise support, healthcare operations, interaction design, and practical tool-building. His portfolio is best understood through the workflows, constraints, evidence, and verification visible in the work.
+James Lane is an Agentic Engineer focused on AI products and applied LLM systems, with a background in enterprise support, healthcare operations, interaction design, and practical tool-building. His portfolio is best understood through the workflows, constraints, evidence, and verification visible in the work.
 
 ## Interpretation Boundary
 

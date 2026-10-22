@@ -147,13 +147,13 @@ const artDesignCatalogCorpus = {
   ]
 };
 
-const RESUME_SOURCE_LABEL = "James_Lane_AI_Product_UX_Functional.docx";
+const RESUME_SOURCE_LABEL = "James-Lane-Resume.pdf";
 
 export const approvedSources = [
   {
     id: "resume-pdf",
     label: RESUME_SOURCE_LABEL,
-    path: "C:\\Users\\angry\\Downloads\\James_Lane_AI_Product_UX_Functional.docx"
+    path: "public/resume/James-Lane-Resume.pdf"
   },
   ...markdownSources.map(({ id, label, path }) => ({
     id,
@@ -202,8 +202,8 @@ const resumeSourceCorpus = [
     referenceLabel: "Page 1",
     page: 1,
     title: "Professional Headline",
-    aliases: ["headline", "roles", "title", "position", "ai product", "ux engineer", "design engineer", "interactive prototyping"],
-    items: ["AI Product & UX Engineer | Design Engineer | Interactive Prototyping"]
+    aliases: ["headline", "roles", "title", "position", "ai engineer", "agentic engineer", "ai products", "workflow automation", "applied llm systems"],
+    items: ["AI Engineer, AI Products, Workflow Automation & Applied LLM Systems"]
   },
   {
     id: "p1-summary",
@@ -211,51 +211,49 @@ const resumeSourceCorpus = [
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "Product Design Profile",
+    title: "Summary",
     aliases: ["summary", "overview", "background", "profile", "about"],
     items: [
-      "Career-changing AI product builder focused on user-facing systems for decisions, AI output, and complex workflows.",
-      "Combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.",
-      "Turns ambiguous operational problems into clear interaction models, evidence-rich interfaces, human review paths, and working prototypes."
+      "AI engineer who designs and builds working LLM systems, mostly retrieval-backed assistants and tools that keep a human in charge of the final decision.",
+      "Drove an enterprise AI assistant from a written proposal through VP and committee approval to pilot stage inside a healthcare company.",
+      "Seven years of enterprise systems support. Builds in public: 45 active repositories, at least 9 live, mostly React/TypeScript frontends with Python/FastAPI backends, pgvector retrieval, and Firebase or Cloudflare deployment."
     ]
   },
   {
-    id: "p1-functional-capabilities",
+    id: "p1-how-i-work",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 1",
     page: 1,
-    title: "Functional Capabilities",
-    aliases: ["capabilities", "product design", "interaction design", "ai experience design", "rapid prototyping", "validation", "workflow translation"],
+    title: "How I Work",
+    aliases: ["work style", "work environment", "neurodivergent", "autism", "adhd", "written expectations", "direct communication", "systems thinking"],
     items: [
-      "AI Product & Interaction Design: user flows, interaction models, decision-support UX, progressive disclosure, human-in-the-loop design, explainability, inspectable memory, and workflow states.",
-      "Frontend Product Engineering: React, TypeScript, JavaScript, Vite, Framer Motion, responsive interfaces, component-based UI, local state, Firebase Hosting, and accessible interaction patterns.",
-      "AI Experience Design: LLM-assisted workflows, retrieval-backed interfaces, deterministic and generative hybrid systems, source grounding, bounded automation, review and override loops, visible evidence, and constraints.",
-      "Rapid Prototyping & Validation: linting, type checks, tests, builds, browser inspection, Playwright, and deployment checks.",
-      "Systems & Workflow Translation: maps business rules, dependencies, edge cases, and user decisions into understandable product experiences."
+      "James identifies as neurodivergent, with Autism Level 1 and ADHD, and says this shapes how he works.",
+      "He does his best work with written expectations, direct communication, a predictable schedule, and advance notice when plans change.",
+      "He describes strengths in sustained focus on hard problems, pattern recognition, and finding process failures beneath symptoms; he communicates directly and values candor and systems thinking."
     ]
   },
   {
     id: "p1-tools-and-platforms",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 1",
-    page: 1,
-    title: "Tools & Technologies",
-    aliases: ["skills", "core strengths", "strengths", "competencies", "technical stack", "tools", "platforms", "enterprise context"],
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "Technical Skills",
+    aliases: ["skills", "tools", "technologies", "frameworks", "technical stack", "platforms", "ai", "llm", "backend", "quality", "delivery"],
     items: [
-      "Design / Frontend: React, TypeScript, JavaScript, Vite, Framer Motion, responsive UI, component systems, HTML/CSS.",
-      "AI / Product Systems: ChatGPT, Claude, Codex, Gemini, prompt/RAG design, retrieval, agent workflows, memory UX, evaluation, and human review.",
-      "Backend / Platform: Firebase Hosting, Functions, Auth, App Check, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, and REST/JSON APIs.",
-      "Delivery / Quality: Git, GitHub, pull requests, GitHub Actions, CI/CD, Vitest, Playwright, ESLint, pytest, secret scanning, and deployment verification."
+      "AI/LLM: RAG design, prompt engineering, agent workflows, evaluation harnesses, source grounding, human-in-the-loop design, and Copilot Studio.",
+      "Languages/Frameworks: TypeScript, JavaScript, Python, React, Vite, FastAPI, Framer Motion, and HTML/CSS.",
+      "Data/Backend: PostgreSQL, pgvector, SQLite, REST/JSON APIs, Firebase Hosting/Functions/Auth/App Check, and Cloudflare Workers.",
+      "Quality/Delivery: Git/GitHub, GitHub Actions, CI/CD, Vitest, Playwright, pytest, ESLint, and deployment verification."
     ]
   },
   {
     id: "p1-project-blue-shopping-agent",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 1",
-    page: 1,
+    referenceLabel: "Page 2",
+    page: 2,
     title: "Blue - Ambient AI Shopping Agent Concept",
     aliases: ["blue", "best buy blue", "ambient shopping agent", "shopping agent", "retail ai", "inspectable memory", "product recommendations", "curated laptop", "checkout simulation"],
     items: [
@@ -270,8 +268,8 @@ const resumeSourceCorpus = [
     id: "p1-project-delivery-composer",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 1",
-    page: 1,
+    referenceLabel: "Page 2",
+    page: 2,
     title: "Delivery Composer - AI-Assisted Consulting Staffing Workflow",
     aliases: ["delivery composer", "consulting staffing", "delivery team", "candidate comparison", "human approval", "staffing workflow"],
     items: [
@@ -287,26 +285,70 @@ const resumeSourceCorpus = [
     sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
-    title: "Additional Product & AI Build Evidence",
-    aliases: ["cogfit jobs", "james ai", "living resume", "pdf equipment checker", "responsible vibe coding", "playbook"],
+    title: "Living Resume / Recruiter Assistant",
+    aliases: ["james ai", "living resume", "recruiter assistant", "voice guidance"],
     items: [
-      "CogFit Jobs: explainable AI work-fit interface with visible fit dimensions, confidence, evidence, and improvement guidance.",
-      "James AI Living Resume: recruiter-facing portfolio assistant built with React/Vite, Firebase Hosting/Functions, verified resume data, and voice guidance.",
-      "PDF Equipment Checker: deterministic document-validation tool and hosted upload flow for comparing equipment schedules against plan drawings.",
-      "Responsible Vibe Coding Playbook: published AI-assisted development workflow centered on inspect-before-edit, explicit trust boundaries, scoped implementation, verification, and traceable deployment."
+      "Source-grounded, recruiter-facing portfolio assistant built with React/Vite and Firebase Hosting/Functions, with verified resume data and voice guidance.",
+      "The resume describes it as a portfolio that interviews itself."
     ]
   },
   {
-    id: "p2-exp-ai-product-builder",
+    id: "p2-project-cogfit-jobs",
     group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
     referenceLabel: "Page 2",
     page: 2,
+    title: "CogFit Jobs",
+    aliases: ["cogfit jobs", "cogfit", "job fit evaluator", "work-fit interface"],
+    items: ["Explainable AI work-fit interface that turns a structured profile and job posting into visible fit dimensions, confidence levels, evidence, and improvement guidance."]
+  },
+  {
+    id: "p2-project-ambient-shopping",
+    group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    title: "AI Product Builder - JamesLaneAI.com | 2025-Present",
-    aliases: ["current role", "current job", "ai product builder", "jameslaneai", "james lane ai", "consulting"],
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "Ambient AI Shopping Concept",
+    aliases: ["ambient ai shopping", "shopping concept", "shopping agent", "retail ai"],
+    items: ["Retail AI interaction model with browser-local memory the user can inspect, edit, and undo, and recommendations that show their tradeoffs instead of one opaque answer."]
+  },
+  {
+    id: "p2-selected-projects",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "Selected Projects",
+    aliases: ["selected projects", "projects on resume", "delivery composer", "cogfit jobs", "ambient ai shopping", "shopping concept"],
     items: [
-      "Designs and builds AI-enabled products, workflow tools, frontend concepts, and portfolio prototypes from problem framing through working implementation.",
-      "Translates business problems into user-facing workflows, explicit decision points, bounded automation, and reviewable product behavior."
+      "Delivery Composer is an AI-assisted consulting staffing workflow built with React, FastAPI, and PostgreSQL/pgvector. It turns a client brief into requirements and candidate evidence, then supports human review, override, and re-evaluation; score deltas and eligibility gates remain visible.",
+      "CogFit Jobs presents visible work-fit dimensions, confidence, evidence, and improvement guidance from a structured profile and job posting.",
+      "The Ambient AI Shopping Concept uses inspectable, editable, reversible browser-local memory and recommendations that show tradeoffs rather than one opaque answer."
+    ]
+  },
+  {
+    id: "p2-user-domain-perspective",
+    group: "resume-pdf",
+    sourceLabel: RESUME_SOURCE_LABEL,
+    referenceLabel: "Page 2",
+    page: 2,
+    title: "User and Domain Perspective",
+    aliases: ["retail", "automotive", "customer-facing", "consumer product", "shopping", "service workflows"],
+    items: ["Earlier work across Best Buy, hhgregg, OfficeMax, Verizon/GoWireless, automotive retail and service, and other customer-facing environments provides firsthand perspective on shopping, product comparison, customer help, and real-world service workflows. The resume connects this background to consumer product UX, retail technology, automotive experiences, and AI-assisted decision tools."]
+  },
+  {
+    id: "p1-exp-ai-product-engineer",
+    group: "resume-pdf",
+    referenceLabel: "Page 1",
+    page: 1,
+    sourceLabel: RESUME_SOURCE_LABEL,
+    title: "AI Product Engineer (Independent) | 2025-Present",
+    aliases: ["current role", "current job", "ai product engineer", "independent", "jameslaneai", "james lane ai", "consulting"],
+    items: [
+      "Designs and builds AI products from the first sketch of the problem through deployment and evaluation.",
+      "Builds retrieval-backed assistants that cite sources, bounded automation with human review and override, and hybrid workflows mixing deterministic steps with generated output.",
+      "Uses structured A/B model comparisons, linting and type checks, Playwright browser verification, and live-deployment checks.",
+      "Documents an inspect-before-edit method, explicit trust boundaries, scoped changes, and traceable deployments."
     ]
   },
   {
@@ -326,25 +368,29 @@ const resumeSourceCorpus = [
     id: "p2-exp-capital-blue-cross",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 2",
-    page: 2,
+    referenceLabel: "Page 1",
+    page: 1,
     title: "Claims Examiner I - Capital Blue Cross | 2025-2026",
     aliases: ["capital blue cross", "cbc", "claims examiner", "claims examiner i", "claims", "facets", "phi-safe claims ai pilot"],
     items: [
-      "Designed a PHI-safe AI assistant pilot for complex claims workflows, including source grounding, linked-step navigation, human review, governance boundaries, and structured A/B evaluation."
+      "Found recurring process failures in complex claims workflows and proposed fixes, flagging more improvement opportunities than the review pipeline could absorb.",
+      "Proposed a PHI-safe AI assistant pilot for claims workflows, with source grounding, linked-step navigation, human review gates, and governance boundaries. A VP and both enterprise AI committees backed the proposal; it projected 40,000 labor hours a year in savings and the pilot was approved.",
+      "Began building the assistant in Copilot Studio and set up an A/B evaluation plan to measure its effect on examiner throughput and accuracy.",
+      "Learned the Facets claims platform and its plan rules quickly; the resume says this confirmed system design and automation are where James does his best work."
     ]
   },
   {
     id: "p2-exp-randstad-icu-medical",
     group: "resume-pdf",
     sourceLabel: RESUME_SOURCE_LABEL,
-    referenceLabel: "Page 2",
-    page: 2,
-    title: "Help Desk Analyst L1.5 / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
+    referenceLabel: "Pages 1-2",
+    page: 1,
+    title: "Help Desk Analyst / Enterprise Systems Support - ICU Medical via Randstad | 2018-2025",
     aliases: ["randstad", "icu medical", "help desk analyst", "enterprise systems support", "enterprise it", "oracle ebs", "active directory", "azure ad"],
     items: [
       "Supported more than 3,000 enterprise users across Microsoft 365, Active Directory, Azure AD, Oracle EBS, VPN/VDI, and ServiceNow.",
-      "Converted recurring support friction into scripts, macros, technical documentation, escalation templates, and workflow improvements."
+      "Turned recurring support problems into permanent fixes through scripts, macros, documentation, and escalation templates that cut down repeat tickets.",
+      "Proposed an AI assistant to improve service-desk efficiency; that proposal started the move into AI systems work."
     ]
   },
   artDesignCatalogCorpus,
@@ -597,8 +643,9 @@ const resumeSourceCorpus = [
     items: [
       "High School Diploma | Hephzibah High School",
       "AI Fluency: Framework & Foundations (Anthropic)",
-      "Academy Accreditation: Generative AI Fundamentals (Databricks)",
-      "Business Analysis Foundations"
+      "Generative AI Fundamentals (Databricks)",
+      "Business Analysis Foundations",
+      "Prompt Engineering and AI Agents (LinkedIn Learning)"
     ]
   }
 ];
