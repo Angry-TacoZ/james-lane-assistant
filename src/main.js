@@ -784,6 +784,22 @@ function composeLocalAnswer(matches, mode, question) {
 }
 
 function render() {
+  const activeComposer =
+    pageState.page === "home" &&
+    !pageState.focusComposer &&
+    document.activeElement?.matches("[data-home-input]")
+      ? document.activeElement
+      : null;
+  const composerState = activeComposer
+    ? {
+        value: activeComposer.value,
+        selectionStart: activeComposer.selectionStart,
+        selectionEnd: activeComposer.selectionEnd,
+        selectionDirection: activeComposer.selectionDirection
+      }
+    : null;
+  activeComposer?.remove();
+
   document.title = PAGE_TITLES[pageState.page] ?? PAGE_TITLES.home;
   let pageHtml = "";
 
@@ -823,6 +839,21 @@ function render() {
       card.setAttribute("role", "link");
     }
   });
+
+  if (composerState) {
+    const renderedComposer = app.querySelector("[data-home-input]");
+    if (renderedComposer) {
+      renderedComposer.replaceWith(activeComposer);
+      activeComposer.value = composerState.value;
+      pageState.homeDraft = composerState.value;
+      activeComposer.focus({ preventScroll: true });
+      activeComposer.setSelectionRange(
+        composerState.selectionStart,
+        composerState.selectionEnd,
+        composerState.selectionDirection
+      );
+    }
+  }
 
   if (pageState.focusComposer && pageState.page === "home") {
     const composer = document.querySelector("[data-home-input]");

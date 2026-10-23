@@ -423,6 +423,54 @@ async function verifyResumeViewer(browser) {
   }
 }
 
+async function verifyComposerTypingDuringDeferredStartup(browser) {
+  for (const viewport of viewports) {
+    const context = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: viewport.isMobile
+    });
+
+    try {
+      await context.addInitScript(() => {
+        const idleCallbacks = [];
+        window.requestIdleCallback = (callback) => {
+          idleCallbacks.push(callback);
+          return idleCallbacks.length;
+        };
+        window.__runIdleCallback = (index) => idleCallbacks[index]?.({ didTimeout: false, timeRemaining: () => 50 });
+      });
+
+      const page = await context.newPage();
+      await page.goto(`${BASE_URL}/?qa=responsive-startup-composer-${viewport.name}`, { waitUntil: "networkidle" });
+
+      const composer = page.locator("[data-home-input]");
+      await composer.fill("draft question");
+      await composer.evaluate((input) => input.setSelectionRange(5, 5));
+      await composer.evaluate((input) => { window.__composerBeforeDeferredRender = input; });
+      await page.evaluate(() => window.__runIdleCallback(1));
+      await page.waitForSelector("[data-home-history] [data-home-turn-user-last]");
+
+      const afterDeferredRender = await composer.evaluate((input) => ({
+        focused: input === document.activeElement,
+        sameNode: input === window.__composerBeforeDeferredRender,
+        value: input.value,
+        selectionStart: input.selectionStart,
+        selectionEnd: input.selectionEnd
+      }));
+
+      assert(afterDeferredRender.focused, `${viewport.name}/startup deferred render stole focus from the composer`);
+      assert(afterDeferredRender.sameNode, `${viewport.name}/startup deferred render replaced the active composer node`);
+      assert(afterDeferredRender.value === "draft question", `${viewport.name}/startup deferred render lost composer text`);
+      assert(afterDeferredRender.selectionStart === 5 && afterDeferredRender.selectionEnd === 5, `${viewport.name}/startup deferred render moved the composer caret`);
+
+      await composer.pressSequentially("ed");
+      assert(await composer.inputValue() === "drafted question", `${viewport.name}/startup typing did not continue at the preserved caret`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function assertCardLiftAndGlow(card, label) {
   const element = await card.elementHandle();
   assert(element, `${label} is missing`);
@@ -515,6 +563,7 @@ async function main() {
 
       await verifyAudioGuide(browser);
       await verifyResumeViewer(browser);
+      await verifyComposerTypingDuringDeferredStartup(browser);
       await verifyHomeQuickLinkInteraction(browser);
       await verifyInteractiveCards(browser);
     } finally {
