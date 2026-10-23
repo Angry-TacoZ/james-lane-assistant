@@ -18,10 +18,10 @@ The JSON artifact is written to `output/lighthouse-performance.json`, which is i
 | --- | ---: | ---: |
 | Performance score | 94 | 95 |
 | First Contentful Paint | 1.8 s | 1.9 s |
-| Largest Contentful Paint | 2.8 s | 2.7 s |
-| Total Blocking Time | 70 ms | 10 ms |
+| Largest Contentful Paint | 2.8 s | 2.6 s |
+| Total Blocking Time | 70 ms | 20 ms |
 | Cumulative Layout Shift | 0.012 | 0.009 |
-| Transferred bytes | 1,510 KiB | 674 KiB |
+| Transferred bytes | 1,510 KiB | 689 KiB |
 
 ## What Changed
 
