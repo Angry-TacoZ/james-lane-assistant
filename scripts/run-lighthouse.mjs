@@ -1,10 +1,11 @@
 import { execFile, spawn } from "node:child_process";
 import { createServer } from "node:net";
 import { existsSync } from "node:fs";
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
+import { runFreshLighthouseAudit } from "./lighthouse-report.mjs";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -84,8 +85,8 @@ try {
     throw new Error("The local preview server did not become ready for Lighthouse.");
   }
 
-  try {
-    await execFileAsync(process.execPath, [
+  const report = await runFreshLighthouseAudit(reportPath, () =>
+    execFileAsync(process.execPath, [
       resolve(projectRoot, "node_modules", "lighthouse", "cli", "index.js"),
       url,
       `--chrome-path=${chromePath}`,
@@ -93,14 +94,8 @@ try {
       "--output=json",
       `--output-path=${reportPath}`,
       "--quiet"
-    ]);
-  } catch (error) {
-    if (!existsSync(reportPath)) {
-      throw error;
-    }
-  }
-
-  const report = JSON.parse(await readFile(reportPath, "utf8"));
+    ])
+  );
   const audits = report.audits;
   const metrics = {
     performance: Math.round(report.categories.performance.score * 100),

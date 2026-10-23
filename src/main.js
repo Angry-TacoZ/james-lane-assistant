@@ -787,7 +787,8 @@ function render() {
   const activeComposer =
     pageState.page === "home" &&
     !pageState.focusComposer &&
-    document.activeElement?.matches("[data-home-input]")
+    document.activeElement?.matches("[data-home-input]") &&
+    document.activeElement.value === pageState.homeDraft
       ? document.activeElement
       : null;
   const composerState = activeComposer

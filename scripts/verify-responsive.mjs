@@ -471,6 +471,41 @@ async function verifyComposerTypingDuringDeferredStartup(browser) {
   }
 }
 
+async function verifyComposerSubmissionClearsDraft(browser) {
+  for (const viewport of viewports) {
+    const context = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: viewport.isMobile
+    });
+
+    try {
+      const page = await context.newPage();
+      await page.goto(`${BASE_URL}/?qa=responsive-submit-composer-${viewport.name}`, { waitUntil: "networkidle" });
+      await page.waitForFunction(() =>
+        document.querySelector("[data-home-history] [data-home-turn-user-last]") &&
+        !document.body.innerText.includes("Thinking through the approved sources...")
+      );
+
+      const question = "Would James be good at software engineering?";
+      const composer = page.locator("[data-home-input]");
+      await composer.fill(question);
+      await composer.press("Enter");
+      await page.waitForFunction((submittedQuestion) =>
+        [...document.querySelectorAll("[data-home-history] [data-home-turn-user-last]")]
+          .some((turn) => turn.innerText.includes(submittedQuestion)), question
+      );
+      await page.waitForFunction(() =>
+        document.querySelector("[data-home-input]")?.value === "" &&
+        !document.body.innerText.includes("Thinking through the approved sources...")
+      );
+
+      assert(await composer.inputValue() === "", `${viewport.name}/submit left the completed question in the composer`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function assertCardLiftAndGlow(card, label) {
   const element = await card.elementHandle();
   assert(element, `${label} is missing`);
@@ -564,6 +599,7 @@ async function main() {
       await verifyAudioGuide(browser);
       await verifyResumeViewer(browser);
       await verifyComposerTypingDuringDeferredStartup(browser);
+      await verifyComposerSubmissionClearsDraft(browser);
       await verifyHomeQuickLinkInteraction(browser);
       await verifyInteractiveCards(browser);
     } finally {
