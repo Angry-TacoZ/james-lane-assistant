@@ -20,10 +20,10 @@ export const profileModes = [
     briefingCards: [
       {
         eyebrow: "Identity",
-        title: "AI product and UX engineer",
+        title: "Agentic Engineer",
         body:
           "James builds user-facing AI and workflow tools, drawing on healthcare operations, enterprise systems support, interaction design, and public prototypes.",
-        ref: "resume-pdf / Product Design Profile"
+        ref: "resume-pdf / Summary"
       },
       {
         eyebrow: "Work Style",
@@ -37,7 +37,7 @@ export const profileModes = [
         title: "Turns complex workflows into clear product decisions",
         body:
           "The strongest evidence is in product flows that make requirements, tradeoffs, evidence, and human review visible.",
-        ref: "resume-pdf / Functional Capabilities"
+        ref: "resume-pdf / Technical Skills"
       }
     ]
   },
@@ -121,7 +121,7 @@ export const profileModes = [
         title: "Concrete behavior over broad claims",
         body:
           "The portfolio shows how James defines constraints, exposes evidence and tradeoffs, and verifies the behavior of working prototypes.",
-        ref: "resume-pdf / Product Design Profile"
+        ref: "resume-pdf / Summary"
       }
     ]
   },
@@ -156,7 +156,7 @@ export const profileModes = [
         title: "Bounded AI and inspectable workflow design",
         body:
           "The projects distinguish public demos from production integrations and keep data, scoring, evidence, and human approval visible where they matter.",
-        ref: "resume-pdf / Functional Capabilities"
+        ref: "resume-pdf / Selected Projects"
       },
       {
         eyebrow: "Portfolio Media",
@@ -264,7 +264,7 @@ export const profileModes = [
     answerStyle:
       "Answer directly and factually, with minimal framing.",
     starterQuestions: [
-      "What is James Lane's current consulting role?",
+      "What is James Lane's current role?",
       "What systems and automation tools does James Lane list?",
       "What education and certifications are listed?",
       "How can someone contact James Lane?"
@@ -272,24 +272,24 @@ export const profileModes = [
     briefingCards: [
       {
         eyebrow: "Current Role",
-        title: "AI product builder at JamesLaneAI.com",
+        title: "AI Product Engineer (Independent)",
         body:
-          "The resume lists James's current role as AI Product Builder at JamesLaneAI.com, beginning in 2025.",
-        ref: "resume-pdf / AI Product Builder - JamesLaneAI.com | 2025-Present"
+          "The resume lists James's current role as an independent AI Product Engineer, beginning in 2025.",
+        ref: "resume-pdf / AI Product Engineer (Independent) | 2025-Present"
       },
       {
         eyebrow: "Background",
         title: "Healthcare operations plus enterprise IT",
         body:
           "The resume combines healthcare claims operations experience with a longer enterprise IT and identity-access support background.",
-        ref: "resume-pdf / Professional Summary"
+        ref: "resume-pdf / Summary"
       },
       {
         eyebrow: "Tools",
         title: "Product, AI, platform, and quality tooling",
         body:
           "The resume lists React, TypeScript, Vite, Framer Motion, Firebase, FastAPI, Python, PostgreSQL, pgvector, SQLite, Cloudflare Workers, ChatGPT, Claude, Codex, Gemini, GitHub Actions, Vitest, Playwright, and pytest.",
-        ref: "resume-pdf / Tools & Technologies"
+        ref: "resume-pdf / Technical Skills"
       }
     ]
   }

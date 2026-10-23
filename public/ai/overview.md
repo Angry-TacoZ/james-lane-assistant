@@ -10,15 +10,15 @@ Medium: https://medium.com/@Angry_TacoZ
 
 ## One-Sentence Summary
 
-James AI is the AI product and UX portfolio for James Earl Lane. It presents working prototypes, an evidence-backed resume assistant, public writing, and visual design work alongside the constraints and verification behind each artifact.
+James AI is the Agentic Engineer portfolio for James Earl Lane. It presents working AI products and LLM systems, an evidence-backed resume assistant, public writing, and visual design work alongside the constraints and verification behind each artifact.
 
 ## Candidate Summary
 
-James Lane designs user-facing systems for decisions, AI output, and complex workflows. He combines product thinking, interaction design, responsive frontend implementation, and AI system design across React, TypeScript, Vite, Firebase, FastAPI, and LLM-enabled workflows.
+James Lane is an Agentic Engineer whose current resume headline is "AI Engineer, AI Products, Workflow Automation & Applied LLM Systems." He builds retrieval-backed assistants, bounded automation, and hybrid workflows that keep a human in charge of the final decision.
 
-His background spans healthcare claims operations and enterprise IT support. The public portfolio shows how he makes requirements, evidence, tradeoffs, and human review visible in working software. His current resume identifies his ongoing work as AI Product Builder at JamesLaneAI.com.
+His background spans healthcare claims operations and enterprise IT support. The public portfolio shows how he makes requirements, evidence, tradeoffs, and human review visible in working software. His current resume lists AI Product Engineer (Independent), 2025-Present.
 
-Selected applications include Delivery Composer, Blue, James AI Living Resume, CogFit Jobs, PDF Equipment Checker, Personal Job Discovery, and the Fieldline AEC concept. Documented certifications include Anthropic's AI Fluency: Framework & Foundations, Databricks Generative AI Fundamentals accreditation, and Business Analysis Foundations.
+Selected applications include Delivery Composer, Blue, James AI Living Resume, CogFit Jobs, PDF Equipment Checker, Personal Job Discovery, and the Fieldline AEC concept. Documented certifications include Anthropic's AI Fluency: Framework & Foundations, Databricks Generative AI Fundamentals, Business Analysis Foundations, and LinkedIn Learning's Prompt Engineering and AI Agents.
 
 ## Best-Fit Work
 

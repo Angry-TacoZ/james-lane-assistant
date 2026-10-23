@@ -1,6 +1,6 @@
 # James AI / James Lane
 
-> James AI is an AI product and UX portfolio and living resume for James Earl Lane. It is designed for both human review and AI-agent reading.
+> James AI is the Agentic Engineer portfolio and living resume for James Earl Lane. It is designed for both human review and AI-agent reading.
 
 Canonical site: https://jamesai.space/
 Firebase hosting mirror: https://james-lane-web-resume.web.app/
@@ -12,7 +12,7 @@ X: https://x.com/JamesLaneAI
 
 ## Purpose
 
-James AI is an AI product and UX portfolio and living resume for James Lane.
+James AI is the Agentic Engineer portfolio and living resume for James Lane.
 
 ## What This Site Is
 

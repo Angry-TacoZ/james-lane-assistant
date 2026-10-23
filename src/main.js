@@ -998,7 +998,7 @@ function renderHomePrimaryPanel(mode, briefingPrimary, vectorCard, supportTags) 
         </div>
         <span class="font-['Space_Grotesk'] text-on-surface-variant/40 text-[10px] uppercase tracking-widest">ID-4092-X</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight">${escapeHtml(briefingPrimary.title)}</h2>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-on-surface mb-6 md:mb-8 tracking-tight" data-home-identity-title>${escapeHtml(briefingPrimary.title)}</h2>
       <div class="grid md:grid-cols-2 gap-8 md:gap-12">
         <div class="space-y-6">
           <p class="text-lg text-on-surface-variant leading-relaxed">${escapeHtml(briefingPrimary.body)}</p>
@@ -1040,7 +1040,7 @@ function renderResumeDocumentPanel() {
         <div>
           <div class="mb-2 font-label text-[10px] uppercase tracking-[0.22em] text-primary">Current resume</div>
           <h2 class="text-2xl font-bold tracking-normal text-on-surface sm:text-3xl">James Lane</h2>
-          <p class="mt-2 text-sm text-on-surface-variant/70">AI Product &amp; UX Engineer</p>
+          <p class="mt-2 text-sm text-on-surface-variant/70">AI Engineer, AI Products, Workflow Automation &amp; Applied LLM Systems</p>
         </div>
         <a class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 font-label text-[10px] font-bold uppercase tracking-[0.16em] text-on-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low" href="${RESUME_PDF_URL}" download="James-Lane-Resume.pdf" data-resume-download>
           <span class="material-symbols-outlined text-base" aria-hidden="true">download</span>

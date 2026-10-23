@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { approvedSources, parseMarkdownSource, refusalMessage, sourceCorpus } from "../src/data/resumeCorpus.js";
+import { profileModes } from "../src/data/profileModes.js";
 import { askAssistant } from "../src/lib/retrieval.js";
 
 describe("James AI retrieval", () => {
@@ -11,8 +12,14 @@ describe("James AI retrieval", () => {
 
     expect(headlineMatch?.title).toBe("Professional Headline");
     expect(headlineMatch?.items).toEqual([
-      "AI Product & UX Engineer | Design Engineer | Interactive Prototyping"
+      "AI Engineer, AI Products, Workflow Automation & Applied LLM Systems"
     ]);
+  });
+
+  it("uses Agentic Engineer as the home identity card title", () => {
+    const identityCard = profileModes.find((mode) => mode.id === "profile")?.briefingCards[0];
+
+    expect(identityCard?.title).toBe("Agentic Engineer");
   });
 
   it("answers direct factual contact questions from the approved resume", () => {
@@ -476,13 +483,43 @@ describe("James AI retrieval", () => {
     expect(response.answer).toMatch(/\[(cognitive-profile|core-identity|p2-tools-and-platforms|evidence-and-projects)-?/) ;
   });
 
-  it("uses the updated AI product builder role as James's current role", () => {
+  it("uses the updated AI Product Engineer role as James's current role", () => {
     const response = askAssistant("What is James Lane's current role?");
 
     expect(response.refused).toBe(false);
-    expect(response.answer).toContain("AI Product Builder");
-    expect(response.answer).toContain("JamesLaneAI.com");
-    expect(response.answer).toContain("[p2-exp-ai-product-builder]");
+    expect(response.answer).toContain("AI Product Engineer (Independent)");
+    expect(response.answer).toContain("2025-Present");
+    expect(response.answer).toContain("[p1-exp-ai-product-engineer]");
+  });
+
+  it("retrieves updated resume facts for the approved claims-assistant pilot", () => {
+    const response = askAssistant("What happened with James's AI assistant proposal at Capital Blue Cross?");
+
+    expect(response.refused).toBe(false);
+    expect(response.answer).toContain("40,000 labor hours a year in savings");
+    expect(response.answer).toContain("both enterprise AI committees");
+    expect(response.answer).toContain("[p2-exp-capital-blue-cross]");
+  });
+
+  it("includes the new LinkedIn Learning certification in resume evidence", () => {
+    const response = askAssistant("What certifications are listed on James Lane's resume?");
+
+    expect(response.refused).toBe(false);
+    expect(response.intent).toBe("education");
+    expect(response.answer).toContain("Prompt Engineering and AI Agents (LinkedIn Learning)");
+    expect(response.answer).toContain("[p2-education]");
+  });
+
+  it("does not attribute unsupported retail and automotive employment to the current resume", () => {
+    const response = askAssistant("What retail and automotive experience has James personally worked in?");
+    const resumeRefs = sourceCorpus.filter((section) => section.group === "resume-pdf");
+
+    expect(resumeRefs.some((section) => section.id === "p2-user-domain-perspective")).toBe(false);
+    expect(resumeRefs.flatMap((section) => section.items.join(" ")).join(" ")).not.toMatch(
+      /hhgregg|OfficeMax|Verizon\/GoWireless|automotive retail and service/i
+    );
+    expect(response.answer).not.toMatch(/hhgregg|OfficeMax|Verizon\/GoWireless|automotive retail and service/i);
+    expect(response.matches?.some((match) => match.referenceId === "p2-user-domain-perspective")).not.toBe(true);
   });
 
   it("describes Capital Blue Cross as prior experience with the updated dates", () => {
@@ -536,10 +573,11 @@ describe("James AI retrieval", () => {
     const oldSourceName = "Profres072026.pdf";
 
     expect(resumeSource).toMatchObject({
-      label: "James_Lane_AI_Product_UX_Functional.docx",
-      path: "C:\\Users\\angry\\Downloads\\James_Lane_AI_Product_UX_Functional.docx"
+      label: "James-Lane-Resume.pdf",
+      path: "public/resume/James-Lane-Resume.pdf"
     });
     expect(sourceCorpus.some((section) => section.sourceLabel?.includes(oldSourceName))).toBe(false);
+    expect(sourceCorpus.some((section) => section.sourceLabel === "James_Lane_AI_Product_UX_Functional.docx")).toBe(false);
   });
 
   it("supports broader fit questions when fit mode is active", () => {

@@ -35,6 +35,24 @@ export const retrievalEvaluationCases = [
     forbiddenRefs: ["p1-project-blue-shopping-agent", "github-project-blue-curated-journey"]
   },
   {
+    name: "Updated Capital Blue Cross pilot evidence",
+    question: "What happened with James's AI assistant proposal at Capital Blue Cross?",
+    expectedIntent: "experience",
+    expectedFirstRef: "p2-exp-capital-blue-cross",
+    requiredRefs: ["p2-exp-capital-blue-cross"],
+    forbiddenRefs: ["p1-project-blue-shopping-agent"],
+    requiredAnswerText: "40,000 labor hours a year in savings"
+  },
+  {
+    name: "Current resume certifications",
+    question: "What certifications are listed on James Lane's resume?",
+    expectedIntent: "education",
+    expectedFirstRef: "p2-education",
+    requiredRefs: ["p2-education"],
+    forbiddenRefs: ["p2-exp-capital-blue-cross", "p2-selected-projects"],
+    requiredAnswerText: "Prompt Engineering and AI Agents (LinkedIn Learning)"
+  },
+  {
     name: "Generic design work",
     question: "What design work has James done?",
     options: { modeId: "projects", preferredIntent: "projects" },

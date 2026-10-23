@@ -65,6 +65,10 @@ for (const evaluationCase of retrievalEvaluationCases) {
     }
   }
 
+  if (evaluationCase.requiredAnswerText && !response.answer.includes(evaluationCase.requiredAnswerText)) {
+    failureReasons.push(`answer did not include required evidence text: ${evaluationCase.requiredAnswerText}`);
+  }
+
   if (failureReasons.length > 0) {
     failures.push(`${evaluationCase.name}: ${failureReasons.join("; ")}`);
   }

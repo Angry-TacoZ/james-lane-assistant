@@ -193,6 +193,8 @@ async function verifyPage(browser, viewport, pageTarget) {
       const brandCopyIsCorrect =
         brandLockup?.querySelector("[data-brand-name]")?.textContent?.trim() === "James AI" &&
         brandLockup?.querySelector("[data-brand-tagline]")?.textContent?.trim() === "An AI-powered living resume";
+      const homeIdentityTitleIsCorrect =
+        pageTargetName !== "home" || document.querySelector("[data-home-identity-title]")?.textContent?.trim() === "Agentic Engineer";
       const homeEvidenceCards = [...document.querySelectorAll("[data-home-evidence-card]")];
       const homeEvidenceAffordancesAreHonest = homeEvidenceCards.every((card) => {
         const hasUrl = card.getAttribute("data-evidence-link") === "true";
@@ -226,6 +228,7 @@ async function verifyPage(browser, viewport, pageTarget) {
         homeComposerIsAccessible,
         brandLockupIsVisible,
         brandCopyIsCorrect,
+        homeIdentityTitleIsCorrect,
         homeEvidenceAffordancesAreHonest,
         widthOverflow
       };
@@ -245,6 +248,7 @@ async function verifyPage(browser, viewport, pageTarget) {
     assert(result.homeComposerIsAccessible, `${viewport.name}/${pageTarget.name} home composer is missing accessible labels`);
     assert(result.brandLockupIsVisible, `${viewport.name}/${pageTarget.name} brand lockup is missing or hidden`);
     assert(result.brandCopyIsCorrect, `${viewport.name}/${pageTarget.name} brand copy is incorrect`);
+    assert(result.homeIdentityTitleIsCorrect, `${viewport.name}/${pageTarget.name} home identity title is incorrect`);
     assert(result.homeEvidenceAffordancesAreHonest, `${viewport.name}/${pageTarget.name} evidence cards imply unavailable links`);
     assert(result.widthOverflow <= 2, `${viewport.name}/${pageTarget.name} has horizontal overflow of ${result.widthOverflow}px`);
   } finally {
