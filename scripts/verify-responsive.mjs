@@ -506,6 +506,54 @@ async function verifyComposerSubmissionClearsDraft(browser) {
   }
 }
 
+async function verifyAssistantChunkFailureRecovery(browser) {
+  for (const viewport of viewports) {
+    let failAssistantChunks = true;
+    const context = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: viewport.isMobile
+    });
+
+    try {
+      await context.route(/\/assets\/(?:resumeCorpus|retrieval|synthesizer)-[^/]+\.js/, (route) =>
+        failAssistantChunks ? route.abort("failed") : route.continue()
+      );
+
+      const page = await context.newPage();
+      const errors = [];
+      page.on("pageerror", (error) => errors.push(error.message));
+      await page.goto(`${BASE_URL}/?qa=responsive-assistant-chunk-recovery-${viewport.name}`, { waitUntil: "networkidle" });
+      await page.waitForSelector("[data-assistant-error][role='alert']");
+
+      const question = "Would James be good at software engineering?";
+      const composer = page.locator("[data-home-input]");
+      await composer.fill(question);
+      await composer.press("Enter");
+      await page.waitForFunction(() =>
+        document.querySelector("[data-assistant-error]") &&
+        !document.body.innerText.includes("Thinking through the approved sources...")
+      );
+      assert(await composer.inputValue() === question, `${viewport.name}/chunk failure discarded the typed question`);
+
+      failAssistantChunks = false;
+      await page.locator("[data-assistant-retry]").click();
+      await page.waitForFunction((submittedQuestion) =>
+        [...document.querySelectorAll("[data-home-history] [data-home-turn-user-last]")]
+          .some((turn) => turn.innerText.includes(submittedQuestion)), question
+      );
+      await page.waitForFunction(() =>
+        document.querySelector("[data-home-input]")?.value === "" &&
+        !document.querySelector("[data-assistant-error]") &&
+        !document.body.innerText.includes("Thinking through the approved sources...")
+      );
+
+      assert(errors.length === 0, `${viewport.name}/chunk failure escaped the visible recovery path: ${errors.join(" | ")}`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function assertCardLiftAndGlow(card, label) {
   const element = await card.elementHandle();
   assert(element, `${label} is missing`);
@@ -600,6 +648,7 @@ async function main() {
       await verifyResumeViewer(browser);
       await verifyComposerTypingDuringDeferredStartup(browser);
       await verifyComposerSubmissionClearsDraft(browser);
+      await verifyAssistantChunkFailureRecovery(browser);
       await verifyHomeQuickLinkInteraction(browser);
       await verifyInteractiveCards(browser);
     } finally {

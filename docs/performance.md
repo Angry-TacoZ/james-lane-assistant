@@ -23,7 +23,7 @@ The JSON artifact is written to `output/lighthouse-performance.json`, which is i
 | Cumulative Layout Shift | 0.012 | 0.009 |
 | Transferred bytes | 1,510 KiB | 689 KiB |
 
-Two follow-up audits on the rebased candidate using Node 22 completed with performance scores of 75 and 77, FCP of 3.9 s and 4.0 s, LCP of 4.4 s and 4.2 s, TBT of 20 ms in both runs, CLS of 0 and 0, and transfer sizes of 729 KiB and 690 KiB. These runs show meaningful timing/score variance and are not directly comparable to the initial before/after pair; the transfer-size reduction remained consistent. Node 24 runs on this Windows host failed during Lighthouse temporary-profile cleanup and were treated as failed runs, not accepted metrics.
+Two current-candidate audits using Node 22 completed with performance scores of 72 and 77, FCP of 4.2 s and 2.9 s, LCP of 4.9 s in both runs, TBT of 20 ms in both runs, CLS of 0 and 0.009, and transfer sizes of 759 KiB in both runs. These runs show meaningful timing/score variance and are not directly comparable to the initial before/after pair; the transfer-size reduction remains directionally consistent. The current audits include corrected Inter and Space Grotesk preload URLs that match the Latin font files actually requested by the stylesheet. Node 24 runs on this Windows host failed during Lighthouse temporary-profile cleanup and were treated as failed runs, not accepted metrics.
 
 ## What Changed
 

@@ -35,6 +35,7 @@ const RESUME_PAGE_URLS = [
 ];
 const AUDIO_GUIDE_URL = "/audio/james-ai-audio-guide.mp3";
 const AUDIO_GUIDE_STORAGE_KEY = "james-ai-audio-guide-dismissed";
+const PENDING_ASSISTANT_QUESTION_KEY = "james-ai-pending-question";
 // Temporary voiceover hold: use "prompt" here to restore the original first-visit popup.
 const AUDIO_GUIDE_FIRST_VISIT_STATUS = "dock";
 
@@ -224,6 +225,7 @@ const pageState = {
   writingSort: "chronological",
   writingPage: 1,
   homeDraft: "",
+  assistantError: "",
   sessions: {},
   latestContext: null,
   focusComposer: false,
@@ -240,10 +242,23 @@ void init();
 async function init() {
   ensureHead();
   seedInitialState();
+  const pendingAssistantQuestion = readPendingAssistantQuestion();
+  if (pendingAssistantQuestion !== null) {
+    pageState.homeDraft = pendingAssistantQuestion;
+  }
   render();
   bindGlobalEvents();
   scheduleNonCriticalWork(loadAnalytics);
   scheduleNonCriticalWork(async () => {
+    const pendingQuestion = readPendingAssistantQuestion();
+    if (pendingQuestion !== null) {
+      if (pendingQuestion.trim()) {
+        await handleAsk(pendingQuestion, { skipSeed: true });
+        return;
+      }
+      clearPendingAssistantQuestion();
+    }
+
     await ensureModeSession(pageState.modeId);
     if (pageState.page === "home") {
       render();
@@ -300,6 +315,9 @@ async function getAssistantModules() {
       synthesize: synthesizer.synthesize
     };
     return assistantModules;
+  }).catch((error) => {
+    assistantModulesPromise = null;
+    throw error;
   });
 
   return assistantModulesPromise;
@@ -316,6 +334,31 @@ function getInitialAudioGuideStatus() {
       : AUDIO_GUIDE_FIRST_VISIT_STATUS;
   } catch {
     return AUDIO_GUIDE_FIRST_VISIT_STATUS;
+  }
+}
+
+function readPendingAssistantQuestion() {
+  try {
+    return window.sessionStorage.getItem(PENDING_ASSISTANT_QUESTION_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function savePendingAssistantQuestion(question) {
+  try {
+    window.sessionStorage.setItem(PENDING_ASSISTANT_QUESTION_KEY, question);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function clearPendingAssistantQuestion() {
+  try {
+    window.sessionStorage.removeItem(PENDING_ASSISTANT_QUESTION_KEY);
+  } catch {
+    // Session storage can be unavailable in strict privacy contexts.
   }
 }
 
@@ -443,6 +486,14 @@ function bindGlobalEvents() {
     if (homeSubmit) {
       event.preventDefault();
       await handleAsk(pageState.homeDraft);
+      return;
+    }
+
+    const assistantRetry = event.target.closest("[data-assistant-retry]");
+
+    if (assistantRetry) {
+      event.preventDefault();
+      await retryAssistant();
       return;
     }
 
@@ -603,26 +654,41 @@ async function switchMode(modeId) {
   render();
 }
 
-async function handleAsk(question) {
+async function handleAsk(question, { skipSeed = false } = {}) {
   const trimmed = question.trim();
 
   if (!trimmed || pageState.busy) {
     return;
   }
 
+  pageState.assistantError = "";
   pageState.busy = true;
   render();
 
   try {
-    await ensureModeSession(pageState.modeId);
+    await ensureModeSession(pageState.modeId, { skipSeed });
     await runAssistantQuestion(pageState.modeId, trimmed);
     pageState.homeDraft = "";
     pageState.focusComposer = false;
+    clearPendingAssistantQuestion();
+  } catch (error) {
+    console.error("Assistant request failed", error);
+    pageState.assistantError = "The assistant couldn't load its sources. Your question is still saved here; retry when your connection is ready.";
   } finally {
     pageState.busy = false;
     render();
     scrollHomeChatToBottom();
   }
+}
+
+async function retryAssistant() {
+  if (!savePendingAssistantQuestion(pageState.homeDraft)) {
+    pageState.assistantError = "The assistant couldn't retry because this tab can't preserve your draft. Your question is still here; copy it before reloading.";
+    render();
+    return;
+  }
+
+  window.location.reload();
 }
 
 async function ensureModeSession(modeId, options = {}) {
@@ -651,9 +717,12 @@ async function ensureModeSession(modeId, options = {}) {
   const session = pageState.sessions[modeId];
   pageState.latestContext = buildLatestContext(modeId);
 
-    if (!session.seedStarted) {
+    if (!session.seedStarted && !options.skipSeed) {
       session.seedStarted = true;
-      session.seedPromise = runAssistantQuestion(modeId, mode.starterQuestions[0], { seeded: true }).finally(() => {
+      session.seedPromise = runAssistantQuestion(modeId, mode.starterQuestions[0], { seeded: true }).catch((error) => {
+        console.error("Assistant starter failed to load", error);
+        pageState.assistantError = "The assistant couldn't load its sources. Check your connection and retry.";
+      }).finally(() => {
       session.seedPromise = null;
           if (pageState.page === "home" && pageState.modeId === modeId) {
             render();
@@ -1396,6 +1465,12 @@ function renderHomeChatPanel(displayedHistory, placeholder, modeSeedLoading = fa
               <div class="min-w-0 max-w-full overflow-hidden bg-surface-container-high text-on-surface p-3 sm:p-4 rounded-2xl rounded-tl-none text-sm leading-relaxed break-words [overflow-wrap:anywhere]">
                 Loading the source-backed starter answer for this lens...
               </div>
+            </div>
+          ` : ""}
+          ${pageState.assistantError ? `
+            <div class="flex items-center justify-between gap-4 rounded-lg border border-primary/20 bg-surface-container-high px-4 py-3 text-sm text-on-surface" role="alert" data-assistant-error>
+              <span>${escapeHtml(pageState.assistantError)}</span>
+              <button class="shrink-0 rounded border border-primary/30 px-3 py-2 font-label text-xs text-primary hover:bg-primary/10" type="button" data-assistant-retry>Retry</button>
             </div>
           ` : ""}
           ${pageState.busy ? `
