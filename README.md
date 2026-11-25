@@ -1,8 +1,8 @@
 # James AI
 
-[James AI](https://james-lane-web-resume.web.app/) is James Lane's source-grounded living resume and portfolio. It gives visitors a way to explore his work, writing, projects, work-design context, and current resume through a bounded assistant instead of a static page alone.
+[James AI (`jamesai.space`)](https://jamesai.space/) is James Lane's source-grounded living resume and portfolio. It gives visitors a way to explore his work, writing, projects, work-design context, and current resume through a bounded assistant instead of a static page alone.
 
-The site is an employer-facing portfolio artifact. It is not a general web-search chatbot and does not claim knowledge beyond the approved public source corpus in this repository.
+The site is an employer-facing portfolio artifact. It is not a general web-search chatbot and does not claim knowledge beyond the approved public source corpus in this repository. Retrieval routing and source selection are regression-tested in CI (`npm run verify`, documented in [`docs/retrieval-evaluation.md`](docs/retrieval-evaluation.md)).
 
 ## What Visitors Can Do
 
@@ -47,7 +47,7 @@ The per-instance rate limit is a lightweight abuse control, not a substitute for
 
 Requirements: Node.js 22 and npm.
 
-```powershell
+```bash
 npm ci
 npm --prefix functions ci
 npx playwright install chromium
@@ -59,7 +59,7 @@ Local development intentionally uses the deterministic response path. A deployed
 
 ## Verification
 
-```powershell
+```bash
 npm run test
 npm run test:functions
 npm run build
@@ -69,7 +69,7 @@ npm run verify:responsive
 npm run verify:all
 ```
 
-`verify:all` regenerates the Functions allowlist, runs application and Functions tests, builds the site, exercises the retrieval evaluation set, and checks all primary routes plus the audio-guide flow at desktop and mobile viewports. GitHub Actions runs the same verification workflow on pull requests and pushes to `main`.
+`verify:all` regenerates the Functions allowlist, runs application and Functions tests, builds the site, exercises the [retrieval evaluation set](docs/retrieval-evaluation.md), and checks all primary routes plus the audio-guide flow at desktop and mobile viewports. GitHub Actions runs the same verification workflow on pull requests and pushes to `main`.
 - `verify:responsive` builds on the current `dist` output by starting a local preview and checking each major route on mobile and desktop viewports.
 - `perf:lighthouse` creates a local production build, runs a Lighthouse performance audit, and writes the current report to `output/lighthouse-performance.json`. The baseline and comparison method are documented in `docs/performance.md`.
 - Playwright-managed Chromium must be installed once with `npx playwright install chromium`. CI installs Chromium and its Linux system dependencies before running the full gate.
@@ -90,16 +90,18 @@ For a production release from reviewed `main`:
 
 ```powershell
 npm run verify:all
-powershell -ExecutionPolicy Bypass -File C:\Users\angry\.codex\sessions\scripts\predeploy-secret-scan.ps1 -Path <project-root>
+powershell -ExecutionPolicy Bypass -File <path-to-predeploy-secret-scan.ps1> -Path <project-root>
 firebase deploy --only "hosting,functions:synthesize"
 ```
+
+On macOS or Linux, run an equivalent secret scan covering source and built `dist/` assets before deploying.
 
 Deploy Hosting and `synthesize` together when the approved corpus or allowlist changes. After deployment, verify the live site and its primary assistant flow before calling the release complete.
 
 ## Public Resources
 
-- Live site: [james-lane-web-resume.web.app](https://james-lane-web-resume.web.app/)
-- Custom domain: [jamesai.space](https://jamesai.space/)
+- Custom domain (canonical): [jamesai.space](https://jamesai.space/)
+- Firebase Hosting mirror: [james-lane-web-resume.web.app](https://james-lane-web-resume.web.app/)
 - AI-readable summary: [`/llms.txt`](https://jamesai.space/llms.txt)
 - Expanded AI-readable context: [`/llms-full.txt`](https://jamesai.space/llms-full.txt)
 - Resume PDF: [`/resume/James-Lane-Resume.pdf`](https://jamesai.space/resume/James-Lane-Resume.pdf)
